@@ -1,19 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function PopularProduct() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [productData, setProductData] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const response = await fetch("https://fakestoreapi.com/products");
+        const responseJson = await response.json();
+        // console.log(responseJson);
+
+        setProductData(responseJson);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    getProducts();
+  }, []);
+  console.log(productData);
+
+  const currentProducts = productData.slice(
+    currentIndex * 4,
+    (currentIndex + 1) * 4
+  );
 
   const prevImg = () => {
     const firstImg = currentIndex === 0;
-    const newImg = firstImg ? popProducts.length - 4 : currentIndex - 4;
+    const newImg = firstImg ? productData.length / 4 - 1 : currentIndex - 1;
+    setCurrentIndex(newImg);
+  };
+  console.log(currentIndex);
+
+  const nextImg = () => {
+    const lastImg = currentIndex === productData.length / 4 - 1;
+    const newImg = lastImg ? 0 : currentIndex + 1;
     setCurrentIndex(newImg);
   };
 
-  const nextImg = () => {
-    const lastImg = currentIndex === popProducts.length - 4;
-    const newImg = lastImg ? 0 : currentIndex + 4;
-    setCurrentIndex(newImg);
-  };
   const popProducts = [
     {
       productImage:
@@ -195,31 +219,27 @@ function PopularProduct() {
           </button>
         </div>
       </div>
-      <div className="flex h-auto w-full justify-center gap-4 ">
-        {popProducts
-          .slice(currentIndex, currentIndex + 4)
-          .map((item, index) => {
-            return (
-              <div
-                key={index}
-                className="w-[280px] h-auto p-4 text-xl cursor-pointer"
-              >
-                <div className=" h-[300px] overflow-hidden ">
-                  <img
-                    src={item.productImage}
-                    alt="Product Imgae"
-                    className="w-full h-full object-cover rounded-lg hover:scale-110 hover:absolute hover:w-[285px] hover:h-[305px]"
-                  />
-                </div>
-                <p className="font-bold text-wrap mt-[15px] hover:text-gray-400">
-                  {item.productName}
-                </p>
-                <p className="text-gray-500 text-lg my-[10px]">
-                  {item.brandName}
-                </p>
+      <div id="product" className="flex h-auto w-full justify-center gap-4 ">
+        {currentProducts.map((item, index) => {
+          return (
+            <div
+              key={index}
+              className="w-[280px] h-auto p-4 text-xl cursor-pointer"
+            >
+              <div className=" h-[300px] overflow-hidden ">
+                <img
+                  src={item.image}
+                  alt="Product Imgae"
+                  className="w-full h-full object-contain rounded-lg hover:scale-110 hover:absolute hover:w-[285px] hover:h-[305px]"
+                />
+              </div>
+              <p className="font-bold text-nowrap mt-[15px] hover:text-gray-400 text-ellipsis	overflow-hidden">
+                {item.title}
+              </p>
+              <p className="text-gray-500 text-lg my-[10px]">{item.category}</p>
 
-                <div className="flex gap-2 items-center">
-                  <div className="w-3/4 ">
+              <div className="flex gap-2 items-center">
+                {/* <div className="w-3/4 ">
                     <div className="flex gap-2 items-center text-[15px] font-bold">
                       <i
                         class="fa fa-star  text-yellow-500"
@@ -238,34 +258,34 @@ function PopularProduct() {
                       </p>
                       <p className="font-bold">$ {item.discount}</p>
                     </div>
-                  </div>
+                  </div> */}
 
-                  {/* add cart button */}
-                  <button className=" ml-auto bg-black w-10 h-10 p-1 rounded-full hover:bg-gray-300">
-                    <svg
-                      fill="#ffffff"
-                      viewBox="-7 0 32 32"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      stroke="#ffffff"
-                    >
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        {" "}
-                        <title>plus</title>{" "}
-                        <path d="M17.040 15.16h-7.28v-7.24c0-0.48-0.36-0.84-0.84-0.84s-0.84 0.36-0.84 0.84v7.28h-7.24c-0.48-0.040-0.84 0.32-0.84 0.8s0.36 0.84 0.84 0.84h7.28v7.28c0 0.48 0.36 0.84 0.84 0.84s0.84-0.36 0.84-0.84v-7.32h7.28c0.48 0 0.84-0.36 0.84-0.84s-0.44-0.8-0.88-0.8z"></path>{" "}
-                      </g>
-                    </svg>
-                  </button>
-                </div>
+                {/* add cart button */}
+                <button className=" ml-auto bg-black w-10 h-10 p-1 rounded-full hover:bg-gray-300">
+                  <svg
+                    fill="#ffffff"
+                    viewBox="-7 0 32 32"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    stroke="#ffffff"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      {" "}
+                      <title>plus</title>{" "}
+                      <path d="M17.040 15.16h-7.28v-7.24c0-0.48-0.36-0.84-0.84-0.84s-0.84 0.36-0.84 0.84v7.28h-7.24c-0.48-0.040-0.84 0.32-0.84 0.8s0.36 0.84 0.84 0.84h7.28v7.28c0 0.48 0.36 0.84 0.84 0.84s0.84-0.36 0.84-0.84v-7.32h7.28c0.48 0 0.84-0.36 0.84-0.84s-0.44-0.8-0.88-0.8z"></path>{" "}
+                    </g>
+                  </svg>
+                </button>
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
