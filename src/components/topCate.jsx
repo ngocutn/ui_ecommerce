@@ -1,4 +1,42 @@
+import { useState, useEffect } from "react";
+
 function TopCategory() {
+  const [category, setCategory] = useState([]);
+
+  // useEffect(() => {
+  //   fetch("https://fakestoreapi.com/products")
+  //   fetch("https://b8d9-2402-800-63a7-91ab-fddd-c100-4d5f-5cf7.ngrok-free.app/api/v1/categories")
+  //     .then((res) => res.json())
+  //     .then((data) => setCategory(data));
+  // }),
+  //   [];
+
+  useEffect(() => {
+    const getCategory = async () => {
+      try {
+        const res = await fetch(
+          "https://0ff6-2402-800-63a7-91ab-fddd-c100-4d5f-5cf7.ngrok-free.app/api/v1/categories"
+          // https://0ff6-2402-800-63a7-91ab-fddd-c100-4d5f-5cf7.ngrok-free.app
+        );
+        {
+          mode: "no-cors";
+        }
+
+        console.log("res", res);
+        // const res = await fetch("https://fakestoreapi.com/products");
+        const resJson = await res.json();
+
+        console.log("cate", resJson);
+        setCategory(resJson.data);
+      } catch (error) {
+        console.log("Error", error);
+      }
+    };
+    getCategory();
+  }, []);
+
+  console.log("cate2", category);
+
   const svgIcon = [
     {
       image: (
@@ -71,11 +109,12 @@ function TopCategory() {
 
   return (
     <div className="flex gap-3 ml-4 my-3">
-      {svgIcon.map((item, index) => {
+      {category.map((item, index) => {
         return (
           <div>
             <div className="w-[70px] h-[70px] rounded-full bg-gray-200 p-4 hover:bg-gray-100 cursor-pointer">
-              {item.image}
+              {/* <img src={item.image} alt="" /> */}
+              {item.icon}
             </div>
             <p className="text-center mt-2 font-semibold">{item.name}</p>
           </div>
