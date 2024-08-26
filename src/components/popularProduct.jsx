@@ -18,7 +18,7 @@ function PopularProduct() {
     };
     getProducts();
   }, []);
-  console.log(productData);
+  // console.log(productData);
 
   const currentProducts = productData.slice(
     currentIndex * 4,
@@ -226,7 +226,7 @@ function PopularProduct() {
               key={index}
               className="w-[280px] h-auto p-4 text-xl cursor-pointer"
             >
-              <div className=" h-[300px] overflow-hidden ">
+              <div className=" h-[300px] overflow-hidden bg-gray-300">
                 <img
                   src={item.image}
                   alt="Product Imgae"
