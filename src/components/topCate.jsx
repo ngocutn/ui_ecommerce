@@ -1,4 +1,15 @@
+import { useState, useEffect } from "react";
+
 function TopCategory() {
+  const [category, setCategory] = useState([]);
+
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products")
+      .then((res) => res.json())
+      .then((data) => setCategory(data));
+  }),
+    [];
+
   const svgIcon = [
     {
       image: (
@@ -71,11 +82,11 @@ function TopCategory() {
 
   return (
     <div className="flex gap-3 ml-4 my-3">
-      {svgIcon.map((item, index) => {
+      {category.map((item, index) => {
         return (
           <div>
             <div className="w-[70px] h-[70px] rounded-full bg-gray-200 p-4 hover:bg-gray-100 cursor-pointer">
-              {item.image}
+              <img src={item.image} alt="" />
             </div>
             <p className="text-center mt-2 font-semibold">{item.name}</p>
           </div>
