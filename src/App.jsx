@@ -1,14 +1,13 @@
-import MainPage from "./pages/mainPage"
+import MainPage from "./pages/mainPage";
+import AddProduct from "./pages/addProduct";
 
 function App() {
-
-  return( 
+  return (
     <>
-     <MainPage />
+      {/* <MainPage /> */}
+      <AddProduct></AddProduct>
     </>
- 
-)
-    
+  );
 }
 
-export default App
+export default App;
