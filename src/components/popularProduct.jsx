@@ -224,16 +224,17 @@ function PopularProduct() {
           return (
             <div
               key={index}
-              className="w-[280px] h-auto p-4 text-xl cursor-pointer"
+              className="w-[280px] h-auto p-4 text-xl cursor-pointer group transiton"
             >
-              <div className=" h-[300px] overflow-hidden bg-gray-300">
+              <div className=" h-[300px] overflow-hidden  flex justify-center items-center">
                 <img
                   src={item.image}
                   alt="Product Imgae"
-                  className="w-full h-full object-contain rounded-lg hover:scale-110 hover:absolute hover:w-[285px] hover:h-[305px]"
+                  className="max-h-[200px] object-contain rounded-lg group-hover:scale-110 transition duration-300"
+                  // hover:absolute hover:w-[285px] hover:h-[305px]
                 />
               </div>
-              <p className="font-bold text-nowrap mt-[15px] hover:text-gray-400 text-ellipsis	overflow-hidden">
+              <p className="font-bold text-nowrap mt-[10px] group-hover:text-gray-400 text-ellipsis	overflow-hidden">
                 {item.title}
               </p>
               <p className="text-gray-500 text-lg my-[10px]">{item.category}</p>

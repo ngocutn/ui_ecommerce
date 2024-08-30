@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
 
 function TopCategory() {
@@ -11,28 +12,37 @@ function TopCategory() {
   // }),
   //   [];
 
+  // useEffect(() => {
+  //   const getCategory = async () => {
+  //     try {
+  //       const res = await fetch(
+  //         "https://c38f-2402-800-63a7-91ab-c16-1f4d-c090-fa9d.ngrok-free.app/api/v1/categories"
+  //         // https://0ff6-2402-800-63a7-91ab-fddd-c100-4d5f-5cf7.ngrok-free.app
+  //       );
+  //       {
+  //         mode: "no-cors";
+  //       }
+
+  //       console.log("res", res);
+  //       // const res = await fetch("https://fakestoreapi.com/products");
+  //       const resJson = await res.json();
+
+  //       console.log("cate", resJson);
+  //       setCategory(resJson.data);
+  //     } catch (error) {
+  //       console.log("Error", error);
+  //     }
+  //   };
+  //   getCategory();
+  // }, []);
+
   useEffect(() => {
-    const getCategory = async () => {
-      try {
-        const res = await fetch(
-          "https://0ff6-2402-800-63a7-91ab-fddd-c100-4d5f-5cf7.ngrok-free.app/api/v1/categories"
-          // https://0ff6-2402-800-63a7-91ab-fddd-c100-4d5f-5cf7.ngrok-free.app
-        );
-        {
-          mode: "no-cors";
-        }
-
-        console.log("res", res);
-        // const res = await fetch("https://fakestoreapi.com/products");
-        const resJson = await res.json();
-
-        console.log("cate", resJson);
-        setCategory(resJson.data);
-      } catch (error) {
-        console.log("Error", error);
-      }
-    };
-    getCategory();
+    axios
+      .get(
+        "https://c38f-2402-800-63a7-91ab-c16-1f4d-c090-fa9d.ngrok-free.app/api/v1/categories"
+      )
+      .then((res) => setCategory(res.data.data))
+      .catch((error) => console.log("Error: ", error));
   }, []);
 
   console.log("cate2", category);
