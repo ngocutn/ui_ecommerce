@@ -21,10 +21,10 @@ function App() {
         },
       ],
     },
-    // {
-    //   path: "mainpage",
-    //   element: <MainPage />,
-    // },
+    {
+      path: "mainpage",
+      element: <MainPage />,
+    },
     // {
     //   path: "add-product",
     //   element: <AddProduct />,

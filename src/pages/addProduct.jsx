@@ -1,12 +1,17 @@
-// import HeaderProduct from "../components/headerProduct";
 import SideBar from "../components/sideBar";
 import { Button, colors } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function AddProduct() {
   const navigate = useNavigate();
+
+  const [selectedValue, setSelectedValue] = useState("");
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
+
   return (
-    // <div id="add-product" className="flex">
     <div id="add-product" className="my-16 mr-12">
       <div className="flex gap-7">
         <button
@@ -92,17 +97,25 @@ function AddProduct() {
           <p className="text-xl font-semibold mt-7">Selling Type</p>
           <div className="flex flex-col my-3 p-4 border-2 border-gray-300 py-2 rounded-md font-semibold">
             <label className="my-1">
-              <input type="checkbox" />
+              <input type="radio" name="sellingOption" value="in-store" />
               <span className="ml-2">In-store selling only</span>
             </label>
             <label className="my-1">
-              <input type="checkbox" />
+              <input type="radio" name="sellingOption" value="online" />
               <span className="ml-2">Online selling only</span>
             </label>
             <label className="my-1">
-              <input type="checkbox" />
+              <input type="radio" name="sellingOption" value="both" />
               <span className="ml-2">Available both in-store and online</span>
             </label>
+          </div>
+
+          <p className="text-xl font-semibold">Variant</p>
+          <div className="flex justify-between my-3 p-4 border-2 border-gray-300 rounded-md font-semibold">
+            <span>Product Variants</span>
+            <span className="text-blue-700 hover:text-gray-500 cursor-pointer">
+              + Add Variant
+            </span>
           </div>
         </div>
 
@@ -125,7 +138,13 @@ function AddProduct() {
             </div>
             <div className="flex justify-between">
               <p className="font-semibold my-3">Package Size</p>
-              <select name="" id="" className="outline-none">
+              <select
+                name=""
+                id=""
+                className="outline-none"
+                value={selectedValue}
+                onChange={handleChange}
+              >
                 <option value="in">in</option>
                 <option value="m">m</option>
                 <option value="cm">cm</option>
@@ -136,35 +155,49 @@ function AddProduct() {
                 <label htmlFor="" className="text-gray-500 font-semibold">
                   Length
                 </label>
-                <input
-                  type="text"
-                  id="productName"
-                  className="border-2 border-gray-300 p-2 rounded-lg my-2"
-                />
+                <div className="border-2 border-gray-300 p-1 rounded-lg my-2">
+                  <input
+                    type="number"
+                    id="productPrice"
+                    className="outline-none	ml-2 py-1 w-[80%]"
+                  />
+                  <span className="float-right py-1">
+                    {selectedValue ? `${selectedValue}` : "in"}
+                  </span>
+                </div>
               </div>
               <div className="flex flex-col w-[30%]">
                 <label htmlFor="" className="text-gray-500 font-semibold">
                   Breadth
                 </label>
-                <input
-                  type="text"
-                  id="productName"
-                  className="border-2 border-gray-300 p-2 rounded-lg my-2"
-                />
+                <div className="border-2 border-gray-300 p-1 rounded-lg my-2">
+                  <input
+                    type="number"
+                    id="productPrice"
+                    className="outline-none	ml-2 py-1 w-[80%]"
+                  />
+                  <span className="float-right py-1">
+                    {selectedValue ? `${selectedValue}` : "in"}
+                  </span>
+                </div>
               </div>
               <div className="flex flex-col w-[30%]">
                 <label htmlFor="" className="text-gray-500 font-semibold">
                   Width
                 </label>
-                <input
-                  type="text"
-                  id="productName"
-                  className="border-2 border-gray-300 p-2 rounded-lg my-2"
-                />
+                <div className="border-2 border-gray-300 p-1 rounded-lg my-2">
+                  <input
+                    type="number"
+                    id="productPrice"
+                    className="outline-none	ml-2 py-1 w-[80%]"
+                  />
+                  <span className="float-right py-1">
+                    {selectedValue ? `${selectedValue}` : "in"}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-
           <p className="text-xl font-semibold mt-7">Pricing</p>
           <div className="flex flex-col my-3 p-4 border-2 border-gray-300 py-2 rounded-md">
             <div className="flex gap-4">
@@ -180,7 +213,7 @@ function AddProduct() {
                   <input
                     type="number"
                     id="mspr-price"
-                    className="outline-none	ml-2"
+                    className="outline-none	ml-2 w-[80%] "
                   />
                 </div>
               </div>
@@ -196,7 +229,7 @@ function AddProduct() {
                   <input
                     type="number"
                     id="sale-price"
-                    className="outline-none	ml-2"
+                    className="outline-none	ml-2 w-[80%] "
                   />
                 </div>
               </div>
@@ -216,10 +249,17 @@ function AddProduct() {
               />
             </div>
           </div>
+          <div className="flex justify-between mt-5">
+            <button className="border-2 border-gray-300 rounded-lg p-3 font-semibold hover:bg-gray-300 hover:text-white">
+              Discard
+            </button>
+            <button className="border-2 bg-blue-700 rounded-lg p-3 font-semibold hover:bg-gray-300 text-white">
+              Add button
+            </button>
+          </div>
         </div>
       </div>
     </div>
-    // </div>
   );
 }
 
