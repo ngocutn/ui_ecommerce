@@ -38,8 +38,8 @@ function TopCategory() {
 
   useEffect(() => {
     axios
-      .get(
-        "https://c38f-2402-800-63a7-91ab-c16-1f4d-c090-fa9d.ngrok-free.app/api/v1/categories"
+      .get( 
+        "http://localhost:8080/api/v1/categories"
       )
       .then((res) => setCategory(res.data.data))
       .catch((error) => console.log("Error: ", error));
