@@ -37,25 +37,25 @@ function TopCategory() {
   //   getCategory();
   // }, []);
 
-  useEffect(() => {
-    axios
-      .get("https://neo4j-ecommerce.onrender.com/api/v1/categories")
-      .then((res) => setCategory(res.data.data))
-      .catch((error) => console.log("Error: ", error));
-  }, []);
-
   // useEffect(() => {
-  //   const getCategory = async () => {
-  //     try {
-  //       const res = await getAllCategories();
-  //       console.log("res", res);
-  //       setCategory(res.data.data);
-  //     } catch (error) {
-  //       console.log("Error", error);
-  //     }
-  //   };
-  //   getCategory();
+  //   axios
+  //     .get("https://neo4j-ecommerce.onrender.com/api/v1/categories")
+  //     .then((res) => setCategory(res.data.data))
+  //     .catch((error) => console.log("Error: ", error));
   // }, []);
+
+  useEffect(() => {
+    const getCategory = async () => {
+      try {
+        const res = await getAllCategories();
+        console.log("res", res);
+        setCategory(res.data.data);
+      } catch (error) {
+        console.log("Error", error);
+      }
+    };
+    getCategory();
+  }, []);
 
   console.log("cate2", category);
 
