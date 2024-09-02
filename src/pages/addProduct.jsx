@@ -19,23 +19,19 @@ function AddProduct() {
     .object({
       name: yup
         .string()
-        .required("Tiêu đề không được để trống")
-        .min(5, "Tên phải có ít nhất 5 ký tự")
-        .max(120, "Tên không được vượt quá 120 ký tự"),
+        .required("Name is not allowed to be empty"),
       description: yup
         .string()
-        .required("Mô tả không được để trống")
-        .min(200, "Mô tả phải có ít nhất 200 ký tự")
-        .max(1000, "Mô tả không được vượt quá 1000 ký tự"),
+        .required("Description is not allowed to be empty"),
       categoryIds: yup.string().required("Please select a category"),
       subCategoryIds: yup.string().required("Please select a category"),
       quantityAvailable: yup
         .number()
+        .required("Quantity is required")
         .typeError("Price must be a number")
         .positive("Price must be a positive number")
         .required("Số lượng là bắt buộc")
-        .max(9999, "Giá trị cao nhất là 9999")
-        .required("Số lượng là bắt buộc"),
+        .max(9999, "Giá trị cao nhất là 9999"),
       originalPrice: yup
         .number()
         .typeError("Price must be a number")
@@ -51,6 +47,9 @@ function AddProduct() {
     .required();
 
   const {
+    setError,
+    clearErrors,
+    setValue,
     register,
     handleSubmit,
     formState: { errors },
@@ -68,7 +67,6 @@ function AddProduct() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
-
   const [discardButton, setDiscardButton] = useState(false);
 
   const handleDiscardButton = () => {
@@ -97,6 +95,7 @@ function AddProduct() {
 
       try {
         const response = await getCategoriesByParentId(selectedCategory);
+  
         setSubcategories(response.data.data);
       } catch (error) {
         console.error("Error fetching subcategories:", error);
@@ -108,9 +107,29 @@ function AddProduct() {
 
   const handleCategoryChange = (event) => {
     const categoryId = event.target.value;
+
+    console.log("category id", categoryId);
     setSelectedCategory(categoryId);
   };
 
+  useEffect(() => {
+    if (selectedCategory) {
+      setSelectedSubcategory("");
+    }
+  }, [selectedCategory]);
+
+  // clear errors when category, subcategory is selected
+  useEffect(() => {
+    if (selectedCategory) {
+      clearErrors("categoryIds");
+    }
+  } , [selectedCategory]);
+
+  useEffect(() => {
+    if (selectedSubcategory) {
+      clearErrors("subCategoryIds");
+    }
+  } , [selectedSubcategory]);
   const handleSubcategoryChange = (event) => {
     setSelectedSubcategory(event.target.value);
   };
@@ -170,12 +189,73 @@ function AddProduct() {
     });
   };
 
+
+  const handleChangeName = (event) => {
+    if (event.target.value.length < 5) {
+      setError("name", {
+        type: "manual",
+        message: "Minimum 5 characters required",
+      });
+    } else if (event.target.value.length > 120) {
+      setError("name", {
+        type: "manual",
+        message: "Maximum 120 characters allowed",
+      });
+    } else if (event.target.value.length === 120 && event.key !== "Backspace" && event.key !== "Delete") {
+      setError("name", {
+        type: "manual",
+        message: "Maximum 120 characters allowed",
+      });
+    } else {
+      setValue("name", event.target.value);
+      clearErrors("name");
+    }
+    if (event.target.value.length === 0) {
+      setError("name", {
+        type: "manual",
+        message: "Name is not allowed to be empty",
+      })
+    }
+  };
+
+  const handleChangeDescription = (event) => {
+    const description = event.target.value.trim();
+    if (description.length === 0) {
+      setError("description", {
+        type: "manual",
+        message: "Description is not allowed to be empty",
+      });
+    } else if (description.length < 200) {
+      setError("description", {
+        type: "manual",
+        message: "Minimum 200 characters required",
+      });
+    } else if (description.length === 1000 && event.key !== "Backspace" && event.key !== "Delete") {
+      setError("description", {
+        type: "manual",
+        message: "Maximum 1000 characters allowed",
+      });
+    } else {
+      setValue("description", description);
+      clearErrors("description");
+    }
+  };
+
+  const handleFractionInput = (e) => {
+    const value = e.target.value;
+    const floatValue = parseFloat(value);
+    if (isNaN(floatValue)) {
+      e.target.value = '';
+    } else if (floatValue.toString().split('.')[1] && floatValue.toString().split('.')[1].length > 2) {
+      e.target.value = floatValue.toFixed(2);
+    }
+  }
   return (
-    <div id="add-product" className="my-16 mr-12">
+    <div id="add-product" className="`my-16 mr-12">
       <div className="flex gap-7">
         <button
           className="border border-gray-400 px-4 py-1 rounded-md text-gray-400 hover:bg-gray-400 hover:text-white"
-          onClick={handleDiscardButton}
+          onClick={() => handleDiscardButton}
         >
           <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
         </button>
@@ -196,7 +276,8 @@ function AddProduct() {
               <input
                 type="text"
                 id="name"
-                {...register("name")}
+                maxLength={120}
+                onChange={handleChangeName}
                 className={`border-2 border-gray-300 p-2 rounded-lg my-2 text-ellipsis ${
                   errors.name ? "border-red-500" : "border-gray-300"
                 }`}
@@ -221,8 +302,12 @@ function AddProduct() {
                 Business description
               </label>
               <textarea
+                type="text"
+                maxLength={1000}
+                minLength={200}
                 id="description"
-                {...register("description")}
+                {...register("description", { required: true })} 
+                onChange={handleChangeDescription}
                 className={`border-2 border-gray-300 p-2 rounded-lg my-2 ${
                   errors.description ? "border-red-500" : "border-gray-300"
                 }`}
@@ -326,6 +411,12 @@ function AddProduct() {
                 </label>
                 <input
                   type="number"
+                  step="1"
+                  onKeyPress={(e) => {
+                            if (e.key === ".") {
+                              e.preventDefault();
+                            }
+                          }}
                   id="quantityAvailable"
                   {...register("quantityAvailable")}
                   className={`border-2 border-gray-300 p-2 rounded-lg my-2 ${
@@ -362,7 +453,7 @@ function AddProduct() {
 
             <p className="text-xl font-semibold mt-7">Selling Type</p>
             <div className="flex flex-col my-3 p-4 border-2 border-gray-300 py-2 rounded-md font-semibold">
-              <label htmlFor="sellingType" className="my-1">
+              <label className="my-1">
                 <input
                   type="radio"
                   id="storeSelling"
@@ -408,13 +499,16 @@ function AddProduct() {
               </label>
               <div className="border-2 border-gray-300 p-2 rounded-lg my-2">
                 <input
+                   onInput={handleFractionInput}
                   type="number"
+                  step="0.01"
                   id="weight"
                   {...register("weight")}
                   className="outline-none w-[90%]"
                 />
                 <select
                   id="unitWeight"
+                  onInput={handleFractionInput}
                   {...register("unitWeight")}
                   className="float-right outline-none"
                 >
@@ -446,7 +540,9 @@ function AddProduct() {
                   </label>
                   <div className="border-2 border-gray-300 p-1 rounded-lg my-2">
                     <input
+                    onInput={handleFractionInput}
                       type="number"
+                      step="0.01"
                       id="length"
                       {...register("length")}
                       className="outline-none ml-2 py-1 w-[80%]"
@@ -465,7 +561,9 @@ function AddProduct() {
                   </label>
                   <div className="border-2 border-gray-300 p-1 rounded-lg my-2">
                     <input
+                    onInput={handleFractionInput}
                       type="number"
+                      step="0.01"
                       id="breadth"
                       {...register("breadth")}
                       className="outline-none ml-2 py-1 w-[80%]"
@@ -484,7 +582,9 @@ function AddProduct() {
                   </label>
                   <div className="border-2 border-gray-300 p-1 rounded-lg my-2">
                     <input
+                    onInput={handleFractionInput}
                       type="number"
+                      step="0.01"
                       id="width"
                       {...register("width")}
                       className="outline-none ml-2 py-1 w-[80%]"
@@ -519,7 +619,9 @@ function AddProduct() {
                       aria-hidden="true"
                     ></i>
                     <input
-                      type="number"
+                    onInput={handleFractionInput}
+                    type="number"
+                      step="0.01"
                       id="originalPrice"
                       {...register("originalPrice")}
                       className="outline-none ml-2 w-[80%]"
@@ -558,7 +660,9 @@ function AddProduct() {
                       aria-hidden="true"
                     ></i>
                     <input
+                    onInput={handleFractionInput}
                       type="number"
+                      step="0.01"
                       id="discountedPrice"
                       {...register("discountedPrice")}
                       className="outline-none ml-2 w-[80%]"
@@ -594,7 +698,9 @@ function AddProduct() {
                   aria-hidden="true"
                 ></i>
                 <input
+                  onInput={handleFractionInput}
                   type="number"
+                  step="0.01"
                   id="sellingPrice"
                   {...register("sellingPrice")}
                   className="outline-none ml-2 w-[90%]"
