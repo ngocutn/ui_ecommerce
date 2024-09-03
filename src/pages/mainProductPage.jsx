@@ -8,7 +8,7 @@ function MainProductPage() {
       <div className="w-1/5">
         <SideBar></SideBar>
       </div>
-      <div className="w-4/5 pl-20 pr-8 py-4 flex-col gap-4">
+      <div className="w-4/5 px-10 py-4 flex-col gap-4">
         <div className="flex gap-5 items-center float-right">
           <i class="fa-regular fa-bell cursor-pointer"></i>
           <i class="fa-regular fa-circle-question cursor-pointer"></i>
