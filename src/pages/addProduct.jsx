@@ -54,6 +54,8 @@ function AddProduct() {
     .required();
 
   const {
+    trigger,
+    formState,
     setError,
     clearErrors,
     setValue,
@@ -118,6 +120,8 @@ function AddProduct() {
     setShowModal(true);
   };
 
+  const [loading, setLoading] = useState(false);
+
   const handleDiscardButton = () => {
     setDiscardButton(!discardButton);
   };
@@ -178,11 +182,13 @@ function AddProduct() {
       clearErrors("subCategoryIds");
     }
   }, [selectedSubcategory]);
+
   const handleSubcategoryChange = (event) => {
     setSelectedSubcategory(event.target.value);
   };
 
   const onSubmit = async (data) => {
+   
     const {
       name,
       description,
@@ -224,6 +230,7 @@ function AddProduct() {
 
     console.log("request", request);
 
+
     const formData = new FormData();
     const jsonBlob = new Blob([JSON.stringify(request)], {
       type: "application/json",
@@ -241,18 +248,27 @@ function AddProduct() {
 
     console.log("formData", formData);
 
+ 
+
+    console.log("set loading", loading);
+    console.log("load", loading);
+    
     return axios({
       method: "post",
       url: `https://neo4j-ecommerce.onrender.com/api/v1/products`,
       data: formData,
     })
-      .then((res) => {
-        console.log("res in onSubmit", res);
-      })
-      .catch((error) => {
-        console.log("error in onSubmit ++++++++", error);
-      });
-  };
+
+  }
+    
+  
+  
+
+
+
+  const isFormValid = formState.isValid;
+  console.log("isFormValid", isFormValid);
+
 
   const handleChangeName = (event) => {
     if (event.target.value.length < 5) {
@@ -311,6 +327,8 @@ function AddProduct() {
       setValue("description", description);
       clearErrors("description");
     }
+    trigger('description');
+    
   };
 
   const handleFractionInput = (e) => {
@@ -325,6 +343,7 @@ function AddProduct() {
       e.target.value = floatValue.toFixed(2);
     }
   };
+  
   return (
     <div id="add-product" className="my-16 mr-12">
       <div className="flex gap-7">
@@ -349,6 +368,7 @@ function AddProduct() {
                 Product Name
               </label>
               <input
+                {...register("name", { required: true })}
                 type="text"
                 id="name"
                 maxLength={120}
@@ -880,9 +900,10 @@ function AddProduct() {
               </button>
               <button
                 type="submit"
-                className="border-2 bg-blue-700 rounded-lg p-3 font-semibold hover:bg-gray-300 text-white"
+                disabled={!isFormValid}
+                className={`border-2 ${isFormValid  ? 'bg-blue-700 text-white' : 'bg-gray-300 text-white'}  rounded-lg p-3 font-semibold`}
               >
-                Add Product
+                {loading ? 'Loading...' : 'Add Product'}
               </button>
 
               {discardButton && (
