@@ -4,7 +4,7 @@ import MainPage from "./pages/mainPage";
 import AddProduct from "./pages/addProduct";
 import ListProduct from "./pages/listProduct";
 import MainProductPage from "./pages/mainProductPage";
-import ImageUploader from "./pages/image";
+import Text from "./pages/image";
 
 function App() {
   const router = createBrowserRouter([
@@ -28,7 +28,7 @@ function App() {
     },
     {
       path: "image",
-      element: <ImageUploader />,
+      element: <Text />,
     },
     // {
     //   path: "add-product",
