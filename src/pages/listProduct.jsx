@@ -40,7 +40,7 @@ function ListProduct() {
           products.map((product) => (
             <div
               key={product.id}
-              className="border rounded-lg p-4 shadow-sm bg-white flex"
+              className="border rounded-lg p-4 shadow-sm bg-white hover:bg-gray-100 flex"
             >
               <div className="w-20 h-20 bg-gray-200 rounded mr-4">
                 <img

@@ -346,8 +346,20 @@ function AddProduct() {
       },
     };
 
-    console.log("request", request);
+    setLoading(true);
 
+    const res = await addProduct(request);
+    setLoading(false);
+    console.log("res 3333", res);
+
+    if (res.status === 201) {
+      alert(res.data.message);
+    } else {
+      alert(res.response.data.message);
+    }
+  };
+
+  const addProduct = async (request) => {
     const formData = new FormData();
     const jsonBlob = new Blob([JSON.stringify(request)], {
       type: "application/json",
@@ -360,14 +372,19 @@ function AddProduct() {
 
     console.log("formData", formData);
 
-    console.log("set loading", loading);
-    console.log("load", loading);
-
     return axios({
       method: "post",
       url: `https://neo4j-ecommerce.onrender.com/api/v1/products`,
       data: formData,
-    });
+    })
+      .then((response) => {
+        console.log("response", response);
+        return response;
+      })
+      .catch((error) => {
+        console.log("error", error);
+        return error;
+      });
   };
 
   const isFormValid = formState.isValid;
@@ -985,9 +1002,11 @@ function AddProduct() {
                 disabled={!isFormValid}
                 className={`border-2 ${
                   isFormValid
-                    ? "bg-blue-700 text-white"
+                    ? loading
+                      ? "bg-gray-300 text-white"
+                      : "bg-blue-700 text-white"
                     : "bg-gray-300 text-white"
-                }  rounded-lg p-3 font-semibold`}
+                } rounded-lg p-3 font-semibold`}
               >
                 {loading ? "Loading..." : "Add Product"}
               </button>
