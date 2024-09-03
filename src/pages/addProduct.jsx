@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { set, useForm } from "react-hook-form";
 import * as yup from "yup";
 import axios from "axios";
-
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SideBar from "../components/sideBar";
 import { Button, colors } from "@mui/material";
@@ -71,6 +72,7 @@ function AddProduct() {
   });
 
   const navigate = useNavigate();
+  const [descriptionValue, setDescriptionValue] = useState("");
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -85,6 +87,25 @@ function AddProduct() {
   const [replaceIndex, setReplaceIndex] = useState(null);
 
   const [showModal, setShowModal] = useState(false);
+
+  const [fileError, setFileError] = useState("");
+
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [
+        { align: "" },
+        { align: "center" },
+        { align: "right" },
+        { align: "justify" },
+      ],
+    ],
+  };
+
+  const handleQuillChange = (name, value) => {
+    setValue(name, value, { shouldValidate: true });
+  };
 
   const onSelectFile = (e) => {
     const selectedFile = e.target.files;
@@ -188,7 +209,6 @@ function AddProduct() {
   };
 
   const onSubmit = async (data) => {
-   
     const {
       name,
       description,
@@ -230,45 +250,29 @@ function AddProduct() {
 
     console.log("request", request);
 
-
     const formData = new FormData();
     const jsonBlob = new Blob([JSON.stringify(request)], {
       type: "application/json",
     });
     formData.append("request", jsonBlob);
-    // formData.append("files", selectedFiles);
     for (let i = 0; i < selectedFiles.length; i++) {
       formData.append("files", selectedFiles[i]);
     }
 
-    // Array.from(images).forEach((file) => {
-    //   const fileType = file.type;
-    //   formData.append("images", new Blob([file], { type: fileType }));
-    // });
-
     console.log("formData", formData);
-
- 
 
     console.log("set loading", loading);
     console.log("load", loading);
-    
+
     return axios({
       method: "post",
       url: `https://neo4j-ecommerce.onrender.com/api/v1/products`,
       data: formData,
-    })
-
-  }
-    
-  
-  
-
-
+    });
+  };
 
   const isFormValid = formState.isValid;
   console.log("isFormValid", isFormValid);
-
 
   const handleChangeName = (event) => {
     if (event.target.value.length < 5) {
@@ -302,6 +306,29 @@ function AddProduct() {
     }
   };
 
+  const handleFileUpload = (e) => {
+    const textFile = e.target.files[0];
+    if (textFile) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const text = event.target.result;
+        const wordCount = text.split(/\s+/).length;
+        console.log("Word count:", wordCount);
+
+        if (wordCount > 1000) {
+          setFileError(
+            "The file contains more than 1000 words. Please upload a smaller file."
+          );
+          setDescriptionValue("");
+        } else {
+          setFileError("");
+          setDescriptionValue(text);
+        }
+      };
+      reader.readAsText(textFile);
+    }
+  };
+
   const handleChangeDescription = (event) => {
     const description = event.target.value.trim();
     if (description.length === 0) {
@@ -327,8 +354,7 @@ function AddProduct() {
       setValue("description", description);
       clearErrors("description");
     }
-    trigger('description');
-    
+    trigger("description");
   };
 
   const handleFractionInput = (e) => {
@@ -343,7 +369,7 @@ function AddProduct() {
       e.target.value = floatValue.toFixed(2);
     }
   };
-  
+
   return (
     <div id="add-product" className="my-16 mr-12">
       <div className="flex gap-7">
@@ -390,23 +416,55 @@ function AddProduct() {
                 </div>
               )}
 
-              <label
-                htmlFor="description"
-                className="text-gray-500 font-semibold"
-              >
-                Business description
-              </label>
-              <textarea
+              <div className="flex justify-between">
+                <label
+                  htmlFor="description"
+                  className="text-gray-500 font-semibold"
+                >
+                  Business description
+                </label>
+
+                <label htmlFor="textFile" className="cursor-pointer">
+                  Upload .txt file
+                  <input
+                    id="textFile"
+                    name="textFile"
+                    type="file"
+                    accept=".txt"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                </label>
+
+                {fileError && <p className="text-red-600">{fileError}</p>}
+              </div>
+
+              {/* <textarea
                 type="text"
                 maxLength={1000}
                 minLength={200}
                 id="description"
                 {...register("description", { required: true })}
                 onChange={handleChangeDescription}
-                className={`border-2 border-gray-300 p-2 rounded-lg my-2 ${
+                className={`border-2 border-gray-300 p-2 rounded-lg my-2 resize-none	 ${
                   errors.description ? "border-red-500" : "border-gray-300"
                 }`}
+              /> */}
+
+              <ReactQuill
+                className="h-[78%]"
+                theme="snow"
+                id="description"
+                name="description"
+                value={descriptionValue}
+                onChange={(value) => {
+                  setDescriptionValue(value);
+                  handleChangeDescription;
+                  handleQuillChange("description", value);
+                }}
+                modules={modules}
               />
+
               {errors?.description && (
                 <div className="flex items-center">
                   <i
@@ -901,9 +959,13 @@ function AddProduct() {
               <button
                 type="submit"
                 disabled={!isFormValid}
-                className={`border-2 ${isFormValid  ? 'bg-blue-700 text-white' : 'bg-gray-300 text-white'}  rounded-lg p-3 font-semibold`}
+                className={`border-2 ${
+                  isFormValid
+                    ? "bg-blue-700 text-white"
+                    : "bg-gray-300 text-white"
+                }  rounded-lg p-3 font-semibold`}
               >
-                {loading ? 'Loading...' : 'Add Product'}
+                {loading ? "Loading..." : "Add Product"}
               </button>
 
               {discardButton && (
