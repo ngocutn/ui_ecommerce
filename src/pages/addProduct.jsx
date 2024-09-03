@@ -16,20 +16,20 @@ import {
 } from "../service/product/api";
 
 import ImageModal from "../components/imageModal";
+import PopUp from "../components/popUp";
 
 function AddProduct() {
+  //Validation schema
   const schema = yup
     .object({
-      name: yup
-        .string()
-        .required("Tiêu đề không được để trống")
-        .min(5, "Tên phải có ít nhất 5 ký tự")
-        .max(120, "Tên không được vượt quá 120 ký tự"),
+      name: yup.string().required("Title is required"),
+      // .min(5, "Tên phải có ít nhất 5 ký tự")
+      // .max(120, "Tên không được vượt quá 120 ký tự"),
       description: yup
         .string()
-        .required("Mô tả không được để trống")
-        .min(200, "Mô tả phải có ít nhất 200 ký tự")
-        .max(1000, "Mô tả không được vượt quá 1000 ký tự"),
+        .required("Description is required")
+        .min(200, "Description must be at least 200 characters")
+        .max(1000, "Description must be less than 1000 characters"),
       categoryIds: yup.string().required("Please select a category"),
       subCategoryIds: yup.string().required("Please select a category"),
       quantityAvailable: yup
@@ -37,23 +37,23 @@ function AddProduct() {
         .required("Quantity is required")
         .typeError("Price must be a number")
         .positive("Price must be a positive number")
-        .required("Số lượng là bắt buộc")
-        .max(9999, "Giá trị cao nhất là 9999")
-        .required("Số lượng là bắt buộc"),
+        .max(9999, "number must be less than 9999")
+        .required("Number of items is required"),
       originalPrice: yup
         .number()
         .typeError("Price must be a number")
         .positive("Price must be a positive number")
-        .required("Giá gốc là bắt buộc"),
+        .required("Price is required"),
       sellingPrice: yup
         .number()
         .typeError("Price must be a number")
         .positive("Price must be a positive number")
-        .required("Giá bán là bắt buộc"),
+        .required("Price is required"),
+      // images: yup.array().of(yup.string().required("Please upload an image")),
     })
-
     .required();
 
+  // useForm
   const {
     trigger,
     formState,
@@ -71,31 +71,112 @@ function AddProduct() {
     },
   });
 
-  const navigate = useNavigate();
-  const [descriptionValue, setDescriptionValue] = useState("");
-  const [categories, setCategories] = useState([]);
-  const [subcategories, setSubcategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedSubcategory, setSelectedSubcategory] = useState("");
-  const [selectedValue, setSelectedValue] = useState("");
-  const [discardButton, setDiscardButton] = useState(false);
-  const [selectedImages, setSelectedImages] = useState([]);
-  const [selectedFiles, setSelectedFiles] = useState([]);
-  const [replaceIndex, setReplaceIndex] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-
+  // Handle validation
   const [fileError, setFileError] = useState("");
 
+  const handleChangeName = (event) => {
+    if (event.target.value.length < 5) {
+      setError("name", {
+        type: "manual",
+        message: "Minimum 5 characters required",
+      });
+    } else if (event.target.value.length > 120) {
+      setError("name", {
+        type: "manual",
+        message: "Maximum 120 characters allowed",
+      });
+    } else if (
+      event.target.value.length === 120 &&
+      event.key !== "Backspace" &&
+      event.key !== "Delete"
+    ) {
+      setError("name", {
+        type: "manual",
+        message: "Maximum 120 characters allowed",
+      });
+    } else {
+      setValue("name", event.target.value);
+      clearErrors("name");
+    }
+    if (event.target.value.length === 0) {
+      setError("name", {
+        type: "manual",
+        message: "Name is not allowed to be empty",
+      });
+    }
+  };
+
+  const handleChangeDescription = (event) => {
+    const description = event.target.value.trim();
+    if (description.length === 0) {
+      setError("description", {
+        type: "manual",
+        message: "Description is not allowed to be empty",
+      });
+    } else if (description.length < 200) {
+      setError("description", {
+        type: "manual",
+        message: "Minimum 200 characters required",
+      });
+    } else if (
+      description.length === 1000 &&
+      event.key !== "Backspace" &&
+      event.key !== "Delete"
+    ) {
+      setError("description", {
+        type: "manual",
+        message: "Maximum 1000 characters allowed",
+      });
+    } else {
+      setDescriptionValue(description);
+      clearErrors("description");
+    }
+    trigger("description");
+  };
+
+  const handleFractionInput = (e) => {
+    const value = e.target.value;
+    const floatValue = parseFloat(value);
+    if (isNaN(floatValue)) {
+      e.target.value = "";
+    } else if (
+      floatValue.toString().split(".")[1] &&
+      floatValue.toString().split(".")[1].length > 2
+    ) {
+      e.target.value = floatValue.toFixed(2);
+    }
+  };
+
+  // Upload file txt
+  const handleFileUpload = (e) => {
+    const textFile = e.target.files[0];
+    if (textFile) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const text = event.target.result;
+        const wordCount = text.split(/\s+/).length;
+        console.log("Word count:", wordCount);
+
+        if (wordCount > 1000) {
+          setFileError(
+            "The file contains more than 1000 words. Please upload a smaller file."
+          );
+          setDescriptionValue("");
+        } else {
+          setFileError("");
+          setDescriptionValue(text);
+        }
+      };
+      reader.readAsText(textFile);
+    }
+  };
+
+  // ReactQuill
+  const [descriptionValue, setDescriptionValue] = useState("");
   const modules = {
     toolbar: [
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
-      [
-        { align: "" },
-        { align: "center" },
-        { align: "right" },
-        { align: "justify" },
-      ],
     ],
   };
 
@@ -103,49 +184,11 @@ function AddProduct() {
     setValue(name, value, { shouldValidate: true });
   };
 
-  const onSelectFile = (e) => {
-    const selectedFile = e.target.files;
-    console.log("selectedFile", selectedFile);
-    setSelectedFiles(selectedFile);
-
-    const selectedFilesArray = Array.from(selectedFile).map((file) =>
-      URL.createObjectURL(file)
-    );
-
-    setSelectedImages((prevImages) => {
-      const newImages = [...prevImages, ...selectedFilesArray].slice(0, 10);
-      return newImages;
-    });
-  };
-
-  const removeImage = () => {
-    setSelectedImages((prevImages) => prevImages.slice(1));
-  };
-
-  const replaceImage = (newImageUrl, updatedImageList) => {
-    // setSelectedImages((prevImages) =>
-    //   prevImages.map((img, index) =>
-    //     index === replaceIndex ? newImageUrl : img
-    //   )
-    // );
-    setSelectedImages(updatedImageList);
-    setShowModal(false);
-  };
-
-  const handleReplace = (index) => {
-    setReplaceIndex(index);
-    setShowModal(true);
-  };
-
-  const [loading, setLoading] = useState(false);
-
-  const handleDiscardButton = () => {
-    setDiscardButton(!discardButton);
-  };
-
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
+  // Handel Category
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
 
   useEffect(() => {
     const getCategory = async () => {
@@ -187,7 +230,6 @@ function AddProduct() {
     }
   }, [selectedCategory]);
 
-  // clear errors when category, subcategory is selected
   useEffect(() => {
     if (selectedCategory) {
       clearErrors("categoryIds");
@@ -204,6 +246,66 @@ function AddProduct() {
     setSelectedSubcategory(event.target.value);
   };
 
+  // Handle Product Button
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const [discardButton, setDiscardButton] = useState(false);
+  const handleDiscardButton = () => {
+    setDiscardButton(!discardButton);
+  };
+
+  // Handel Shipping
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
+
+  // Handle Image
+
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  const [replaceIndex, setReplaceIndex] = useState(null);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const onSelectFile = (e) => {
+    const selectedFile = e.target.files;
+    console.log("selectedFile", selectedFile);
+    setSelectedFiles(selectedFile);
+
+    const selectedFilesArray = Array.from(selectedFile).map((file) =>
+      URL.createObjectURL(file)
+    );
+
+    setSelectedImages((prevImages) => {
+      const newImages = [...prevImages, ...selectedFilesArray].slice(0, 10);
+      return newImages;
+    });
+  };
+
+  const removeImage = () => {
+    setSelectedImages((prevImages) => prevImages.slice(1));
+  };
+
+  const replaceImage = (newImageUrl, updatedImageList) => {
+    // setSelectedImages((prevImages) =>
+    //   prevImages.map((img, index) =>
+    //     index === replaceIndex ? newImageUrl : img
+    //   )
+    // );
+    setSelectedImages(updatedImageList);
+    setShowModal(false);
+  };
+
+  const handleReplace = (index) => {
+    setReplaceIndex(index);
+    setShowModal(true);
+  };
+
+  // Handle submit
   const onSubmit = async (data) => {
     const {
       name,
@@ -261,7 +363,6 @@ function AddProduct() {
     console.log("set loading", loading);
     console.log("load", loading);
 
-
     return axios({
       method: "post",
       url: `https://neo4j-ecommerce.onrender.com/api/v1/products`,
@@ -272,108 +373,12 @@ function AddProduct() {
   const isFormValid = formState.isValid;
   console.log("isFormValid", isFormValid);
 
-  const handleChangeName = (event) => {
-    if (event.target.value.length < 5) {
-      setError("name", {
-        type: "manual",
-        message: "Minimum 5 characters required",
-      });
-    } else if (event.target.value.length > 120) {
-      setError("name", {
-        type: "manual",
-        message: "Maximum 120 characters allowed",
-      });
-    } else if (
-      event.target.value.length === 120 &&
-      event.key !== "Backspace" &&
-      event.key !== "Delete"
-    ) {
-      setError("name", {
-        type: "manual",
-        message: "Maximum 120 characters allowed",
-      });
-    } else {
-      setValue("name", event.target.value);
-      clearErrors("name");
-    }
-    if (event.target.value.length === 0) {
-      setError("name", {
-        type: "manual",
-        message: "Name is not allowed to be empty",
-      });
-    }
-  };
-
-  const handleFileUpload = (e) => {
-    const textFile = e.target.files[0];
-    if (textFile) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const text = event.target.result;
-        const wordCount = text.split(/\s+/).length;
-        console.log("Word count:", wordCount);
-
-        if (wordCount > 1000) {
-          setFileError(
-            "The file contains more than 1000 words. Please upload a smaller file."
-          );
-          setDescriptionValue("");
-        } else {
-          setFileError("");
-          setDescriptionValue(text);
-        }
-      };
-      reader.readAsText(textFile);
-    }
-  };
-
-  const handleChangeDescription = (event) => {
-    const description = event.target.value.trim();
-    if (description.length === 0) {
-      setError("description", {
-        type: "manual",
-        message: "Description is not allowed to be empty",
-      });
-    } else if (description.length < 200) {
-      setError("description", {
-        type: "manual",
-        message: "Minimum 200 characters required",
-      });
-    } else if (
-      description.length === 1000 &&
-      event.key !== "Backspace" &&
-      event.key !== "Delete"
-    ) {
-      setError("description", {
-        type: "manual",
-        message: "Maximum 1000 characters allowed",
-      });
-    } else {
-      setValue("description", description);
-      clearErrors("description");
-    }
-    trigger("description");
-  };
-
-  const handleFractionInput = (e) => {
-    const value = e.target.value;
-    const floatValue = parseFloat(value);
-    if (isNaN(floatValue)) {
-      e.target.value = "";
-    } else if (
-      floatValue.toString().split(".")[1] &&
-      floatValue.toString().split(".")[1].length > 2
-    ) {
-      e.target.value = floatValue.toFixed(2);
-    }
-  };
-
   return (
     <div id="add-product" className="my-16 mr-12">
-      <div className="flex gap-7">
+      <div id="add-prd-header" className="flex gap-6">
         <button
-          className="border border-gray-400 px-4 py-1 rounded-md text-gray-400 hover:bg-gray-400 hover:text-white"
-          onClick={() => handleDiscardButton}
+          className="border-2 border-gray-200 px-5 py-1 rounded-md text-gray-500 hover:bg-gray-200 hover:text-white"
+          onClick={handleDiscardButton}
         >
           <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
         </button>
@@ -384,10 +389,14 @@ function AddProduct() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex my-4">
+        <div id="add-prd-body" className="flex my-4 gap-2">
           <div className="w-1/2 m-3">
+            {/* Descriptiom */}
             <p className="text-xl font-semibold">Description</p>
-            <div className="flex flex-col my-3 p-4 border-2 border-gray-300 py-2 rounded-md ">
+            <div
+              id="productDescription"
+              className="flex flex-col h-[280px] my-3 p-4 border-2 border-gray-200 py-2 rounded-md "
+            >
               <label htmlFor="name" className="text-gray-500 font-semibold">
                 Product Name
               </label>
@@ -397,8 +406,8 @@ function AddProduct() {
                 id="name"
                 maxLength={120}
                 onChange={handleChangeName}
-                className={`border-2 border-gray-300 p-2 rounded-lg my-2 text-ellipsis ${
-                  errors.name ? "border-red-500" : "border-gray-300"
+                className={`border-2 2 p-2 rounded-lg my-2 text-ellipsis ${
+                  errors.name ? "border-red-500" : "2"
                 }`}
               />
               {errors?.name && (
@@ -407,7 +416,6 @@ function AddProduct() {
                     class="fa fa-exclamation-circle text-red-500"
                     aria-hidden="true"
                   ></i>
-
                   <p className="px-2 font-nunito text-md leading-normal text-red-500">
                     {errors.name?.message}
                   </p>
@@ -422,8 +430,14 @@ function AddProduct() {
                   Business description
                 </label>
 
-                <label htmlFor="textFile" className="cursor-pointer">
-                  Upload .txt file
+                <label
+                  htmlFor="textFile"
+                  className="cursor-pointer text-blue-400"
+                >
+                  <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                  <span className="ml-2 font-semibold text-sm">
+                    Upload .txt file
+                  </span>
                   <input
                     id="textFile"
                     name="textFile"
@@ -433,24 +447,11 @@ function AddProduct() {
                     className="hidden"
                   />
                 </label>
-
                 {fileError && <p className="text-red-600">{fileError}</p>}
               </div>
 
-              {/* <textarea
-                type="text"
-                maxLength={1000}
-                minLength={200}
-                id="description"
-                {...register("description", { required: true })}
-                onChange={handleChangeDescription}
-                className={`border-2 border-gray-300 p-2 rounded-lg my-2 resize-none	 ${
-                  errors.description ? "border-red-500" : "border-gray-300"
-                }`}
-              /> */}
-
               <ReactQuill
-                className="h-[78%]"
+                className="h-[90px] my-2 relative"
                 theme="snow"
                 id="description"
                 name="description"
@@ -464,7 +465,7 @@ function AddProduct() {
               />
 
               {errors?.description && (
-                <div className="flex items-center">
+                <div className="flex items-center mt-9 text-sm">
                   <i
                     class="fa fa-exclamation-circle text-red-500"
                     aria-hidden="true"
@@ -478,7 +479,10 @@ function AddProduct() {
             </div>
 
             <p className="text-xl font-semibold mt-7">Category</p>
-            <div className="flex flex-col my-3 p-4 border-2 border-gray-300 py-2 rounded-md">
+            <div
+              id="productCategory"
+              className="flex flex-col my-3 p-4 border-2 2 py-2 rounded-md"
+            >
               <label
                 htmlFor="categoryIds"
                 className="text-gray-500 font-semibold"
@@ -488,8 +492,8 @@ function AddProduct() {
               <select
                 id="productCategory"
                 {...register("categoryIds")}
-                className={`border-2 border-gray-300 p-2 rounded-lg my-2 font-semibold ${
-                  errors.categoryIds ? "border-red-500" : "border-gray-300"
+                className={`border-2 2 p-2 rounded-lg my-2 font-semibold ${
+                  errors.categoryIds ? "border-red-500" : "2"
                 }`}
                 value={selectedCategory}
                 onChange={handleCategoryChange}
@@ -523,8 +527,8 @@ function AddProduct() {
               <select
                 id="productSubcategory"
                 {...register("subCategoryIds")}
-                className={`border-2 border-gray-300 p-2 rounded-lg my-2 font-semibold ${
-                  errors.subCategoryIds ? "border-red-500" : "border-gray-300"
+                className={`border-2 2 p-2 rounded-lg my-2 font-semibold ${
+                  errors.subCategoryIds ? "border-red-500" : "2"
                 }`}
                 value={selectedSubcategory}
                 onChange={handleSubcategoryChange}
@@ -552,7 +556,10 @@ function AddProduct() {
             </div>
 
             <p className="text-xl font-semibold mt-7">Inventory</p>
-            <div className="flex gap-4 my-3 p-4 border-2 border-gray-300 py-2 rounded-md">
+            <div
+              id="productInventory"
+              className="flex gap-4 my-3 p-4 border-2 2 py-2 rounded-md"
+            >
               <div className="flex flex-col w-1/3">
                 <label
                   htmlFor="quantityAvailable"
@@ -570,10 +577,8 @@ function AddProduct() {
                   }}
                   id="quantityAvailable"
                   {...register("quantityAvailable")}
-                  className={`border-2 border-gray-300 p-2 rounded-lg my-2 ${
-                    errors.quantityAvailable
-                      ? "border-red-500"
-                      : "border-gray-300"
+                  className={`border-2 2 p-2 rounded-lg my-2 ${
+                    errors.quantityAvailable ? "border-red-500" : "2"
                   }`}
                 />
                 {errors?.quantityAvailable && (
@@ -597,13 +602,16 @@ function AddProduct() {
                   type="text"
                   id="SKU"
                   {...register("SKU")}
-                  className="border-2 border-gray-300 p-2 rounded-lg my-2"
+                  className="border-2 2 p-2 rounded-lg my-2"
                 />
               </div>
             </div>
 
             <p className="text-xl font-semibold mt-7">Selling Type</p>
-            <div className="flex flex-col my-3 p-4 border-2 border-gray-300 py-2 rounded-md font-semibold">
+            <div
+              id="productSellType"
+              className="flex flex-col my-3 p-4 border-2 2 py-2 rounded-md font-semibold"
+            >
               <label htmlFor="sellingType" className="my-1">
                 <input
                   type="radio"
@@ -633,8 +641,8 @@ function AddProduct() {
               </label>
             </div>
 
-            <p className="text-xl font-semibold">Variant</p>
-            <div className="flex justify-between my-3 p-4 border-2 border-gray-300 rounded-md font-semibold">
+            <p className="text-xl font-semibold mt-7">Variant</p>
+            <div className="flex justify-between my-3 p-4 border-2 2 rounded-md font-semibold">
               <span>Product Variants</span>
               <span className="text-blue-700 hover:text-gray-500 cursor-pointer">
                 + Add Variant
@@ -644,17 +652,27 @@ function AddProduct() {
 
           <div className="w-1/2 m-3">
             <p className="text-xl font-semibold">Product Image</p>
-            <div className="w-full flex items-center justify-between gap-3 my-3 p-4 border-2 border-gray-300 py-2 rounded-md">
+            <div
+              id="productImage"
+              className="w-full h-[200px] flex items-center justify-between gap-3 my-3 px-6 border-2 2 py-4 rounded-md"
+            >
               <label
-                className={`border-2 border-dashed cursor-pointer border-gray-300 rounded-md flex items-center justify-center h-28 ${
-                  selectedImages.length > 0 ? "w-1/2 " : "w-full"
-                }`}
+                className={`border-2 border-dashed border-blue-400 cursor-pointer 2 rounded-md flex items-center justify-center h-[160px] ${
+                  selectedImages.length > 1 ? "w-1/3" : "w-full"
+                } ${selectedImages.length === 1 ? "w-1/2 " : ""}`}
               >
-                <span className="text-gray-500">+</span>
+                <div className="flex flex-col gap-5 text-center text-gray-500 items-center">
+                  <i class="fa-solid fa-xl fa-images"></i>
+                  <span className="text-gray-500 px-2">
+                    <span className="text-blue-400 underline font-semibold">
+                      Click to upload
+                    </span>{" "}
+                    or drag and drop
+                  </span>
+                </div>
                 <input
                   type="file"
                   name="images"
-                  // onChange={onSelectFile}
                   multiple
                   accept="image/png, image/jpg, image/jpeg"
                   className="hidden"
@@ -663,7 +681,11 @@ function AddProduct() {
               </label>
 
               {selectedImages.length > 0 && (
-                <div className="w-1/2 h-28 grid grid-cols-2 gap-1 ">
+                <div
+                  className={`${
+                    selectedImages.length === 1 ? "w-full" : "w-2/3"
+                  } h-[160px] grid grid-cols-2 gap-1 `}
+                >
                   {selectedImages.slice(0, 3).map((image, index) => (
                     <div
                       key={index}
@@ -673,8 +695,8 @@ function AddProduct() {
                         selectedImages.length === 1 ? "col-span-2" : "w-full"
                       } ${
                         selectedImages.length >= 3 && index > 0
-                          ? "h-14"
-                          : "h-28"
+                          ? "h-[80px]"
+                          : "h-[160px]"
                       }`}
                     >
                       <img
@@ -684,12 +706,14 @@ function AddProduct() {
                       {index === 0 && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 group-hover:bg-black group-hover:bg-opacity-60">
                           <button
+                            type="button"
                             onClick={() => handleReplace(index)}
                             className="bg-white py-1 px-2 m-1 text-sm text-black rounded-md hover:bg-gray-200"
                           >
                             Replace
                           </button>
                           <button
+                            type="button"
                             onClick={() => removeImage(index)}
                             className="bg-white py-1 px-2 m-1 text-sm text-black rounded-md hover:bg-gray-200"
                           >
@@ -720,11 +744,14 @@ function AddProduct() {
             </div>
 
             <p className="text-xl font-semibold">Shipping and Delivery</p>
-            <div className="flex flex-col my-3 p-4 border-2 border-gray-300 py-2 rounded-md">
+            <div
+              id="productDelivery"
+              className="flex flex-col my-3 p-4 border-2 2 py-2 rounded-md"
+            >
               <label htmlFor="weight" className="text-gray-500 font-semibold">
                 Items weight
               </label>
-              <div className="border-2 border-gray-300 p-2 rounded-lg my-2">
+              <div className="border-2 2 p-2 rounded-lg my-2">
                 <input
                   onInput={handleFractionInput}
                   type="number"
@@ -735,7 +762,7 @@ function AddProduct() {
                 />
                 <select
                   id="unitWeight"
-                  onInput={handleFractionInput}
+                  // onInput={handleFractionInput}
                   {...register("unitWeight")}
                   className="float-right outline-none"
                 >
@@ -765,14 +792,14 @@ function AddProduct() {
                   >
                     Length
                   </label>
-                  <div className="border-2 border-gray-300 p-1 rounded-lg my-2">
+                  <div className="border-2 2 p-1 rounded-lg my-2">
                     <input
                       onInput={handleFractionInput}
                       type="number"
                       step="0.01"
                       id="length"
                       {...register("length")}
-                      className="outline-none ml-2 py-1 w-[80%]"
+                      className="outline-none ml-2 py-1 w-[70%]"
                     />
                     <span className="float-right py-1">
                       {selectedValue || "in"}
@@ -786,14 +813,14 @@ function AddProduct() {
                   >
                     Breadth
                   </label>
-                  <div className="border-2 border-gray-300 p-1 rounded-lg my-2">
+                  <div className="border-2 2 p-1 rounded-lg my-2">
                     <input
                       onInput={handleFractionInput}
                       type="number"
                       step="0.01"
                       id="breadth"
                       {...register("breadth")}
-                      className="outline-none ml-2 py-1 w-[80%]"
+                      className="outline-none ml-2 py-1 w-[70%]"
                     />
                     <span className="float-right py-1">
                       {selectedValue || "in"}
@@ -807,14 +834,14 @@ function AddProduct() {
                   >
                     Width
                   </label>
-                  <div className="border-2 border-gray-300 p-1 rounded-lg my-2">
+                  <div className="border-2 2 p-1 rounded-lg my-2">
                     <input
                       onInput={handleFractionInput}
                       type="number"
                       step="0.01"
                       id="width"
                       {...register("width")}
-                      className="outline-none ml-2 py-1 w-[80%]"
+                      className="outline-none ml-2 py-1 w-[70%]"
                     />
                     <span className="float-right py-1">
                       {selectedValue || "in"}
@@ -825,7 +852,10 @@ function AddProduct() {
             </div>
 
             <p className="text-xl font-semibold mt-7">Pricing</p>
-            <div className="flex flex-col my-3 p-4 border-2 border-gray-300 py-2 rounded-md">
+            <div
+              id="productPricing"
+              className="flex flex-col my-3 p-4 border-2 2 py-2 rounded-md"
+            >
               <div className="flex gap-4">
                 <div className="flex flex-col w-1/2">
                   <label
@@ -835,10 +865,8 @@ function AddProduct() {
                     MSRP Price
                   </label>
                   <div
-                    className={`border-2 border-gray-300 p-1 rounded-lg my-2  ${
-                      errors.originalPrice
-                        ? "border-red-500"
-                        : "border-gray-300"
+                    className={`border-2 2 p-1 rounded-lg my-2  ${
+                      errors.originalPrice ? "border-red-500" : "2"
                     }`}
                   >
                     <i
@@ -875,10 +903,8 @@ function AddProduct() {
                     Sale Price
                   </label>
                   <div
-                    className={`border-2 border-gray-300 p-1 rounded-lg my-2  ${
-                      errors.discountedPrice
-                        ? "border-red-500"
-                        : "border-gray-300"
+                    className={`border-2 2 p-1 rounded-lg my-2  ${
+                      errors.discountedPrice ? "border-red-500" : "2"
                     }`}
                   >
                     <i
@@ -915,8 +941,8 @@ function AddProduct() {
                 Price
               </label>
               <div
-                className={`border-2 border-gray-300 p-1 rounded-lg my-2  ${
-                  errors.sellingPrice ? "border-red-500" : "border-gray-300"
+                className={`border-2 2 p-1 rounded-lg my-2  ${
+                  errors.sellingPrice ? "border-red-500" : "2"
                 }`}
               >
                 <i
@@ -946,10 +972,10 @@ function AddProduct() {
               )}
             </div>
 
-            <div className="flex justify-between mt-5">
+            <div id="add-prd-button" className="flex justify-between mt-5">
               <button
                 type="button"
-                className="border-2 border-gray-300 rounded-lg p-3 font-semibold hover:bg-gray-300 hover:text-white"
+                className="border-2 2 rounded-lg p-3 font-semibold hover:bg-gray-300 hover:text-white"
                 onClick={handleDiscardButton}
               >
                 Discard
@@ -967,29 +993,12 @@ function AddProduct() {
               </button>
 
               {discardButton && (
-                <div className="fixed left-0 top-0 z-[2] flex h-full w-screen items-center justify-center overflow-hidden bg-black bg-opacity-30 shadow-custom">
-                  <div className="h-auto w-[35%] rounded-xl bg-white px-[10px] py-[25px] border-2 border-blue-600 ">
-                    <p className="text-center text-xl font-semibold leading-normal">
-                      Do you want to discard this product?
-                    </p>
-                    <div className="flex justify-center mt-5 gap-6">
-                      <button
-                        type="button"
-                        onClick={handleDiscardButton}
-                        className="border-2 border-gray-300 rounded-lg p-3 font-semibold hover:bg-gray-300 hover:text-white"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => navigate("/")}
-                        className="border-2 bg-blue-700 rounded-lg p-3 font-semibold hover:bg-gray-300 text-white"
-                      >
-                        Discard
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <PopUp
+                  title="Do you want to discard this product?"
+                  rightButton="Discard"
+                  onCancel={handleDiscardButton}
+                  onDiscard={() => navigate("/")}
+                />
               )}
             </div>
           </div>
