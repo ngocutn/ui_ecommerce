@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { set, useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -13,6 +13,8 @@ import {
   getCategoriesByParentId,
   postProduct,
 } from "../service/product/api";
+
+import ImageModal from "../components/imageModal";
 
 function AddProduct() {
   const schema = yup
@@ -68,6 +70,46 @@ function AddProduct() {
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
   const [discardButton, setDiscardButton] = useState(false);
+
+  const [selectedImages, setSelectedImages] = useState([]);
+  console.log(selectedImages);
+  const [replaceIndex, setReplaceIndex] = useState(null);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const onSelectFile = (e) => {
+    const selectedFile = e.target.files;
+
+    const selectedFilesArray = Array.from(selectedFile).map((file) =>
+      URL.createObjectURL(file)
+    );
+
+    setSelectedImages((prevImages) => {
+      const newImages = [...prevImages, ...selectedFilesArray].slice(0, 10);
+      return newImages;
+    });
+
+    console.log(selectedFile);
+  };
+
+  const removeImage = () => {
+    setSelectedImages((prevImages) => prevImages.slice(1));
+  };
+
+  const replaceImage = (newImageUrl, updatedImageList) => {
+    // setSelectedImages((prevImages) =>
+    //   prevImages.map((img, index) =>
+    //     index === replaceIndex ? newImageUrl : img
+    //   )
+    // );
+    setSelectedImages(updatedImageList);
+    setShowModal(false);
+  };
+
+  const handleReplace = (index) => {
+    setReplaceIndex(index);
+    setShowModal(true);
+  };
 
   const handleDiscardButton = () => {
     setDiscardButton(!discardButton);
@@ -492,6 +534,81 @@ function AddProduct() {
           </div>
 
           <div className="w-1/2 m-3">
+            <p className="text-xl font-semibold">Product Image</p>
+            <div className="w-full flex items-center justify-between gap-3 my-3 p-4 border-2 border-gray-300 py-2 rounded-md">
+              <label
+                className={`border-2 border-dashed cursor-pointer border-gray-300 rounded-md flex items-center justify-center h-28 ${
+                  selectedImages.length > 0 ? "w-1/2 " : "w-full"
+                }`}
+              >
+                <span className="text-gray-500">+</span>
+                <input
+                  type="file"
+                  name="images"
+                  onChange={onSelectFile}
+                  multiple
+                  accept="image/png, image/jpg, image/jpeg"
+                  className="hidden"
+                />
+              </label>
+
+              {selectedImages.length > 0 && (
+                <div className="w-1/2 h-28 grid grid-cols-2 gap-1 ">
+                  {selectedImages.slice(0, 3).map((image, index) => (
+                    <div
+                      key={index}
+                      className={`relative group ${
+                        index === 0 ? "row-span-2" : ""
+                      } ${
+                        selectedImages.length === 1 ? "col-span-2" : "w-full"
+                      } ${
+                        selectedImages.length >= 3 && index > 0
+                          ? "h-14"
+                          : "h-28"
+                      }`}
+                    >
+                      <img
+                        src={image}
+                        className="w-full h-full object-cover rounded-md"
+                      />
+                      {index === 0 && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 group-hover:bg-black group-hover:bg-opacity-60">
+                          <button
+                            onClick={() => handleReplace(index)}
+                            className="bg-white py-1 px-2 m-1 text-sm text-black rounded-md hover:bg-gray-200"
+                          >
+                            Replace
+                          </button>
+                          <button
+                            onClick={() => removeImage(index)}
+                            className="bg-white py-1 px-2 m-1 text-sm text-black rounded-md hover:bg-gray-200"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      )}
+                      {index === 2 && selectedImages.length > 3 && (
+                        <div
+                          className="absolute inset-0 flex items-center justify-center bg-gray-500 bg-opacity-60 text-white text-xl font-bold cursor-pointer"
+                          onClick={() => handleReplace(index)}
+                        >
+                          +{selectedImages.length - 3}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {showModal && (
+                <ImageModal
+                  images={selectedImages}
+                  onClose={() => setShowModal(false)}
+                  onSelect={replaceImage}
+                />
+              )}
+            </div>
+
             <p className="text-xl font-semibold">Shipping and Delivery</p>
             <div className="flex flex-col my-3 p-4 border-2 border-gray-300 py-2 rounded-md">
               <label htmlFor="weight" className="text-gray-500 font-semibold">
@@ -648,7 +765,6 @@ function AddProduct() {
                     Sale Price
                   </label>
                   <div
-                    // className="border-2 border-gray-300 p-1 rounded-lg my-2"
                     className={`border-2 border-gray-300 p-1 rounded-lg my-2  ${
                       errors.discountedPrice
                         ? "border-red-500"
