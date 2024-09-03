@@ -4,6 +4,7 @@ import MainPage from "./pages/mainPage";
 import AddProduct from "./pages/addProduct";
 import ListProduct from "./pages/listProduct";
 import MainProductPage from "./pages/mainProductPage";
+import ImageUploader from "./pages/image";
 
 function App() {
   const router = createBrowserRouter([
@@ -24,6 +25,10 @@ function App() {
     {
       path: "mainpage",
       element: <MainPage />,
+    },
+    {
+      path: "image",
+      element: <ImageUploader />,
     },
     // {
     //   path: "add-product",
