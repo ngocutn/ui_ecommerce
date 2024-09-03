@@ -21,10 +21,14 @@ function AddProduct() {
     .object({
       name: yup
         .string()
-        .required("Name is not allowed to be empty"),
+        .required("Tiêu đề không được để trống")
+        .min(5, "Tên phải có ít nhất 5 ký tự")
+        .max(120, "Tên không được vượt quá 120 ký tự"),
       description: yup
         .string()
-        .required("Description is not allowed to be empty"),
+        .required("Mô tả không được để trống")
+        .min(200, "Mô tả phải có ít nhất 200 ký tự")
+        .max(1000, "Mô tả không được vượt quá 1000 ký tự"),
       categoryIds: yup.string().required("Please select a category"),
       subCategoryIds: yup.string().required("Please select a category"),
       quantityAvailable: yup
@@ -33,7 +37,8 @@ function AddProduct() {
         .typeError("Price must be a number")
         .positive("Price must be a positive number")
         .required("Số lượng là bắt buộc")
-        .max(9999, "Giá trị cao nhất là 9999"),
+        .max(9999, "Giá trị cao nhất là 9999")
+        .required("Số lượng là bắt buộc"),
       originalPrice: yup
         .number()
         .typeError("Price must be a number")
@@ -69,16 +74,20 @@ function AddProduct() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
+
   const [discardButton, setDiscardButton] = useState(false);
 
   const [selectedImages, setSelectedImages] = useState([]);
-  console.log(selectedImages);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
   const [replaceIndex, setReplaceIndex] = useState(null);
 
   const [showModal, setShowModal] = useState(false);
 
   const onSelectFile = (e) => {
     const selectedFile = e.target.files;
+    console.log("selectedFile", selectedFile);
+    setSelectedFiles(selectedFile);
 
     const selectedFilesArray = Array.from(selectedFile).map((file) =>
       URL.createObjectURL(file)
@@ -88,8 +97,6 @@ function AddProduct() {
       const newImages = [...prevImages, ...selectedFilesArray].slice(0, 10);
       return newImages;
     });
-
-    console.log(selectedFile);
   };
 
   const removeImage = () => {
@@ -137,7 +144,7 @@ function AddProduct() {
 
       try {
         const response = await getCategoriesByParentId(selectedCategory);
-  
+
         setSubcategories(response.data.data);
       } catch (error) {
         console.error("Error fetching subcategories:", error);
@@ -150,7 +157,6 @@ function AddProduct() {
   const handleCategoryChange = (event) => {
     const categoryId = event.target.value;
 
-    console.log("category id", categoryId);
     setSelectedCategory(categoryId);
   };
 
@@ -165,13 +171,13 @@ function AddProduct() {
     if (selectedCategory) {
       clearErrors("categoryIds");
     }
-  } , [selectedCategory]);
+  }, [selectedCategory]);
 
   useEffect(() => {
     if (selectedSubcategory) {
       clearErrors("subCategoryIds");
     }
-  } , [selectedSubcategory]);
+  }, [selectedSubcategory]);
   const handleSubcategoryChange = (event) => {
     setSelectedSubcategory(event.target.value);
   };
@@ -192,8 +198,10 @@ function AddProduct() {
       sellingPrice,
       originalPrice,
       discountedPrice,
+      images,
       ...otherFields
     } = data;
+    console.log("data", data);
 
     const request = {
       ...otherFields,
@@ -214,23 +222,37 @@ function AddProduct() {
       },
     };
 
-    console.log(request);
+    console.log("request", request);
 
     const formData = new FormData();
     const jsonBlob = new Blob([JSON.stringify(request)], {
       type: "application/json",
     });
     formData.append("request", jsonBlob);
+    // formData.append("files", selectedFiles);
+    for (let i = 0; i < selectedFiles.length; i++) {
+      formData.append("files", selectedFiles[i]);
+    }
+
+    // Array.from(images).forEach((file) => {
+    //   const fileType = file.type;
+    //   formData.append("images", new Blob([file], { type: fileType }));
+    // });
+
+    console.log("formData", formData);
 
     return axios({
       method: "post",
       url: `https://neo4j-ecommerce.onrender.com/api/v1/products`,
       data: formData,
-    }).then((res) => {
-      console.log("res in onSubmit", res);
-    });
+    })
+      .then((res) => {
+        console.log("res in onSubmit", res);
+      })
+      .catch((error) => {
+        console.log("error in onSubmit ++++++++", error);
+      });
   };
-
 
   const handleChangeName = (event) => {
     if (event.target.value.length < 5) {
@@ -243,7 +265,11 @@ function AddProduct() {
         type: "manual",
         message: "Maximum 120 characters allowed",
       });
-    } else if (event.target.value.length === 120 && event.key !== "Backspace" && event.key !== "Delete") {
+    } else if (
+      event.target.value.length === 120 &&
+      event.key !== "Backspace" &&
+      event.key !== "Delete"
+    ) {
       setError("name", {
         type: "manual",
         message: "Maximum 120 characters allowed",
@@ -256,7 +282,7 @@ function AddProduct() {
       setError("name", {
         type: "manual",
         message: "Name is not allowed to be empty",
-      })
+      });
     }
   };
 
@@ -272,7 +298,11 @@ function AddProduct() {
         type: "manual",
         message: "Minimum 200 characters required",
       });
-    } else if (description.length === 1000 && event.key !== "Backspace" && event.key !== "Delete") {
+    } else if (
+      description.length === 1000 &&
+      event.key !== "Backspace" &&
+      event.key !== "Delete"
+    ) {
       setError("description", {
         type: "manual",
         message: "Maximum 1000 characters allowed",
@@ -287,13 +317,16 @@ function AddProduct() {
     const value = e.target.value;
     const floatValue = parseFloat(value);
     if (isNaN(floatValue)) {
-      e.target.value = '';
-    } else if (floatValue.toString().split('.')[1] && floatValue.toString().split('.')[1].length > 2) {
+      e.target.value = "";
+    } else if (
+      floatValue.toString().split(".")[1] &&
+      floatValue.toString().split(".")[1].length > 2
+    ) {
       e.target.value = floatValue.toFixed(2);
     }
-  }
+  };
   return (
-    <div id="add-product" className="`my-16 mr-12">
+    <div id="add-product" className="my-16 mr-12">
       <div className="flex gap-7">
         <button
           className="border border-gray-400 px-4 py-1 rounded-md text-gray-400 hover:bg-gray-400 hover:text-white"
@@ -348,7 +381,7 @@ function AddProduct() {
                 maxLength={1000}
                 minLength={200}
                 id="description"
-                {...register("description", { required: true })} 
+                {...register("description", { required: true })}
                 onChange={handleChangeDescription}
                 className={`border-2 border-gray-300 p-2 rounded-lg my-2 ${
                   errors.description ? "border-red-500" : "border-gray-300"
@@ -455,10 +488,10 @@ function AddProduct() {
                   type="number"
                   step="1"
                   onKeyPress={(e) => {
-                            if (e.key === ".") {
-                              e.preventDefault();
-                            }
-                          }}
+                    if (e.key === ".") {
+                      e.preventDefault();
+                    }
+                  }}
                   id="quantityAvailable"
                   {...register("quantityAvailable")}
                   className={`border-2 border-gray-300 p-2 rounded-lg my-2 ${
@@ -495,7 +528,7 @@ function AddProduct() {
 
             <p className="text-xl font-semibold mt-7">Selling Type</p>
             <div className="flex flex-col my-3 p-4 border-2 border-gray-300 py-2 rounded-md font-semibold">
-              <label className="my-1">
+              <label htmlFor="sellingType" className="my-1">
                 <input
                   type="radio"
                   id="storeSelling"
@@ -545,10 +578,11 @@ function AddProduct() {
                 <input
                   type="file"
                   name="images"
-                  onChange={onSelectFile}
+                  // onChange={onSelectFile}
                   multiple
                   accept="image/png, image/jpg, image/jpeg"
                   className="hidden"
+                  {...register("images", { onChange: onSelectFile })}
                 />
               </label>
 
@@ -616,7 +650,7 @@ function AddProduct() {
               </label>
               <div className="border-2 border-gray-300 p-2 rounded-lg my-2">
                 <input
-                   onInput={handleFractionInput}
+                  onInput={handleFractionInput}
                   type="number"
                   step="0.01"
                   id="weight"
@@ -657,7 +691,7 @@ function AddProduct() {
                   </label>
                   <div className="border-2 border-gray-300 p-1 rounded-lg my-2">
                     <input
-                    onInput={handleFractionInput}
+                      onInput={handleFractionInput}
                       type="number"
                       step="0.01"
                       id="length"
@@ -678,7 +712,7 @@ function AddProduct() {
                   </label>
                   <div className="border-2 border-gray-300 p-1 rounded-lg my-2">
                     <input
-                    onInput={handleFractionInput}
+                      onInput={handleFractionInput}
                       type="number"
                       step="0.01"
                       id="breadth"
@@ -699,7 +733,7 @@ function AddProduct() {
                   </label>
                   <div className="border-2 border-gray-300 p-1 rounded-lg my-2">
                     <input
-                    onInput={handleFractionInput}
+                      onInput={handleFractionInput}
                       type="number"
                       step="0.01"
                       id="width"
@@ -736,8 +770,8 @@ function AddProduct() {
                       aria-hidden="true"
                     ></i>
                     <input
-                    onInput={handleFractionInput}
-                    type="number"
+                      onInput={handleFractionInput}
+                      type="number"
                       step="0.01"
                       id="originalPrice"
                       {...register("originalPrice")}
@@ -776,7 +810,7 @@ function AddProduct() {
                       aria-hidden="true"
                     ></i>
                     <input
-                    onInput={handleFractionInput}
+                      onInput={handleFractionInput}
                       type="number"
                       step="0.01"
                       id="discountedPrice"
