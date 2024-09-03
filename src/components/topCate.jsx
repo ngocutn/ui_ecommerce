@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { getAllCategories } from "../service/product/api";
 
 function TopCategory() {
   const [category, setCategory] = useState([]);
@@ -36,13 +37,24 @@ function TopCategory() {
   //   getCategory();
   // }, []);
 
+  // useEffect(() => {
+  //   axios
+  //     .get("https://neo4j-ecommerce.onrender.com/api/v1/categories")
+  //     .then((res) => setCategory(res.data.data))
+  //     .catch((error) => console.log("Error: ", error));
+  // }, []);
+
   useEffect(() => {
-    axios
-      .get(
-        "https://c38f-2402-800-63a7-91ab-c16-1f4d-c090-fa9d.ngrok-free.app/api/v1/categories"
-      )
-      .then((res) => setCategory(res.data.data))
-      .catch((error) => console.log("Error: ", error));
+    const getCategory = async () => {
+      try {
+        const res = await getAllCategories();
+        console.log("res", res);
+        setCategory(res.data.data);
+      } catch (error) {
+        console.log("Error", error);
+      }
+    };
+    getCategory();
   }, []);
 
   console.log("cate2", category);
@@ -124,7 +136,7 @@ function TopCategory() {
           <div>
             <div className="w-[70px] h-[70px] rounded-full bg-gray-200 p-4 hover:bg-gray-100 cursor-pointer">
               {/* <img src={item.image} alt="" /> */}
-              {item.icon}
+              {/* {item.icon} */}
             </div>
             <p className="text-center mt-2 font-semibold">{item.name}</p>
           </div>
