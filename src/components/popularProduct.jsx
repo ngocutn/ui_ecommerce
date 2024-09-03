@@ -8,8 +8,11 @@ function PopularProduct() {
     const getProducts = async () => {
       try {
         const response = await fetch("https://fakestoreapi.com/products");
+        // const response = await fetch(
+        //   "https://59e5-115-73-5-32.ngrok-free.app/api/v1/categories"
+        // );
         const responseJson = await response.json();
-        // console.log(responseJson);
+        console.log(responseJson);
 
         setProductData(responseJson);
       } catch (error) {
@@ -240,26 +243,24 @@ function PopularProduct() {
               <p className="text-gray-500 text-lg my-[10px]">{item.category}</p>
 
               <div className="flex gap-2 items-center">
-                {/* <div className="w-3/4 ">
-                    <div className="flex gap-2 items-center text-[15px] font-bold">
-                      <i
-                        class="fa fa-star  text-yellow-500"
-                        aria-hidden="true"
-                      ></i>
-                      <span>{item.evaluation}</span>
-                      <div class="w-1 bg-gray-400 h-[20px]"></div>
-                      <span className="bg-gray-200 p-1">
-                        {item.quantitySold} Sold
-                      </span>
-                    </div>
+                <div className="w-3/4 ">
+                  <div className="flex gap-2 items-center text-[15px] font-bold">
+                    <i
+                      class="fa fa-star  text-yellow-500"
+                      aria-hidden="true"
+                    ></i>
+                    <span>{item.evaluation}</span>
+                    <div class="w-1 bg-gray-400 h-[20px]"></div>
+                    <span className="bg-gray-200 p-1">
+                      {item.quantitySold} Sold
+                    </span>
+                  </div>
 
-                    <div className="flex gap-4">
-                      <p className="line-through text-gray-500">
-                        $ {item.price}
-                      </p>
-                      <p className="font-bold">$ {item.discount}</p>
-                    </div>
-                  </div> */}
+                  <div className="flex gap-4">
+                    <p className="line-through text-gray-500">$ {item.price}</p>
+                    <p className="font-bold">$ {item.discount}</p>
+                  </div>
+                </div>
 
                 {/* add cart button */}
                 <button className=" ml-auto bg-black w-10 h-10 p-1 rounded-full hover:bg-gray-300">

@@ -1,7 +1,7 @@
 import PopularProduct from "../components/popularProduct";
 import Header from "../components/header";
 import TopCategory from "../components/topCate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function MainPage() {
   const urlImg = [
@@ -18,6 +18,15 @@ function MainPage() {
       url: "https://images.unsplash.com/photo-1723927689937-13cf4350a4aa?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
   ];
+
+  const [banner, setBanner] = useState([]);
+
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products")
+      .then((res) => res.json())
+      .then((data) => setBanner(data));
+  }),
+    [];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [buttonBanner, setButtonBanner] = useState(false);
