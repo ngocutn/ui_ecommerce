@@ -78,14 +78,10 @@ function AddProduct() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
-
   const [discardButton, setDiscardButton] = useState(false);
-
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
-
   const [replaceIndex, setReplaceIndex] = useState(null);
-
   const [showModal, setShowModal] = useState(false);
 
   const [fileError, setFileError] = useState("");
@@ -255,6 +251,7 @@ function AddProduct() {
       type: "application/json",
     });
     formData.append("request", jsonBlob);
+
     for (let i = 0; i < selectedFiles.length; i++) {
       formData.append("files", selectedFiles[i]);
     }
@@ -263,6 +260,7 @@ function AddProduct() {
 
     console.log("set loading", loading);
     console.log("load", loading);
+
 
     return axios({
       method: "post",
