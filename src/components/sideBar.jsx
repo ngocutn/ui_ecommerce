@@ -25,12 +25,14 @@ function SideBar() {
   };
 
   return (
-    <div className="sidebar border-r border-[#d3d4d6] h-full left-0 pl-[1.5rem] pr-[1.5rem] flex flex-col gap-[1.5rem]">
-      <div className="logo">
+    <div className="sidebar w-full sm:w-1/5 fixed border-r border-[#d3d4d6] h-full left-0 pl-[1.5rem] pr-[1.5rem] flex flex-col gap-[1.5rem]">
+      <div className="logo text-4xl font-black text-blue-600 flex items-center">
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg"
+          className="w-[5rem] h-[5rem] md:w-[5rem] md:h-[5rem]"
+          src="https://media.licdn.com/dms/image/v2/C4E0BAQGx-TFoWYNJcg/company-logo_200_200/company-logo_200_200/0/1659539191896?e=1733356800&v=beta&t=6Q59ItomXoSc2VXB7_RWGddV0P5FLE6FcCQPVCuJDIM"
           alt=""
         />
+        ccessed
       </div>
       <div className="searchbar border rounded-lg px-[1rem] py-[.8rem]">
         <i class="fa-solid fa-magnifying-glass pr-[.5rem] text-l"></i>
@@ -217,22 +219,34 @@ function SideBar() {
           <a
             href="#"
             className={`block py-2 px-2 hover:shadow-md ${
-              selectedOption === "Promotion" ? "text-blue-600" : "text-gray-500"
+              selectedOption === "Promotion" ? "text-black" : "text-gray-500"
             }`}
             onClick={() => handleOptionClick("Promotion")}
           >
-            <i class="fa-solid fa-tag mr-2"></i>Promotion
+            <i
+              class={`fa-solid fa-tag mr-2 ${
+                selectedOption === "Promotion"
+                  ? "text-blue-600"
+                  : "text-gray-500"
+              }`}
+            ></i>
+            Promotion
           </a>
         </div>
         <div className="searchbar_item  text-gray-500 font-medium text-[17px]">
           <a
             href="#"
             className={`block py-2 px-2 hover:shadow-md ${
-              selectedOption === "Message" ? "text-blue-600" : "text-gray-500"
+              selectedOption === "Message" ? "text-black" : "text-gray-500"
             }`}
             onClick={() => handleOptionClick("Message")}
           >
-            <i class="fa-solid fa-comment-dots mr-2"></i>Message
+            <i
+              class={`fa-solid fa-comment-dots mr-2 ${
+                selectedOption === "Message" ? "text-blue-600" : "text-gray-500"
+              }`}
+            ></i>
+            Message
           </a>
         </div>
         <div className="searchbar_item text-gray-500 font-medium text-[17px]">
@@ -286,6 +300,18 @@ function SideBar() {
           )}
         </div>
       </nav>
+      <div className="flex items-center mt-auto mb-[1rem]">
+        <img
+          className="rounded-full w-[3rem] h-[3rem] mr-2 cursor-pointer"
+          src="https://i.pravatar.cc/150?img=3"
+          alt=""
+        />
+        <a className="flex flex-col" href="#">
+          <span className="font-semibold text-lg">Jonathon Treat</span>
+          <span className="text-gray-500">lana@treat.com</span>
+        </a>
+        <i className="fa-solid fa-arrow-right-from-bracket text-gray-500 text-lg cursor-pointer ml-auto"></i>
+      </div>
     </div>
   );
 }
