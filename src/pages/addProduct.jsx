@@ -35,7 +35,7 @@ function AddProduct() {
       quantityAvailable: yup
         .number()
         .required("Quantity is required")
-        .typeError("Quantity must be a numb er")
+        .typeError("Quantity must be a number")
         .positive("Quantity must be a positive number")
         .max(9999, "Number must be less than 9999")
         .required("Number of items is required"),
@@ -154,7 +154,7 @@ function AddProduct() {
       const reader = new FileReader();
       reader.onload = (event) => {
         const text = event.target.result;
-        const wordCount = text.split(/\s+/).length;
+        const wordCount = text.split("").length;
         console.log("Word count:", wordCount);
 
         if (wordCount > 1000) {
@@ -627,13 +627,8 @@ function AddProduct() {
                 <input
                   type="number"
                   step="1"
-<<<<<<< Updated upstream
-                  onKeyPress={(e) => {
-                    if (e.key === "." || e.key === "," || e.key === "-") {
-=======
                   onKeyDown={(e) => {
                     if (e.key === "." || e.key === "-" || e.key === ",") {
->>>>>>> Stashed changes
                       e.preventDefault();
                     }
                   }}

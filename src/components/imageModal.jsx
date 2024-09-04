@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { array } from "yup";
 
 const ImageModal = ({ files, images, onClose, onSelect }) => {
   const [fileList, setFileList] = useState(files);
@@ -59,13 +60,17 @@ const ImageModal = ({ files, images, onClose, onSelect }) => {
     const newImageList = imageList.filter(
       (_, index) => index !== indexToRemove
     );
-    const newFileList = fileList.filter((_, index) => index !== indexToRemove);
+
+    const files = Array.from(fileList);
+    const newFileList = files.filter((_, index) => index !== indexToRemove);
+    console.log("file list", files);
 
     setFileList(newFileList);
     setImageList(newImageList);
     if (selectedImage === url) {
       setSelectedImage(newImageList.length > 0 ? newImageList[0] : null);
     }
+
     console.log("delete", newImageList);
     console.log("delete file", newFileList);
   };
