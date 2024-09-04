@@ -34,7 +34,7 @@ function SideBar() {
         />
         ccessed
       </div>
-      <div className="searchbar border rounded-lg px-[1rem] py-[.8rem]">
+      <div className="searchbar border rounded-lg px-[1rem] py-[.8rem]  flex flex-nowrap items-center">
         <i class="fa-solid fa-magnifying-glass pr-[.5rem] text-l"></i>
         <input type="text" className="outline-none" placeholder="Search" />
       </div>
@@ -66,7 +66,7 @@ function SideBar() {
               className={`sub-menu pl-12 flex flex-col gap-[0.75rem] mt-[1rem]`}
             >
               <a
-                href="#"
+                href="add-product"
                 className={`block py-2 hover:shadow-md ${
                   selectedOption === "Products"
                     ? "text-blue-600"
@@ -184,33 +184,33 @@ function SideBar() {
               <a
                 href="#"
                 className={`block py-2 hover:shadow-md ${
-                  selectedOption === "Products"
-                    ? "text-blue-600"
-                    : "text-gray-500"
+                  selectedOption === "Stats" ? "text-blue-600" : "text-gray-500"
                 }`}
-                onClick={() => handleOptionClick("Products")}
+                onClick={() => handleOptionClick("Stats")}
               >
-                Products
+                Stats
               </a>
               <a
                 href="#"
                 className={`block py-2 hover:shadow-md ${
-                  selectedOption === "Order" ? "text-blue-600" : "text-gray-500"
+                  selectedOption === "Insights"
+                    ? "text-blue-600"
+                    : "text-gray-500"
                 }`}
-                onClick={() => handleOptionClick("Order")}
+                onClick={() => handleOptionClick("Insights")}
               >
-                Order
+                Insights
               </a>
               <a
                 href="#"
                 className={`block py-2 hover:shadow-md ${
-                  selectedOption === "Customers"
+                  selectedOption === "Dashboards"
                     ? "text-blue-600"
                     : "text-gray-500"
                 }`}
-                onClick={() => handleOptionClick("Customers")}
+                onClick={() => handleOptionClick("Dashboards")}
               >
-                Customers
+                Dashboards
               </a>
             </div>
           )}

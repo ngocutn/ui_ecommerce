@@ -35,9 +35,9 @@ function AddProduct() {
       quantityAvailable: yup
         .number()
         .required("Quantity is required")
-        .typeError("Price must be a number")
-        .positive("Price must be a positive number")
-        .max(9999, "number must be less than 9999")
+        .typeError("Quantity must be a numb er")
+        .positive("Quantity must be a positive number")
+        .max(9999, "Number must be less than 9999")
         .required("Number of items is required"),
       originalPrice: yup
         .number()
@@ -464,7 +464,7 @@ function AddProduct() {
                 }`}
               />
               {isNameDuplicate && (
-                <p className="text-red-500">Product Already Exist!</p>
+                <p className="text-red-500">Product already exist</p>
               )}
 
               {errors?.name && (
@@ -628,7 +628,7 @@ function AddProduct() {
                   type="number"
                   step="1"
                   onKeyPress={(e) => {
-                    if (e.key === ".") {
+                    if (e.key === "." || e.key === "," || e.key === "-") {
                       e.preventDefault();
                     }
                   }}
@@ -809,7 +809,7 @@ function AddProduct() {
               <label htmlFor="weight" className="text-gray-500 font-semibold">
                 Items weight
               </label>
-              <div className="border-2 2 p-2 rounded-lg my-2">
+              <div className="border-2 2 p-2 rounded-lg my-2 flex flex-nowrap">
                 <input
                   onInput={handleFractionInput}
                   type="number"
@@ -843,14 +843,14 @@ function AddProduct() {
                 </select>
               </div>
               <div className="flex justify-between">
-                <div className="flex flex-col w-[30%]">
+                <div className="flex flex-col w-[30%] ">
                   <label
                     htmlFor="length"
                     className="text-gray-500 font-semibold"
                   >
                     Length
                   </label>
-                  <div className="border-2 2 p-1 rounded-lg my-2">
+                  <div className="border-2 2 p-1 rounded-lg my-2  flex flex-nowrap">
                     <input
                       onInput={handleFractionInput}
                       type="number"
@@ -871,7 +871,7 @@ function AddProduct() {
                   >
                     Breadth
                   </label>
-                  <div className="border-2 2 p-1 rounded-lg my-2">
+                  <div className="border-2 2 p-1 rounded-lg my-2  flex flex-nowrap">
                     <input
                       onInput={handleFractionInput}
                       type="number"
@@ -892,7 +892,7 @@ function AddProduct() {
                   >
                     Width
                   </label>
-                  <div className="border-2 2 p-1 rounded-lg my-2">
+                  <div className="border-2 2 p-1 rounded-lg my-2  flex flex-nowrap">
                     <input
                       onInput={handleFractionInput}
                       type="number"
@@ -923,7 +923,7 @@ function AddProduct() {
                     MSRP Price
                   </label>
                   <div
-                    className={`border-2 2 p-1 rounded-lg my-2  ${
+                    className={`border-2 2 p-1 rounded-lg my-2 flex flex-nowrap ${
                       errors.originalPrice ? "border-red-500" : "2"
                     }`}
                   >
@@ -953,7 +953,7 @@ function AddProduct() {
                     </div>
                   )}
                 </div>
-                <div className="flex flex-col w-1/2">
+                <div className="flex flex-col w-1/2 ">
                   <label
                     htmlFor="discountedPrice"
                     className="text-gray-500 font-semibold"
@@ -961,7 +961,7 @@ function AddProduct() {
                     Sale Price
                   </label>
                   <div
-                    className={`border-2 2 p-1 rounded-lg my-2  ${
+                    className={`border-2 2 p-1 rounded-lg my-2  flex flex-nowrap ${
                       errors.discountedPrice ? "border-red-500" : "2"
                     }`}
                   >
@@ -999,7 +999,7 @@ function AddProduct() {
                 Price
               </label>
               <div
-                className={`border-2 2 p-1 rounded-lg my-2  ${
+                className={`border-2 2 p-1 rounded-lg my-2  flex flex-nowrap ${
                   errors.sellingPrice ? "border-red-500" : "2"
                 }`}
               >
