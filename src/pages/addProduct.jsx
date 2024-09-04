@@ -294,6 +294,8 @@ function AddProduct() {
     const selectedFile = e.target.files;
     setSelectedFiles(selectedFile);
 
+    console.log("selectedFile", selectedFile);
+
     const selectedFilesArray = Array.from(selectedFile).map((file) =>
       URL.createObjectURL(file)
     );
@@ -306,7 +308,13 @@ function AddProduct() {
 
   const removeImage = () => {
     setSelectedImages((prevImages) => prevImages.slice(1));
-    setSelectedFiles((prevFiles) => prevFiles.slice(1));
+    // setSelectedFiles((prevFiles) => prevFiles.slice(1));
+
+    const [fst, ...remain] = selectedFiles;
+    // const files = selectedFiles.slice(1);
+    setSelectedFiles(remain);
+
+    console.log("selectedFiles Remove", selectedFiles);
   };
 
   const replaceImage = (newImageUrl, updatedImageList, updatedFileList) => {
@@ -322,6 +330,8 @@ function AddProduct() {
     console.log("updatedFileList", updatedFileList);
 
     setShowModal(false);
+
+    console.log("selectedFiles replace", selectedFiles);
   };
 
   const handleReplace = (index) => {
@@ -437,7 +447,7 @@ function AddProduct() {
             <p className="text-xl font-semibold">Description</p>
             <div
               id="productDescription"
-              className="flex flex-col h-[280px] my-3 p-4 border-2 border-gray-200 py-2 rounded-md "
+              className="flex flex-col h-[280px] my-3 p-4 border border-gray-200 py-2 rounded-md "
             >
               <label htmlFor="name" className="text-gray-500 font-semibold">
                 Product Name
@@ -528,7 +538,7 @@ function AddProduct() {
             <p className="text-xl font-semibold mt-7">Category</p>
             <div
               id="productCategory"
-              className="flex flex-col my-3 p-4 border-2 2 py-2 rounded-md"
+              className="flex flex-col my-3 p-4 border 2 py-2 rounded-md"
             >
               <label
                 htmlFor="categoryIds"
@@ -605,7 +615,7 @@ function AddProduct() {
             <p className="text-xl font-semibold mt-7">Inventory</p>
             <div
               id="productInventory"
-              className="flex gap-4 my-3 p-4 border-2 2 py-2 rounded-md"
+              className="flex gap-4 my-3 p-4 border 2 py-2 rounded-md"
             >
               <div className="flex flex-col w-1/3">
                 <label
@@ -657,7 +667,7 @@ function AddProduct() {
             <p className="text-xl font-semibold mt-7">Selling Type</p>
             <div
               id="productSellType"
-              className="flex flex-col my-3 p-4 border-2 2 py-2 rounded-md font-semibold"
+              className="flex flex-col my-3 p-4 border 2 py-2 rounded-md font-semibold"
             >
               <label htmlFor="sellingType" className="my-1">
                 <input
@@ -689,7 +699,7 @@ function AddProduct() {
             </div>
 
             <p className="text-xl font-semibold mt-7">Variant</p>
-            <div className="flex justify-between my-3 p-4 border-2 2 rounded-md font-semibold">
+            <div className="flex justify-between my-3 p-4 border 2 rounded-md font-semibold">
               <span>Product Variants</span>
               <span className="text-blue-700 hover:text-gray-500 cursor-pointer">
                 + Add Variant
@@ -701,7 +711,7 @@ function AddProduct() {
             <p className="text-xl font-semibold">Product Image</p>
             <div
               id="productImage"
-              className="w-full h-[200px] flex items-center justify-between gap-3 my-3 px-6 border-2 2 py-4 rounded-md"
+              className="w-full h-[200px] flex items-center justify-between gap-3 my-3 px-6 border 2 py-4 rounded-md"
             >
               <label
                 className={`border-2 border-dashed border-blue-400 cursor-pointer 2 rounded-md flex items-center justify-center h-[160px] ${
@@ -794,7 +804,7 @@ function AddProduct() {
             <p className="text-xl font-semibold">Shipping and Delivery</p>
             <div
               id="productDelivery"
-              className="flex flex-col my-3 p-4 border-2 2 py-2 rounded-md"
+              className="flex flex-col my-3 p-4 border 2 py-2 rounded-md"
             >
               <label htmlFor="weight" className="text-gray-500 font-semibold">
                 Items weight
@@ -902,7 +912,7 @@ function AddProduct() {
             <p className="text-xl font-semibold mt-7">Pricing</p>
             <div
               id="productPricing"
-              className="flex flex-col my-3 p-4 border-2 2 py-2 rounded-md"
+              className="flex flex-col my-3 p-4 border 2 py-2 rounded-md"
             >
               <div className="flex gap-4">
                 <div className="flex flex-col w-1/2">
