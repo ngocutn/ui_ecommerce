@@ -454,7 +454,7 @@ function AddProduct() {
                 }`}
               />
               {isNameDuplicate && (
-                <p className="text-red-500">Duplicate Name</p>
+                <p className="text-red-500">Product Already Exist!</p>
               )}
 
               {errors?.name && (
