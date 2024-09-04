@@ -262,6 +262,25 @@ function AddProduct() {
     setSelectedValue(event.target.value);
   };
 
+  // Handel Duplicate Name
+  const [isNameDuplicate, setIsNameDuplicate] = useState(false);
+
+  const duplicateName = async (event) => {
+    const name = event.target.value;
+
+    const response = await fetch(
+      `https://neo4j-ecommerce.onrender.com/api/v1/products/exists?name=${name}`
+    );
+    const data = await response.json();
+    console.log("data name", data.data);
+
+    if (data.data === true) {
+      setIsNameDuplicate(true);
+    } else {
+      setIsNameDuplicate(false);
+    }
+  };
+
   // Handle Image
 
   const [selectedImages, setSelectedImages] = useState([]);
@@ -273,7 +292,6 @@ function AddProduct() {
 
   const onSelectFile = (e) => {
     const selectedFile = e.target.files;
-    console.log("selectedFile", selectedFile);
     setSelectedFiles(selectedFile);
 
     const selectedFilesArray = Array.from(selectedFile).map((file) =>
@@ -288,15 +306,21 @@ function AddProduct() {
 
   const removeImage = () => {
     setSelectedImages((prevImages) => prevImages.slice(1));
+    setSelectedFiles((prevFiles) => prevFiles.slice(1));
   };
 
-  const replaceImage = (newImageUrl, updatedImageList) => {
+  const replaceImage = (newImageUrl, updatedImageList, updatedFileList) => {
     // setSelectedImages((prevImages) =>
     //   prevImages.map((img, index) =>
     //     index === replaceIndex ? newImageUrl : img
     //   )
     // );
     setSelectedImages(updatedImageList);
+    setSelectedFiles(updatedFileList);
+    // setSelectedFiles(updatedImageList);
+    console.log("updatedImageList", updatedImageList);
+    console.log("updatedFileList", updatedFileList);
+
     setShowModal(false);
   };
 
@@ -371,6 +395,7 @@ function AddProduct() {
     }
 
     console.log("formData", formData);
+    console.log("files", selectedFiles);
 
     return axios({
       method: "post",
@@ -423,10 +448,15 @@ function AddProduct() {
                 id="name"
                 maxLength={120}
                 onChange={handleChangeName}
+                onBlur={duplicateName}
                 className={`border-2 2 p-2 rounded-lg my-2 text-ellipsis ${
-                  errors.name ? "border-red-500" : "2"
+                  errors.name || isNameDuplicate ? "border-red-500" : "2"
                 }`}
               />
+              {isNameDuplicate && (
+                <p className="text-red-500">Duplicate Name</p>
+              )}
+
               {errors?.name && (
                 <div className="flex items-center">
                   <i
@@ -753,6 +783,7 @@ function AddProduct() {
 
               {showModal && (
                 <ImageModal
+                  files={selectedFiles}
                   images={selectedImages}
                   onClose={() => setShowModal(false)}
                   onSelect={replaceImage}
