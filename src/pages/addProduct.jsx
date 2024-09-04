@@ -627,8 +627,13 @@ function AddProduct() {
                 <input
                   type="number"
                   step="1"
+<<<<<<< Updated upstream
                   onKeyPress={(e) => {
                     if (e.key === "." || e.key === "," || e.key === "-") {
+=======
+                  onKeyDown={(e) => {
+                    if (e.key === "." || e.key === "-" || e.key === ",") {
+>>>>>>> Stashed changes
                       e.preventDefault();
                     }
                   }}
