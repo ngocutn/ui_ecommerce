@@ -927,8 +927,9 @@ function AddProduct() {
                   >
                     MSRP Price
                   </label>
+
                   <div
-                    className={`border-2 2 p-1 rounded-lg my-2 flex flex-nowrap ${
+                    className={`border-2 2 p-1 rounded-lg my-2 flex items-center  ${
                       errors.originalPrice ? "border-red-500" : "2"
                     }`}
                   >
@@ -966,7 +967,7 @@ function AddProduct() {
                     Sale Price
                   </label>
                   <div
-                    className={`border-2 2 p-1 rounded-lg my-2  flex flex-nowrap ${
+                    className={`border-2 2 p-1 rounded-lg my-2 flex items-center  ${
                       errors.discountedPrice ? "border-red-500" : "2"
                     }`}
                   >
@@ -1004,7 +1005,7 @@ function AddProduct() {
                 Price
               </label>
               <div
-                className={`border-2 2 p-1 rounded-lg my-2  flex flex-nowrap ${
+                className={`border-2 2 p-1 rounded-lg my-2 flex items-center  ${
                   errors.sellingPrice ? "border-red-500" : "2"
                 }`}
               >
