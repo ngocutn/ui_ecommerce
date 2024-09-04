@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 
-const ImageModal = ({ images, onClose, onSelect }) => {
+const ImageModal = ({ files, images, onClose, onSelect }) => {
+  const [fileList, setFileList] = useState(files);
   const [imageList, setImageList] = useState(images);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  useEffect(() => {
-    if (images.length > 0) {
-      setImageList(images);
-      setSelectedImage(images[0]);
-    }
-  }, [images]);
+  useEffect(
+    () => {
+      if (images.length > 0) {
+        setFileList(files);
+        setImageList(images);
+        setSelectedImage(images[0]);
+      }
+    },
+    [images],
+    [files]
+  );
 
   const handleImageClick = (url) => {
     const selectedIndex = imageList.indexOf(url);
@@ -17,13 +23,20 @@ const ImageModal = ({ images, onClose, onSelect }) => {
 
     if (selectedIndex !== -1 && selectedIndex !== firstIndex) {
       const newImageList = [...imageList];
+      const newFileList = [...fileList];
 
       [newImageList[firstIndex], newImageList[selectedIndex]] = [
         newImageList[selectedIndex],
         newImageList[firstIndex],
       ];
 
+      [newFileList[firstIndex], newFileList[selectedIndex]] = [
+        newFileList[selectedIndex],
+        newFileList[firstIndex],
+      ];
+
       setImageList(newImageList);
+      setFileList(newFileList);
       setSelectedImage(newImageList[firstIndex]);
       console.log("preview", newImageList);
     }
@@ -31,19 +44,30 @@ const ImageModal = ({ images, onClose, onSelect }) => {
 
   const handleAddClick = () => {
     if (selectedImage) {
-      onSelect(selectedImage, imageList);
+      onSelect(selectedImage, imageList, fileList);
     }
     onClose();
     console.log("add", imageList);
+    console.log("add file", fileList);
   };
 
   const handleDeleteClick = (url) => {
-    const newImageList = imageList.filter((image) => image !== url);
+    const indexToRemove = imageList.indexOf(url);
+
+    // const newImageList = imageList.filter((image) => image !== url);
+    // const newFileList = fileList.filter((_, index) => index !== indexToRemove);
+    const newImageList = imageList.filter(
+      (_, index) => index !== indexToRemove
+    );
+    const newFileList = fileList.filter((_, index) => index !== indexToRemove);
+
+    setFileList(newFileList);
     setImageList(newImageList);
     if (selectedImage === url) {
       setSelectedImage(newImageList.length > 0 ? newImageList[0] : null);
     }
     console.log("delete", newImageList);
+    console.log("delete file", newFileList);
   };
 
   return (
@@ -69,6 +93,7 @@ const ImageModal = ({ images, onClose, onSelect }) => {
                   onClick={() => handleImageClick(image)}
                 />
                 <button
+                  type="button"
                   onClick={() => handleDeleteClick(image)}
                   className="absolute top-0 right-0 py-2 px-3 bg-gray-200 text-sm rounded-full hover:bg-gray-500 hover:text-white"
                 >
@@ -80,12 +105,14 @@ const ImageModal = ({ images, onClose, onSelect }) => {
         </div>
         <div className="absolute bottom-6 right-5 ">
           <button
+            type="button"
             onClick={onClose}
             className="px-4 py-2 border-2 border-gray-200 text-gray-500 rounded-lg hover:bg-gray-200 "
           >
             Cancel
           </button>
           <button
+            type="button"
             onClick={handleAddClick}
             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 ml-2"
           >
