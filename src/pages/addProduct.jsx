@@ -6,13 +6,9 @@ import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { yupResolver } from "@hookform/resolvers/yup";
-import SideBar from "../components/sideBar";
-import { Button, colors } from "@mui/material";
 import {
-  getAllCategories,
   getLevel1Categories,
   getCategoriesByParentId,
-  postProduct,
 } from "../service/product/api";
 
 import ImageModal from "../components/imageModal";
@@ -470,7 +466,7 @@ function AddProduct() {
               {errors?.name && (
                 <div className="flex items-center">
                   <i
-                    class="fa fa-exclamation-circle text-red-500"
+                    className="fa fa-exclamation-circle text-red-500"
                     aria-hidden="true"
                   ></i>
                   <p className="px-2 font-nunito text-md leading-normal text-red-500">
@@ -491,7 +487,7 @@ function AddProduct() {
                   htmlFor="textFile"
                   className="cursor-pointer text-blue-400"
                 >
-                  <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                  <i className="fa-solid fa-arrow-up-from-bracket"></i>
                   <span className="ml-2 font-semibold text-sm">
                     Upload .txt file
                   </span>
@@ -524,7 +520,7 @@ function AddProduct() {
               {errors?.description && (
                 <div className="flex items-center mt-9 text-sm">
                   <i
-                    class="fa fa-exclamation-circle text-red-500"
+                    className="fa fa-exclamation-circle text-red-500"
                     aria-hidden="true"
                   ></i>
 
@@ -565,7 +561,7 @@ function AddProduct() {
               {errors?.categoryIds && (
                 <div className="flex items-center">
                   <i
-                    class="fa fa-exclamation-circle text-red-500"
+                    className="fa fa-exclamation-circle text-red-500"
                     aria-hidden="true"
                   ></i>
 
@@ -601,7 +597,7 @@ function AddProduct() {
               {errors?.subCategoryIds && (
                 <div className="flex items-center">
                   <i
-                    class="fa fa-exclamation-circle text-red-500"
+                    className="fa fa-exclamation-circle text-red-500"
                     aria-hidden="true"
                   ></i>
 
@@ -641,7 +637,7 @@ function AddProduct() {
                 {errors?.quantityAvailable && (
                   <div className="flex items-center">
                     <i
-                      class="fa fa-exclamation-circle text-red-500"
+                      className="fa fa-exclamation-circle text-red-500"
                       aria-hidden="true"
                     ></i>
 
@@ -719,7 +715,7 @@ function AddProduct() {
                 } ${selectedImages.length === 1 ? "w-1/2 " : ""}`}
               >
                 <div className="flex flex-col gap-5 text-center text-gray-500 items-center">
-                  <i class="fa-solid fa-xl fa-images"></i>
+                  <i className="fa-solid fa-xl fa-images"></i>
                   <span className="text-gray-500 px-2">
                     <span className="text-blue-400 underline font-semibold">
                       Click to upload
@@ -944,7 +940,7 @@ function AddProduct() {
                   {errors?.originalPrice && (
                     <div className="flex items-center">
                       <i
-                        class="fa fa-exclamation-circle text-red-500"
+                        className="fa fa-exclamation-circle text-red-500"
                         aria-hidden="true"
                       ></i>
 
@@ -982,7 +978,7 @@ function AddProduct() {
                   {errors?.discountedPrice && (
                     <div className="flex items-center">
                       <i
-                        class="fa fa-exclamation-circle text-red-500"
+                        className="fa fa-exclamation-circle text-red-500"
                         aria-hidden="true"
                       ></i>
 
@@ -1020,7 +1016,7 @@ function AddProduct() {
               {errors?.sellingPrice && (
                 <div className="flex items-center">
                   <i
-                    class="fa fa-exclamation-circle text-red-500"
+                    className="fa fa-exclamation-circle text-red-500"
                     aria-hidden="true"
                   ></i>
 
