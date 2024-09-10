@@ -52,7 +52,7 @@ function ListProduct() {
               <div>
                 <h2 className="text-lg font-semibold">{product.name}</h2>
                 <p className="text-sm text-gray-500">
-                  {product.categoriesName[0]}
+                  {product.categoriesName}
                 </p>
                 <p className="text-sm">Price: ${product.sellingPrice}</p>
                 <p className="text-sm">
