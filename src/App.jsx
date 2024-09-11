@@ -10,6 +10,10 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <HomePage />,
+    },
+    {
+      path: "mainpage",
       element: <MainProductPage />,
       children: [
         {
@@ -22,18 +26,6 @@ function App() {
         },
       ],
     },
-    {
-      path: "mainpage",
-      element: <HomePage />,
-    },
-    {
-      path: "image",
-      element: <Text />,
-    },
-    // {
-    //   path: "add-product",
-    //   element: <AddProduct />,
-    // },
   ]);
   return (
     <>

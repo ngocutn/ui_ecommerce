@@ -1054,7 +1054,7 @@ function AddProduct() {
                   title="Do you want to discard this product?"
                   rightButton="Discard"
                   onCancel={handleDiscardButton}
-                  onDiscard={() => navigate("/")}
+                  onDiscard={() => navigate("/mainpage")}
                 />
               )}
             </div>
