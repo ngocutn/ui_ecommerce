@@ -19,20 +19,23 @@ import CategoryIcon from "@mui/icons-material/Category";
 function HeaderHome() {
   return (
     <AppBar className="bg-white pr-7">
-      <Toolbar component="div" className="flex justify-between">
+      <Toolbar component="div" className="flex justify-between my-3">
         <Stack
           direction="row"
-          className="logo text-4xl font-black text-blue-600 flex items-center"
+          className="logo text-3xl font-black text-blue-600 flex items-center"
         >
           <img
-            className="w-[5rem] h-[5rem] md:w-[5rem] md:h-[5rem]"
+            className="w-[4rem] h-[4rem] md:w-[5rem] md:h-[5rem]"
             src="https://media.licdn.com/dms/image/v2/C4E0BAQGx-TFoWYNJcg/company-logo_200_200/company-logo_200_200/0/1659539191896?e=1733356800&v=beta&t=6Q59ItomXoSc2VXB7_RWGddV0P5FLE6FcCQPVCuJDIM"
             alt=""
           />
           ccessed
         </Stack>
 
-        <Stack direction="row" className="grow justify-center items-center">
+        <Stack
+          direction="row"
+          className="grow text-lg justify-center items-center"
+        >
           <Input
             type="search"
             variant="outlined"
@@ -62,7 +65,7 @@ function HeaderHome() {
 
         <Stack
           direction="row"
-          className=" flex items-center justify-center gap-6"
+          className=" flex items-center justify-center gap-5"
         >
           <Button className="capitalize text-black">
             <PermIdentityOutlinedIcon />
@@ -70,7 +73,7 @@ function HeaderHome() {
               variant="body1"
               className="ml-2 font-semibold flex flex-col items-start gap-0"
             >
-              <span className="text-[10px]">Sign in</span>
+              <span className="text-[12px]">Sign in</span>
               <span>Account</span>
             </Typography>
           </Button>
@@ -88,14 +91,14 @@ function HeaderHome() {
               variant="body1"
               className="ml-4 font-semibold flex flex-col items-start gap-0"
             >
-              <span className="text-[10px]">Total</span>
+              <span className="text-[12px]">Total</span>
               <span> $0.00</span>
             </Typography>
           </Button>
         </Stack>
       </Toolbar>
 
-      <Toolbar component="div" className="flex justify-between mt-2">
+      {/* <Toolbar component="div" className="flex justify-between mt-2">
         <Button>
           <CategoryIcon className="text-black" />
           <Typography className="text-black ml-4">Categories</Typography>
@@ -123,7 +126,7 @@ function HeaderHome() {
             Special offers
           </Button>
         </ButtonGroup>
-      </Toolbar>
+      </Toolbar> */}
     </AppBar>
   );
 }

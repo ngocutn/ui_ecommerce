@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function SideBar() {
+  const navigate = useNavigate();
   const [subMenuOpen, setSubMenuOpen] = useState({
     page: false,
     myshop: false,
@@ -26,7 +28,10 @@ function SideBar() {
 
   return (
     <div className="sidebar w-full sm:w-1/5 fixed border-r border-[#d3d4d6] h-full left-0 pl-[1.5rem] pr-[1.5rem] flex flex-col gap-[1.5rem]">
-      <div className="logo text-4xl font-black text-blue-600 flex items-center">
+      <div
+        className="logo text-4xl font-black text-blue-600 flex items-center cursor-pointer"
+        onClick={() => navigate("/")}
+      >
         <img
           className="w-[5rem] h-[5rem] md:w-[5rem] md:h-[5rem]"
           src="https://media.licdn.com/dms/image/v2/C4E0BAQGx-TFoWYNJcg/company-logo_200_200/company-logo_200_200/0/1659539191896?e=1733356800&v=beta&t=6Q59ItomXoSc2VXB7_RWGddV0P5FLE6FcCQPVCuJDIM"

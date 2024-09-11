@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getAllCategories } from "../../../service/product/api";
+import { getLevel1Categories } from "../../../service/product/api";
 
 function TopCategory() {
   const [category, setCategory] = useState([]);
@@ -7,7 +7,7 @@ function TopCategory() {
   useEffect(() => {
     const getCategory = async () => {
       try {
-        const res = await getAllCategories();
+        const res = await getLevel1Categories();
         console.log("res", res);
         setCategory(res.data.data);
       } catch (error) {
@@ -20,14 +20,14 @@ function TopCategory() {
   console.log("cate2", category);
 
   return (
-    <div className="ml-7 mr-9 mt-8">
-      <div id="top-categories" className="flex justify-between px-4">
-        <h1 className="font-bold text-2xl ">Top categories</h1>
-        <span className="text-xl text-gray-500 cursor-pointer hover:bg-gray-400 hover:text-white p-2">
+    <div className="w-[80%] mx-auto mt-12">
+      <div id="top-categories" className="flex justify-between">
+        <h1 className="font-bold text-xl ">Top categories</h1>
+        <span className="text-base text-gray-500 cursor-pointer hover:bg-gray-400 hover:text-white p-2">
           See all
         </span>
       </div>
-      <div className="flex gap-5 w-9 ml-4 my-3">
+      <div className="flex text-base justify-between w-full my-3">
         {category.slice(0, 10).map((item, index) => {
           return (
             <div className="flex flex-col items-center">

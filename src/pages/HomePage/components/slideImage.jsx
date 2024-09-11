@@ -15,12 +15,12 @@ const Banner = ({ slides }) => {
 
   return (
     <div
-      className="mt-[180px]  w-[1180px] mx-auto relative"
+      className="mt-[130px] desktop-up:w-[1100px] tablet-range:w-[750px] sm:w-[350px] mx-auto relative"
       onMouseLeave={leaveBanner}
       onMouseEnter={enterBanner}
     >
       <Swiper
-        modules={[Navigation, Pagination, Scrollbar]}
+        modules={[Navigation, Pagination]}
         slidesPerView={1}
         // onSlideChange={() => console.log("slide change")}
         // onSwiper={(swiper) => console.log(swiper)}
@@ -32,39 +32,38 @@ const Banner = ({ slides }) => {
           clickable: true,
           el: ".custom-pagination",
           renderBullet: (index, className) => {
-            return `<span class="${className} bg-white w-3 h-3 rounded-full inline-block mx-1"></span>`;
+            return `<span class="${className} bg-white w-3 h-3 sm:w-2 sm:h-2 rounded-full inline-block mx-1"></span>`;
           },
         }}
-        scrollbar={{ draggable: true }}
         loop={true}
-        className="h-[550px]"
+        className="desktop-up:h-[500px] tablet-range:h-[400px] sm:h-[200px]"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
             <img
               src={slide.url}
               alt={slide.caption}
-              className="w-full h-full bg-center bg-cover relative rounded-3xl"
+              className="w-full desktop-up:h-[500px] tablet-range:h-[400px] sm:h-[200px] bg-center bg-cover relative rounded-3xl"
             />
           </SwiperSlide>
         ))}
 
         {/* For CSS */}
         <div
-          className={`swiper-button-next mx-5 ${
+          className={`swiper-button-next mx-5 sm:hidden tablet-range:hidden ${
             buttonBanner ? "text-white" : "hidden"
           }`}
         ></div>
         <div
-          className={`swiper-button-prev mx-5 ${
+          className={`swiper-button-prev mx-5 sm:hidden tablet-range:hidden ${
             buttonBanner ? "text-white" : "hidden"
           }`}
         ></div>
 
         <div className="custom-pagination absolute bottom-[5%] left-[10%] z-10"></div>
 
-        <div className="absolute top-[70%] left-[10%] h-auto z-10">
-          <button className="bg-white p-5 rounded-lg hover:bg-gray-300">
+        <div className="absolute top-[70%] left-[10%] h-auto z-10 text-sm sm:text-[10px] sm:top-[60%]">
+          <button className="bg-white p-5 sm:p-2 rounded-lg hover:bg-gray-300">
             <i className="fa fa-shopping-cart mr-4" aria-hidden="true"></i>
             Start Shopping
           </button>

@@ -4,39 +4,19 @@ import { getAllProducts } from "../../../service/product/api";
 function PopularProduct() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [productData, setProductData] = useState([]);
-  //   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const getAllProducts = async () => {
+    const getProducts = async () => {
       try {
-        const response = await fetch("https://fakestoreapi.com/products");
-        // const response = await fetch(
-        //   "https://59e5-115-73-5-32.ngrok-free.app/api/v1/categories"
-        // );
-        const responseJson = await response.json();
-        console.log(responseJson);
-
-        setProductData(responseJson);
+        const res = await getAllProducts();
+        console.log("res", res);
+        setProductData(res.data.data);
       } catch (error) {
-        console.error("Error:", error);
+        console.log("Error", error);
       }
     };
-    getAllProducts();
+    getProducts();
   }, []);
-  // console.log(productData);
-
-  //   useEffect(() => {
-  //     const getProducts = async () => {
-  //       try {
-  //         const res = await getAllProducts();
-  //         console.log("res", res);
-  //         setProducts(res.data.data);
-  //       } catch (error) {
-  //         console.log("Error", error);
-  //       }
-  //     };
-  //     getProducts();
-  //   }, []);
 
   const currentProducts = productData.slice(
     currentIndex * 4,
@@ -45,21 +25,21 @@ function PopularProduct() {
 
   const prevImg = () => {
     const firstImg = currentIndex === 0;
-    const newImg = firstImg ? productData.length / 4 - 1 : currentIndex - 1;
+    const newImg = firstImg ? productData.length - 1 : currentIndex - 1;
     setCurrentIndex(newImg);
   };
   console.log(currentIndex);
 
   const nextImg = () => {
-    const lastImg = currentIndex === productData.length / 4 - 1;
+    const lastImg = currentIndex === productData.length - 1;
     const newImg = lastImg ? 0 : currentIndex + 1;
     setCurrentIndex(newImg);
   };
 
   return (
-    <div id="popularProduct" className="w-full mt-9 pl-5 pr-9">
-      <div className="w-full h-auto m-auto flex justify-between px-4">
-        <h1 className="font-bold text-2xl">Popular Product 2023</h1>
+    <div id="popularProduct" className="w-[80%] mx-auto mt-12">
+      <div className="w-full h-auto m-auto flex justify-between items-center">
+        <h1 className="font-bold text-xl">Popular Product 2023</h1>
         <div>
           <button onClick={prevImg}>
             <i
@@ -75,43 +55,46 @@ function PopularProduct() {
           </button>
         </div>
       </div>
-      <div id="product" className="flex h-auto w-full justify-center gap-4 ">
+
+      <div id="product" className="flex h-auto w-full justify-center gap-5 ">
         {currentProducts.map((item, index) => {
           return (
             <div
               key={index}
-              className="w-[280px] h-auto p-4 text-xl cursor-pointer group transiton "
+              className="w-[280px] h-auto p-4 text-lg cursor-pointer group transiton "
             >
               <div className=" h-[250px] overflow-hidden flex justify-center items-center ">
                 <img
-                  src={item.image}
+                  src={item.primaryImage}
                   alt="Product Imgae"
                   className="max-h-[200px] object-contain rounded-lg group-hover:scale-110 transition duration-300"
                   // hover:absolute hover:w-[285px] hover:h-[305px]
                 />
               </div>
               <p className="font-bold text-nowrap mt-[10px] group-hover:text-gray-400 text-ellipsis	overflow-hidden">
-                {item.title}
+                {item.name}
               </p>
-              <p className="text-gray-500 text-lg my-[10px]">{item.category}</p>
+              <p className="text-gray-500 text-lg mb-[8px]">{item.name}</p>
 
               <div className="flex gap-2 items-center">
                 <div className="w-3/4 ">
-                  <div className="flex gap-2 items-center text-[15px] font-bold">
+                  <div className="flex gap-2 items-center text-[13px] font-bold">
                     <i
                       class="fa fa-star  text-yellow-500"
                       aria-hidden="true"
                     ></i>
-                    <span>{item.evaluation}</span>
+                    <span>{item.quantityAvailable}</span>
                     <div class="w-1 bg-gray-400 h-[20px]"></div>
                     <span className="bg-gray-200 p-1">
-                      {item.quantitySold} Sold
+                      {item.quantityAvailable} Sold
                     </span>
                   </div>
 
-                  <div className="flex gap-4">
-                    <p className="line-through text-gray-500">$ {item.price}</p>
-                    <p className="font-bold">$ {item.discount}</p>
+                  <div className="flex gap-4 mt-2">
+                    <p className="line-through text-gray-500">
+                      $ {item.sellingPrice}
+                    </p>
+                    <p className="font-bold">$ {item.sellingPrice}</p>
                   </div>
                 </div>
 
