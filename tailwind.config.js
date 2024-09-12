@@ -3,8 +3,6 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   important: "#root",
   theme: {
-    extend: {},
-
     screens: {
       sx: { max: "639px" },
 
@@ -31,6 +29,14 @@ export default {
       //   "max-xl": { max: "1535px" },
       "min-md": { min: "1024px" },
       "min-sm": { min: "768px" },
+    },
+    extend: {
+      colors: {
+        // primary: "#F73F5D",
+        // secondary: "#222222",
+        background: "#f1eeef",
+        borderActive: "#5a5869",
+      },
     },
   },
   // corePlugins: {
