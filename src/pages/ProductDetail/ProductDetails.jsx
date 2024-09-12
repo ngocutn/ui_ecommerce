@@ -1,4 +1,6 @@
+import { Star } from "lucide-react";
 import DropList from "../../components/DropList";
+import { Button } from "@mui/material";
 
 const colors = [
   {
@@ -84,13 +86,11 @@ const ProductDetails = () => {
           <p className="text-lg">
             color: <span className="font-bold">Titanium Yellow</span>
           </p>
-          <div className="flex items-center mt-2 gap-x-2">
-            {colors.map((item, index) => (
-              <div
-                key={index}
-                className={`size-[50px] bg-[#${item.color}]`}
-              ></div>
-            ))}
+          <div className="flex items-center mt-2 gap-x-4">
+            <div className={`size-[50px] rounded-xl border bg-[#d9d9d9]`}></div>
+            <div className={`size-[50px] rounded-xl border bg-[#d9d9d9]`}></div>
+            <div className={`size-[50px] rounded-xl border bg-[#d9d9d9]`}></div>
+            <div className={`size-[50px] rounded-xl border bg-[#d9d9d9]`}></div>
           </div>
         </div>
 
@@ -115,7 +115,7 @@ const ProductDetails = () => {
             Stograge: <span className="font-bold">32GB</span>
           </p>
 
-          <div className="flex items-center gap-x-5">
+          <div className="flex items-center gap-x-3">
             {Stograges.map((item) => (
               <div
                 key={item.id}
@@ -128,7 +128,40 @@ const ProductDetails = () => {
         </div>
 
         <div className="mt-6">
-          <DropList></DropList>
+          <DropList>
+            <li className="flex items-center py-3 border-b border-gray-300 gap-x-3 first:pt-0 last:border-b-0">
+              <span className="text-base font-semibold">Display</span>
+              <span>data</span>
+            </li>
+            <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
+              <span className="text-base font-semibold">Display</span>
+              <span>data</span>
+            </li>
+          </DropList>
+        </div>
+
+        <div className="p-4 mt-6 bg-white rounded-lg shadow-lg">
+          <div className="flex items-center justify-between font-bold">
+            <span className="text-lg">
+              Reviews
+              <span>(5)</span>
+            </span>
+            <span className="text-textSecondary">Write a comment</span>
+          </div>
+
+          <div className="flex items-center justify-between mt-4 text-textSecondary">
+            <span className="font-bold">Overall rating</span>
+            <div className="flex items-center gap-x-2">
+              <span className="text-lg font-bold">4.9</span>
+              <Star color="#e96394" size={24} />
+            </div>
+          </div>
+          <Button
+            variant="outlined"
+            className="w-full py-2 mt-4 font-sans text-lg font-bold lowercase border-2 border-strokeColor text-textSecondary"
+          >
+            Show all
+          </Button>
         </div>
       </div>
     </div>

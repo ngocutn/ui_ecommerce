@@ -31,11 +31,16 @@ export default {
       "min-sm": { min: "768px" },
     },
     extend: {
+      fontFamily: {
+        sans: ["Geologica", "sans-serif"],
+      },
       colors: {
         // primary: "#F73F5D",
         // secondary: "#222222",
         background: "#f1eeef",
         borderActive: "#5a5869",
+        textSecondary: "#545454",
+        strokeColor: "#f2f2f2",
       },
     },
   },
