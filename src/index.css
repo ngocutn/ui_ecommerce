@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  @import url("https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&display=swap");
+  body {
+    font-family: "Geologica", sans-serif;
+  }
+
   /* Hide arrows/spinners in input type number for all browsers */
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button {
