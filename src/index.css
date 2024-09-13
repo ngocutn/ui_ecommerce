@@ -28,3 +28,11 @@
     -moz-appearance: textfield;
   }
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.active {
+  border: 3px solid #dadada;
+}

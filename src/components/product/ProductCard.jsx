@@ -1,0 +1,63 @@
+import React from "react";
+import StartFillIcon from "../../icon/StartFillIcon";
+import { PlusIcon } from "lucide-react";
+
+const ProductCard = ({ product }) => {
+  const {
+    id,
+    name,
+    quantityAvailable,
+    primaryImage,
+    sellingPrice,
+    categories,
+  } = product;
+
+  return (
+    <div
+      key={id}
+      className="w-[280px] h-auto text-lg cursor-pointer group hover:bg-white hover:shadow-card transiton-all duration-200 hover:-translate-x-1 hover:-translate-y-1 rounded-lg overflow-hidden"
+    >
+      <div className="w-full h-[250px] overflow-hidden flex justify-center items-center bg-white">
+        <img
+          src={primaryImage}
+          alt="Product Image"
+          className="object-cover w-full h-full transition duration-300 rounded-lg group-hover:scale-110"
+          // hover:absolute hover:w-[285px] hover:h-[305px]
+        />
+      </div>
+      <div className="p-3">
+        <p className="font-bold text-nowrap mt-[10px] text-ellipsis overflow-hidden">
+          {name}
+        </p>
+        <p className="text-gray-500 text-lg mb-[8px] text-ellipsis text-nowrap overflow-hidden">
+          {name}
+        </p>
+        <div className="flex items-center gap-2">
+          <div className="w-3/4 ">
+            <div className="flex gap-2 items-center text-[13px] font-bold">
+              <div className="flex items-end justify-center gap-x-2">
+                <StartFillIcon fill={"#f59d60"} size={24}></StartFillIcon>
+                <span className="pr-2 text-base border-r-2">
+                  {quantityAvailable}
+                </span>
+              </div>
+              <span className="px-3 py-1 text-sm font-medium bg-gray-200 rounded-md">
+                {quantityAvailable} Sold
+              </span>
+            </div>
+            <div className="flex gap-4 mt-2">
+              <p className="text-gray-500 line-through">$ {sellingPrice}</p>
+              <p className="font-bold">$ {sellingPrice}</p>
+            </div>
+          </div>
+          {/* add cart button */}
+          <button className="flex items-center justify-center w-10 h-10 p-1 ml-auto bg-black rounded-full hover:scale-110">
+            <PlusIcon color="#fff"></PlusIcon>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductCard;

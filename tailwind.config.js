@@ -34,6 +34,9 @@ export default {
       fontFamily: {
         sans: ["Geologica", "sans-serif"],
       },
+      boxShadow: {
+        card: "6px 6px 8px 2px rgba(0,0,0,0.75);",
+      },
       colors: {
         // primary: "#F73F5D",
         // secondary: "#222222",
@@ -42,6 +45,7 @@ export default {
         borderActive: "#5a5869",
         textSecondary: "#545454",
         strokeColor: "#f2f2f2",
+        buttonBg: "#353132",
       },
     },
   },

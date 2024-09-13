@@ -16,7 +16,7 @@ const DropList = ({ children }) => {
         className="flex items-center justify-between w-full px-3 py-3 text-lg font-semibold"
         onClick={handleToggle}
       >
-        <div className="flex items-center select-none gap-x-3">
+        <div className="flex items-center text-base select-none gap-x-3">
           <Boxes />
           Specification
         </div>
