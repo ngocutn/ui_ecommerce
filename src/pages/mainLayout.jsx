@@ -7,7 +7,7 @@ const MainLayout = () => {
     <div className="h-full">
       <HeaderHome></HeaderHome>
       <div className=" bg-bgGray">
-        <div className="w-[80%] mx-auto">
+        <div className="w-[85%] mx-auto">
           <Outlet></Outlet>
         </div>
       </div>
