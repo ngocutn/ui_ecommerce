@@ -5,13 +5,11 @@ import HomePage from "./pages/HomePage/homepage";
 import AddProduct from "./pages/addProduct";
 import ListProduct from "./pages/listProduct";
 import MainProductPage from "./pages/mainProductPage";
+import MainLayout from "./pages/mainLayout";
+import ProductDetails from "./pages/ProductDetail/ProductDetails";
 
 function App() {
   const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <HomePage />,
-    },
     {
       path: "mainpage",
       element: <MainProductPage />,
@@ -26,6 +24,28 @@ function App() {
         },
       ],
     },
+    {
+      path: "/",
+      element: <MainLayout />,
+      children: [
+        {
+          index: true,
+          element: <HomePage />,
+        },
+        {
+          path: "/product/:id",
+          element: <ProductDetails />,
+        },
+      ],
+    },
+    {
+      path: "image",
+      element: <Text />,
+    },
+    // {
+    //   path: "add-product",
+    //   element: <AddProduct />,
+    // },
   ]);
   return (
     <>
