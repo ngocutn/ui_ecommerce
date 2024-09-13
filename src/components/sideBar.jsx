@@ -27,9 +27,9 @@ function SideBar() {
   };
 
   return (
-    <div className="sidebar w-full sm:w-1/5 fixed border-r border-[#d3d4d6] h-full left-0 pl-[1.5rem] pr-[1.5rem] flex flex-col gap-[1.5rem]">
+    <div className="sidebar flex-1 sm:w-1/5 fixed border-r border-[#d3d4d6] h-full left-0 pl-[1.5rem] pr-[1.5rem] flex flex-col gap-[1.5rem]">
       <div
-        className="logo text-4xl font-black text-blue-600 flex items-center cursor-pointer"
+        className="flex items-center text-4xl font-black text-blue-600 cursor-pointer logo"
         onClick={() => navigate("/")}
       >
         <img
@@ -312,10 +312,10 @@ function SideBar() {
           alt=""
         />
         <a className="flex flex-col" href="#">
-          <span className="font-semibold text-lg">Jonathon Treat</span>
+          <span className="text-lg font-semibold">Jonathon Treat</span>
           <span className="text-gray-500">lana@treat.com</span>
         </a>
-        <i className="fa-solid fa-arrow-right-from-bracket text-gray-500 text-lg cursor-pointer ml-auto"></i>
+        <i className="ml-auto text-lg text-gray-500 cursor-pointer fa-solid fa-arrow-right-from-bracket"></i>
       </div>
     </div>
   );

@@ -37,6 +37,7 @@ export default {
       colors: {
         // primary: "#F73F5D",
         // secondary: "#222222",
+        bgGray: "#f2f6f9",
         background: "#f1eeef",
         borderActive: "#5a5869",
         textSecondary: "#545454",
