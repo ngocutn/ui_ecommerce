@@ -11,7 +11,7 @@ import ProductDetails from "./pages/ProductDetail/ProductDetails";
 function App() {
   const router = createBrowserRouter([
     {
-      path: "mainpage",
+      path: "/admin",
       element: <MainProductPage />,
       children: [
         {
