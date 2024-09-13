@@ -65,7 +65,7 @@ const Stograges = [
 
 const ProductDetails = () => {
   return (
-    <div className="flex items-start mt-[180px] gap-x-7">
+    <div className="flex items-start py-[140px] gap-x-7">
       <div className="w-2/3">
         <div className="w-full h-[300px] bg-gray-400 rounded-2xl"></div>
       </div>
@@ -94,7 +94,7 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-6">
           <p className="text-lg">
             RAM: <span className="font-bold">4GB</span>
           </p>
@@ -103,14 +103,14 @@ const ProductDetails = () => {
             {Rams.map((item) => (
               <div
                 key={item.id}
-                className="px-6 py-2 border-[3px] border-gray-300 rounded-2xl mt-2 font-semibold"
+                className="bg-white px-6 py-2 border-[3px] border-gray-300 rounded-2xl mt-2 font-semibold"
               >
                 <p>{item.ram} GB</p>
               </div>
             ))}
           </div>
         </div>
-        <div className="mt-4">
+        <div className="mt-6">
           <p className="text-lg">
             Stograge: <span className="font-bold">32GB</span>
           </p>
@@ -119,7 +119,7 @@ const ProductDetails = () => {
             {Stograges.map((item) => (
               <div
                 key={item.id}
-                className="px-6 py-2 border-[3px] border-gray-300 rounded-2xl mt-2 font-semibold"
+                className="px-6 py-2 border-[3px] bg-[#fff] border-gray-300 rounded-2xl mt-2 font-semibold"
               >
                 <p>{item.store} GB</p>
               </div>
@@ -127,7 +127,7 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        <div className="mt-6">
+        <div className="mt-8">
           <DropList>
             <li className="flex items-center py-3 border-b border-gray-300 gap-x-3 first:pt-0 last:border-b-0">
               <span className="text-base font-semibold">Display</span>
@@ -140,7 +140,7 @@ const ProductDetails = () => {
           </DropList>
         </div>
 
-        <div className="p-4 mt-6 bg-white rounded-lg shadow-lg">
+        <div className="p-4 mt-8 bg-white rounded-lg shadow-lg">
           <div className="flex items-center justify-between font-bold">
             <span className="text-lg">
               Reviews

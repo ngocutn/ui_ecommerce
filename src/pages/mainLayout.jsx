@@ -4,12 +4,14 @@ import HeaderHome from "../components/headerHome";
 
 const MainLayout = () => {
   return (
-    <Fragment>
+    <div className="h-full">
       <HeaderHome></HeaderHome>
-      <div className="w-[80%] mx-auto">
-        <Outlet></Outlet>
+      <div className=" bg-bgGray">
+        <div className="w-[80%] mx-auto">
+          <Outlet></Outlet>
+        </div>
       </div>
-    </Fragment>
+    </div>
   );
 };
 
