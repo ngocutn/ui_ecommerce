@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import HeartIcon from "../../icon/HeartIcon";
 import StartFillIcon from "../../icon/StartFillIcon";
+import ReviewsModal from "../Review/ReviewsModal";
 
 const colors = [
   {
@@ -67,7 +68,7 @@ const Stograges = [
   },
 ];
 
-const ProductInfor = () => {
+const ProductInfor = ({ setIsShow, isShow }) => {
   const [isLike, setIsLike] = useState(false);
   const [ram, setRam] = useState();
   const [store, setStore] = useState();
@@ -166,12 +167,13 @@ const ProductInfor = () => {
           <span className="font-bold select-none">Overall rating</span>
           <div className="flex items-center gap-x-2">
             <span className="text-base font-bold select-none">4.9</span>
-            <StartFillIcon fill={"#f9619bs"} />
+            <StartFillIcon fill={"#f9619b"}></StartFillIcon>
           </div>
         </div>
         <Button
           variant="outlined"
           className="w-full py-2 mt-4 font-sans text-lg font-bold lowercase border-2 border-strokeColor text-textSecondary"
+          onClick={() => setIsShow(!isShow)}
         >
           Show all
         </Button>

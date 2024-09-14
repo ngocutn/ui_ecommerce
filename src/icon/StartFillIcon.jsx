@@ -1,6 +1,6 @@
 import React from "react";
 
-const StartFillIcon = ({ fill, size }) => {
+const StartFillIcon = ({ fill = "#000", size = "24" }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

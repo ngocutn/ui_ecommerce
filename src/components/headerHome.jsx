@@ -21,11 +21,11 @@ import { useNavigate } from "react-router-dom";
 function HeaderHome() {
   const navigate = useNavigate();
   return (
-    <AppBar className="bg-white pr-7">
+    <AppBar className="z-10 bg-white pr-7">
       <Toolbar component="div" className="flex justify-between my-3">
         <Stack
           direction="row"
-          className="logo text-3xl font-black text-blue-600 flex items-center cursor-pointer"
+          className="flex items-center text-3xl font-black text-blue-600 cursor-pointer logo"
           onClick={() => navigate("/")}
         >
           <img
@@ -38,13 +38,13 @@ function HeaderHome() {
 
         <Stack
           direction="row"
-          className="grow text-lg justify-center items-center"
+          className="items-center justify-center text-lg grow"
         >
           <Input
             type="search"
             variant="outlined"
             disableUnderline
-            className="border w-2/3 border-gray-200 px-3 py-3 rounded-md"
+            className="w-2/3 px-3 py-3 border border-gray-200 rounded-md"
             placeholder="Search Products"
           >
             <SearchIcon className="text-black" />
@@ -62,20 +62,20 @@ function HeaderHome() {
             <MenuItem value="Phone">Phone</MenuItem>
             <MenuItem value="Laptop">Laptop</MenuItem>
           </Select>
-          <Button className="bg-black py-4 rounded-md">
+          <Button className="py-4 bg-black rounded-md">
             <SearchIcon className="text-white" />
           </Button>
         </Stack>
 
         <Stack
           direction="row"
-          className=" flex items-center justify-center gap-5"
+          className="flex items-center justify-center gap-5 "
         >
-          <Button className="capitalize text-black">
+          <Button className="text-black capitalize">
             <PermIdentityOutlinedIcon />
             <Typography
               variant="body1"
-              className="ml-2 font-semibold flex flex-col items-start gap-0"
+              className="flex flex-col items-start gap-0 ml-2 font-semibold"
             >
               <span className="text-[12px]">Sign in</span>
               <span>Account</span>
@@ -87,13 +87,13 @@ function HeaderHome() {
           <Badge color="secondary" badgeContent={0} showZero max={99}>
             <FavoriteBorderOutlinedIcon className="text-black cursor-pointer" />
           </Badge>
-          <Button className="capitalize text-black">
+          <Button className="text-black capitalize">
             <Badge color="secondary" badgeContent={0} showZero max={99}>
               <ShoppingCartOutlinedIcon className="text-black" />
             </Badge>
             <Typography
               variant="body1"
-              className="ml-4 font-semibold flex flex-col items-start gap-0"
+              className="flex flex-col items-start gap-0 ml-4 font-semibold"
             >
               <span className="text-[12px]">Total</span>
               <span> $0.00</span>
@@ -105,7 +105,7 @@ function HeaderHome() {
       {/* <Toolbar component="div" className="flex justify-between mt-2">
         <Button>
           <CategoryIcon className="text-black" />
-          <Typography className="text-black ml-4">Categories</Typography>
+          <Typography className="ml-4 text-black">Categories</Typography>
         </Button>
         <ButtonGroup
           sx={{
@@ -115,18 +115,18 @@ function HeaderHome() {
           }}
           variant="text"
         >
-          <Button className="text-black capitalize text-lg px-3">Home</Button>
-          <Button className="text-black capitalize text-lg px-3">
+          <Button className="px-3 text-lg text-black capitalize">Home</Button>
+          <Button className="px-3 text-lg text-black capitalize">
             Today detail
           </Button>
-          <Button className="text-black capitalize text-lg px-3">
+          <Button className="px-3 text-lg text-black capitalize">
             Customer Services
           </Button>
-          <Button className="text-black capitalize text-lg px-3">
+          <Button className="px-3 text-lg text-black capitalize">
             Trending products
           </Button>
-          <Button className="text-black capitalize text-lg px-3">Blog</Button>
-          <Button className="text-black capitalize text-lg px-3">
+          <Button className="px-3 text-lg text-black capitalize">Blog</Button>
+          <Button className="px-3 text-lg text-black capitalize">
             Special offers
           </Button>
         </ButtonGroup>
