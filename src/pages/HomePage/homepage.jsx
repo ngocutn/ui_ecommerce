@@ -25,7 +25,7 @@ function HomePage() {
 
   return (
     <div>
-      <HeaderHome></HeaderHome>
+      {/* <HeaderHome></HeaderHome> */}
       <Banner slides={slideImages}></Banner>
       <TopCategory></TopCategory>
       <PopularProduct></PopularProduct>

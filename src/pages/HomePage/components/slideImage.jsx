@@ -36,14 +36,14 @@ const Banner = ({ slides }) => {
           },
         }}
         loop={true}
-        className="desktop-up:h-[500px] tablet-range:h-[400px] sm:h-[200px]"
+        className="desktop-up:h-[500px] tablet-range:h-[400px] sm:h-[200px] rounded-3xl"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
             <img
               src={slide.url}
               alt={slide.caption}
-              className="w-full desktop-up:h-[500px] tablet-range:h-[400px] sm:h-[200px] bg-center bg-cover relative rounded-3xl"
+              className="w-full desktop-up:h-[500px] tablet-range:h-[400px] sm:h-[200px] bg-center bg-cover relative"
             />
           </SwiperSlide>
         ))}
