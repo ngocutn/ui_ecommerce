@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getLevel1Categories } from "../../../service/product/api";
 
-import image1 from "../../../assets/image/airpods-alt-svgrepo-com.png";
+// import image1 from "../../../assets/image/airpods-alt-svgrepo-com.png";
 
 function TopCategory() {
   const [category, setCategory] = useState([]);
@@ -35,7 +35,7 @@ function TopCategory() {
             <div className="flex flex-col items-center">
               <div className="w-[70px] h-[70px] rounded-full bg-gray-200 p-4 hover:bg-gray-100 cursor-pointer">
                 <img
-                  src={image1}
+                  src={item.icon}
                   alt="image"
                   className="w-full h-full object-cover"
                 />

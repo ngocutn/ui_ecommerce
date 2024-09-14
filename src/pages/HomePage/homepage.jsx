@@ -24,9 +24,19 @@ function HomePage() {
   ];
 
   return (
-    <div>
-      {/* <HeaderHome></HeaderHome> */}
-      <Banner slides={slideImages}></Banner>
+    <div className="pt-[130px]">
+      <Banner
+        slides={slideImages}
+        customWidth="desktop-up:w-[1100px] tablet-range:w-[750px] sm:w-[350px]"
+        customHeight="desktop-up:h-[550px] tablet-range:h-[400px] sm:h-[200px]"
+      >
+        <div className="absolute top-[70%] left-[10%] h-auto z-10 text-sm sm:text-[10px] sm:top-[60%]">
+          <button className="bg-white p-5 sm:p-2 rounded-lg hover:bg-gray-300">
+            <i className="fa fa-shopping-cart mr-4" aria-hidden="true"></i>
+            Start Shopping
+          </button>
+        </div>
+      </Banner>
       <TopCategory></TopCategory>
       <PopularProduct></PopularProduct>
     </div>

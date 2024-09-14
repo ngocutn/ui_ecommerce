@@ -11,7 +11,7 @@ import {
   getCategoriesByParentId,
 } from "../service/product/api";
 
-import ImageModal from "../components/imageModal";
+import ImageModal from "../components/ImagePopup/imageModal";
 import PopUp from "../components/popUp";
 
 function AddProduct() {
