@@ -1,6 +1,7 @@
 import React from "react";
 import StartFillIcon from "../../icon/StartFillIcon";
 import { PlusIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   const {
@@ -12,10 +13,17 @@ const ProductCard = ({ product }) => {
     categories,
   } = product;
 
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/products/${id}`);
+  };
+
   return (
     <div
       key={id}
       className="w-[280px] h-auto text-lg cursor-pointer group hover:bg-white hover:shadow-card transiton-all duration-200 hover:-translate-x-1 hover:-translate-y-1 rounded-lg overflow-hidden"
+      onClick={handleClick}
     >
       <div className="w-full h-[250px] overflow-hidden flex justify-center items-center bg-white">
         <img

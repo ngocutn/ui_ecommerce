@@ -4,7 +4,6 @@ import Banner from "../HomePage/components/slideImage";
 const ImageSlide = () => {
   const [viewImage, setViewImage] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  console.log(activeIndex);
 
   const handleViewImage = (index) => {
     setActiveIndex(index);
