@@ -49,7 +49,7 @@ const ReviewsModal = ({ setIsShow, isShow }) => {
         <ReviewCard></ReviewCard>
       </div>
 
-      <Button className="w-full py-3 mt-5 text-[12px] font-semibold text-white bg-black">
+      <Button className="w-full py-3 mt-5 text-[12px] font-semibold text-white bg-black rounded-lg">
         Write a review
       </Button>
     </div>
