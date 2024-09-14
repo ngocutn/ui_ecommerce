@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { set, useForm } from "react-hook-form";
 import * as yup from "yup";
 import axios from "axios";
@@ -11,7 +11,7 @@ import {
   getCategoriesByParentId,
 } from "../service/product/api";
 
-import ImageModal from "../components/imageModal";
+import ImageModal from "../components/ImagePopup/imageModal";
 import PopUp from "../components/popUp";
 
 function AddProduct() {
@@ -425,19 +425,19 @@ function AddProduct() {
     <div id="add-product" className="my-16 mr-12">
       <div id="add-prd-header" className="flex gap-6">
         <button
-          className="border-2 border-gray-200 px-5 py-1 rounded-md text-gray-500 hover:bg-gray-200 hover:text-white"
+          className="flex items-center justify-center px-5 py-1 text-gray-500 border-2 border-gray-200 rounded-md hover:bg-gray-200 hover:text-white"
           onClick={handleDiscardButton}
         >
           <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
         </button>
         <div>
-          <p className="text-gray-500 font-semibold">Back to product list</p>
+          <p className="font-semibold text-gray-500">Back to product list</p>
           <p className="text-2xl font-bold">Add new product</p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div id="add-prd-body" className="flex my-4 gap-2">
+        <div id="add-prd-body" className="flex gap-2 my-4">
           <div className="w-1/2 m-3">
             {/* Descriptiom */}
             <p className="text-xl font-semibold">Description</p>
@@ -445,7 +445,7 @@ function AddProduct() {
               id="productDescription"
               className="flex flex-col h-[280px] my-3 p-4 border border-gray-200 py-2 rounded-md "
             >
-              <label htmlFor="name" className="text-gray-500 font-semibold">
+              <label htmlFor="name" className="font-semibold text-gray-500">
                 Product Name
               </label>
               <input
@@ -466,10 +466,10 @@ function AddProduct() {
               {errors?.name && (
                 <div className="flex items-center">
                   <i
-                    className="fa fa-exclamation-circle text-red-500"
+                    className="text-red-500 fa fa-exclamation-circle"
                     aria-hidden="true"
                   ></i>
-                  <p className="px-2 font-nunito text-md leading-normal text-red-500">
+                  <p className="px-2 leading-normal text-red-500 font-nunito text-md">
                     {errors.name?.message}
                   </p>
                 </div>
@@ -478,17 +478,17 @@ function AddProduct() {
               <div className="flex justify-between">
                 <label
                   htmlFor="description"
-                  className="text-gray-500 font-semibold"
+                  className="font-semibold text-gray-500"
                 >
                   Business description
                 </label>
 
                 <label
                   htmlFor="textFile"
-                  className="cursor-pointer text-blue-400"
+                  className="text-blue-400 cursor-pointer"
                 >
                   <i className="fa-solid fa-arrow-up-from-bracket"></i>
-                  <span className="ml-2 font-semibold text-sm">
+                  <span className="ml-2 text-sm font-semibold">
                     Upload .txt file
                   </span>
                   <input
@@ -518,13 +518,13 @@ function AddProduct() {
               />
 
               {errors?.description && (
-                <div className="flex items-center mt-9 text-sm">
+                <div className="flex items-center text-sm mt-9">
                   <i
-                    className="fa fa-exclamation-circle text-red-500"
+                    className="text-red-500 fa fa-exclamation-circle"
                     aria-hidden="true"
                   ></i>
 
-                  <p className="px-2 font-nunito text-md leading-normal text-red-500">
+                  <p className="px-2 leading-normal text-red-500 font-nunito text-md">
                     {errors.description?.message}
                   </p>
                 </div>
@@ -534,11 +534,11 @@ function AddProduct() {
             <p className="text-xl font-semibold mt-7">Category</p>
             <div
               id="productCategory"
-              className="flex flex-col my-3 p-4 border 2 py-2 rounded-md"
+              className="flex flex-col p-4 py-2 my-3 border rounded-md 2"
             >
               <label
                 htmlFor="categoryIds"
-                className="text-gray-500 font-semibold"
+                className="font-semibold text-gray-500"
               >
                 Product Category
               </label>
@@ -561,11 +561,11 @@ function AddProduct() {
               {errors?.categoryIds && (
                 <div className="flex items-center">
                   <i
-                    className="fa fa-exclamation-circle text-red-500"
+                    className="text-red-500 fa fa-exclamation-circle"
                     aria-hidden="true"
                   ></i>
 
-                  <p className="px-2 font-nunito text-md leading-normal text-red-500">
+                  <p className="px-2 leading-normal text-red-500 font-nunito text-md">
                     {errors.categoryIds?.message}
                   </p>
                 </div>
@@ -573,7 +573,7 @@ function AddProduct() {
 
               <label
                 htmlFor="subCategoryIds"
-                className="text-gray-500 font-semibold"
+                className="font-semibold text-gray-500"
               >
                 Product Subcategory
               </label>
@@ -597,11 +597,11 @@ function AddProduct() {
               {errors?.subCategoryIds && (
                 <div className="flex items-center">
                   <i
-                    className="fa fa-exclamation-circle text-red-500"
+                    className="text-red-500 fa fa-exclamation-circle"
                     aria-hidden="true"
                   ></i>
 
-                  <p className="px-2 font-nunito text-md leading-normal text-red-500">
+                  <p className="px-2 leading-normal text-red-500 font-nunito text-md">
                     {errors.subCategoryIds?.message}
                   </p>
                 </div>
@@ -611,12 +611,12 @@ function AddProduct() {
             <p className="text-xl font-semibold mt-7">Inventory</p>
             <div
               id="productInventory"
-              className="flex gap-4 my-3 p-4 border 2 py-2 rounded-md"
+              className="flex gap-4 p-4 py-2 my-3 border rounded-md 2"
             >
               <div className="flex flex-col w-1/3">
                 <label
                   htmlFor="quantityAvailable"
-                  className="text-gray-500 font-semibold"
+                  className="font-semibold text-gray-500"
                 >
                   Quantity
                 </label>
@@ -637,25 +637,25 @@ function AddProduct() {
                 {errors?.quantityAvailable && (
                   <div className="flex items-center">
                     <i
-                      className="fa fa-exclamation-circle text-red-500"
+                      className="text-red-500 fa fa-exclamation-circle"
                       aria-hidden="true"
                     ></i>
 
-                    <p className="px-2 font-nunito text-md leading-normal text-red-500">
+                    <p className="px-2 leading-normal text-red-500 font-nunito text-md">
                       {errors.quantityAvailable?.message}
                     </p>
                   </div>
                 )}
               </div>
               <div className="flex flex-col w-2/3">
-                <label htmlFor="SKU" className="text-gray-500 font-semibold">
+                <label htmlFor="SKU" className="font-semibold text-gray-500">
                   SKU (Optional)
                 </label>
                 <input
                   type="text"
                   id="SKU"
                   {...register("SKU")}
-                  className="border-2 2 p-2 rounded-lg my-2"
+                  className="p-2 my-2 border-2 rounded-lg 2"
                 />
               </div>
             </div>
@@ -663,7 +663,7 @@ function AddProduct() {
             <p className="text-xl font-semibold mt-7">Selling Type</p>
             <div
               id="productSellType"
-              className="flex flex-col my-3 p-4 border 2 py-2 rounded-md font-semibold"
+              className="flex flex-col p-4 py-2 my-3 font-semibold border rounded-md 2"
             >
               <label htmlFor="sellingType" className="my-1">
                 <input
@@ -695,9 +695,9 @@ function AddProduct() {
             </div>
 
             <p className="text-xl font-semibold mt-7">Variant</p>
-            <div className="flex justify-between my-3 p-4 border 2 rounded-md font-semibold">
+            <div className="flex justify-between p-4 my-3 font-semibold border rounded-md 2">
               <span>Product Variants</span>
-              <span className="text-blue-700 hover:text-gray-500 cursor-pointer">
+              <span className="text-blue-700 cursor-pointer hover:text-gray-500">
                 + Add Variant
               </span>
             </div>
@@ -714,10 +714,10 @@ function AddProduct() {
                   selectedImages.length > 1 ? "w-1/3" : "w-full"
                 } ${selectedImages.length === 1 ? "w-1/2 " : ""}`}
               >
-                <div className="flex flex-col gap-5 text-center text-gray-500 items-center">
+                <div className="flex flex-col items-center gap-5 text-center text-gray-500">
                   <i className="fa-solid fa-xl fa-images"></i>
-                  <span className="text-gray-500 px-2">
-                    <span className="text-blue-400 underline font-semibold">
+                  <span className="px-2 text-gray-500">
+                    <span className="font-semibold text-blue-400 underline">
                       Click to upload
                     </span>{" "}
                     or drag and drop
@@ -754,21 +754,21 @@ function AddProduct() {
                     >
                       <img
                         src={image}
-                        className="w-full h-full object-cover rounded-md"
+                        className="object-cover w-full h-full rounded-md"
                       />
                       {index === 0 && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 group-hover:bg-black group-hover:bg-opacity-60">
                           <button
                             type="button"
                             onClick={() => handleReplace(index)}
-                            className="bg-white py-1 px-2 m-1 text-sm text-black rounded-md hover:bg-gray-200"
+                            className="px-2 py-1 m-1 text-sm text-black bg-white rounded-md hover:bg-gray-200"
                           >
                             Replace
                           </button>
                           <button
                             type="button"
                             onClick={() => removeImage(index)}
-                            className="bg-white py-1 px-2 m-1 text-sm text-black rounded-md hover:bg-gray-200"
+                            className="px-2 py-1 m-1 text-sm text-black bg-white rounded-md hover:bg-gray-200"
                           >
                             Remove
                           </button>
@@ -776,7 +776,7 @@ function AddProduct() {
                       )}
                       {index === 2 && selectedImages.length > 3 && (
                         <div
-                          className="absolute inset-0 flex items-center justify-center bg-gray-500 bg-opacity-60 text-white text-xl font-bold cursor-pointer"
+                          className="absolute inset-0 flex items-center justify-center text-xl font-bold text-white bg-gray-500 cursor-pointer bg-opacity-60"
                           onClick={() => handleReplace(index)}
                         >
                           +{selectedImages.length - 3}
@@ -800,12 +800,12 @@ function AddProduct() {
             <p className="text-xl font-semibold">Shipping and Delivery</p>
             <div
               id="productDelivery"
-              className="flex flex-col my-3 p-4 border 2 py-2 rounded-md"
+              className="flex flex-col p-4 py-2 my-3 border rounded-md 2"
             >
-              <label htmlFor="weight" className="text-gray-500 font-semibold">
+              <label htmlFor="weight" className="font-semibold text-gray-500">
                 Items weight
               </label>
-              <div className="border-2 2 p-2 rounded-lg my-2 flex flex-nowrap">
+              <div className="flex p-2 my-2 border-2 rounded-lg 2 flex-nowrap">
                 <input
                   onInput={handleFractionInput}
                   type="number"
@@ -825,7 +825,7 @@ function AddProduct() {
                 </select>
               </div>
               <div className="flex justify-between">
-                <label className="font-semibold my-3">Package Size</label>
+                <label className="my-3 font-semibold">Package Size</label>
                 <select
                   id="packageUnit"
                   {...register("packageUnit")}
@@ -842,11 +842,11 @@ function AddProduct() {
                 <div className="flex flex-col w-[30%] ">
                   <label
                     htmlFor="length"
-                    className="text-gray-500 font-semibold"
+                    className="font-semibold text-gray-500"
                   >
                     Length
                   </label>
-                  <div className="border-2 2 p-1 rounded-lg my-2  flex flex-nowrap">
+                  <div className="flex p-1 my-2 border-2 rounded-lg 2 flex-nowrap">
                     <input
                       onInput={handleFractionInput}
                       type="number"
@@ -863,11 +863,11 @@ function AddProduct() {
                 <div className="flex flex-col w-[30%]">
                   <label
                     htmlFor="breadth"
-                    className="text-gray-500 font-semibold"
+                    className="font-semibold text-gray-500"
                   >
                     Breadth
                   </label>
-                  <div className="border-2 2 p-1 rounded-lg my-2  flex flex-nowrap">
+                  <div className="flex p-1 my-2 border-2 rounded-lg 2 flex-nowrap">
                     <input
                       onInput={handleFractionInput}
                       type="number"
@@ -884,11 +884,11 @@ function AddProduct() {
                 <div className="flex flex-col w-[30%]">
                   <label
                     htmlFor="width"
-                    className="text-gray-500 font-semibold"
+                    className="font-semibold text-gray-500"
                   >
                     Width
                   </label>
-                  <div className="border-2 2 p-1 rounded-lg my-2  flex flex-nowrap">
+                  <div className="flex p-1 my-2 border-2 rounded-lg 2 flex-nowrap">
                     <input
                       onInput={handleFractionInput}
                       type="number"
@@ -908,13 +908,13 @@ function AddProduct() {
             <p className="text-xl font-semibold mt-7">Pricing</p>
             <div
               id="productPricing"
-              className="flex flex-col my-3 p-4 border 2 py-2 rounded-md"
+              className="flex flex-col p-4 py-2 my-3 border rounded-md 2"
             >
               <div className="flex gap-4">
                 <div className="flex flex-col w-1/2">
                   <label
                     htmlFor="originalPrice"
-                    className="text-gray-500 font-semibold"
+                    className="font-semibold text-gray-500"
                   >
                     MSRP Price
                   </label>
@@ -925,7 +925,7 @@ function AddProduct() {
                     }`}
                   >
                     <i
-                      className="fa fa-usd bg-gray-200 py-2 px-3 rounded-sm"
+                      className="px-3 py-2 bg-gray-200 rounded-sm fa fa-usd"
                       aria-hidden="true"
                     ></i>
                     <input
@@ -940,11 +940,11 @@ function AddProduct() {
                   {errors?.originalPrice && (
                     <div className="flex items-center">
                       <i
-                        className="fa fa-exclamation-circle text-red-500"
+                        className="text-red-500 fa fa-exclamation-circle"
                         aria-hidden="true"
                       ></i>
 
-                      <p className="px-2 font-nunito text-md leading-normal text-red-500">
+                      <p className="px-2 leading-normal text-red-500 font-nunito text-md">
                         {errors.originalPrice?.message}
                       </p>
                     </div>
@@ -953,7 +953,7 @@ function AddProduct() {
                 <div className="flex flex-col w-1/2 ">
                   <label
                     htmlFor="discountedPrice"
-                    className="text-gray-500 font-semibold"
+                    className="font-semibold text-gray-500"
                   >
                     Sale Price
                   </label>
@@ -963,7 +963,7 @@ function AddProduct() {
                     }`}
                   >
                     <i
-                      className="fa fa-usd bg-gray-200 py-2 px-3 rounded-sm"
+                      className="px-3 py-2 bg-gray-200 rounded-sm fa fa-usd"
                       aria-hidden="true"
                     ></i>
                     <input
@@ -978,11 +978,11 @@ function AddProduct() {
                   {errors?.discountedPrice && (
                     <div className="flex items-center">
                       <i
-                        className="fa fa-exclamation-circle text-red-500"
+                        className="text-red-500 fa fa-exclamation-circle"
                         aria-hidden="true"
                       ></i>
 
-                      <p className="px-2 font-nunito text-md leading-normal text-red-500">
+                      <p className="px-2 leading-normal text-red-500 font-nunito text-md">
                         {errors.discountedPrice?.message}
                       </p>
                     </div>
@@ -991,7 +991,7 @@ function AddProduct() {
               </div>
               <label
                 htmlFor="sellingPrice"
-                className="text-gray-500 font-semibold"
+                className="font-semibold text-gray-500"
               >
                 Price
               </label>
@@ -1001,7 +1001,7 @@ function AddProduct() {
                 }`}
               >
                 <i
-                  className="fa fa-usd bg-gray-200 py-2 px-3 rounded-sm"
+                  className="px-3 py-2 bg-gray-200 rounded-sm fa fa-usd"
                   aria-hidden="true"
                 ></i>
                 <input
@@ -1016,11 +1016,11 @@ function AddProduct() {
               {errors?.sellingPrice && (
                 <div className="flex items-center">
                   <i
-                    className="fa fa-exclamation-circle text-red-500"
+                    className="text-red-500 fa fa-exclamation-circle"
                     aria-hidden="true"
                   ></i>
 
-                  <p className="px-2 font-nunito text-md leading-normal text-red-500">
+                  <p className="px-2 leading-normal text-red-500 font-nunito text-md">
                     {errors.sellingPrice?.message}
                   </p>
                 </div>
@@ -1030,7 +1030,7 @@ function AddProduct() {
             <div id="add-prd-button" className="flex justify-between mt-5">
               <button
                 type="button"
-                className="border-2 2 rounded-lg p-3 font-semibold hover:bg-gray-300 hover:text-white"
+                className="p-3 font-semibold border-2 rounded-lg 2 hover:bg-gray-300 hover:text-white"
                 onClick={handleDiscardButton}
               >
                 Discard
@@ -1054,7 +1054,7 @@ function AddProduct() {
                   title="Do you want to discard this product?"
                   rightButton="Discard"
                   onCancel={handleDiscardButton}
-                  onDiscard={() => navigate("/mainpage")}
+                  onDiscard={() => navigate("/admin")}
                 />
               )}
             </div>

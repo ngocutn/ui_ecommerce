@@ -1,15 +1,27 @@
-import { Fragment } from "react";
-import { Outlet } from "react-router-dom";
+import { Fragment, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import HeaderHome from "../components/headerHome";
 
 const MainLayout = () => {
+  const location = useLocation();
+  const [isShow, setIsShow] = useState(false);
+
   return (
-    <Fragment>
+    <div className="h-full">
       <HeaderHome></HeaderHome>
-      <div className="w-[80%] mx-auto">
-        <Outlet></Outlet>
+
+      <div className={location.pathname === "/" ? "bg-white" : "bg-bgGray"}>
+        <div className="w-[85%] mx-auto">
+          <Outlet context={{ isShow, setIsShow }}></Outlet>
+        </div>
       </div>
-    </Fragment>
+
+      {isShow ? (
+        <div className="fixed top-0 bottom-0 left-0 right-0 z-10 bg-black bg-opacity-25"></div>
+      ) : (
+        ""
+      )}
+    </div>
   );
 };
 
