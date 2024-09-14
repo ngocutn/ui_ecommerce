@@ -16,13 +16,17 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import CategoryIcon from "@mui/icons-material/Category";
 
+import { useNavigate } from "react-router-dom";
+
 function HeaderHome() {
+  const navigate = useNavigate();
   return (
     <AppBar className="bg-white pr-7">
       <Toolbar component="div" className="flex justify-between my-3">
         <Stack
           direction="row"
-          className="logo text-3xl font-black text-blue-600 flex items-center"
+          className="logo text-3xl font-black text-blue-600 flex items-center cursor-pointer"
+          onClick={() => navigate("/")}
         >
           <img
             className="w-[4rem] h-[4rem] md:w-[5rem] md:h-[5rem]"

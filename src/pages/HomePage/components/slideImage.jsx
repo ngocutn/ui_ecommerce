@@ -2,7 +2,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar } from "swiper/modules";
 import { useState } from "react";
 
-const Banner = ({ slides }) => {
+const Banner = ({
+  slides,
+  children,
+  customWidth,
+  customHeight,
+  onImageClick,
+  indexSlide,
+}) => {
   const [buttonBanner, setButtonBanner] = useState(false);
 
   const enterBanner = () => {
@@ -15,7 +22,7 @@ const Banner = ({ slides }) => {
 
   return (
     <div
-      className="mt-[130px] desktop-up:w-[1100px] tablet-range:w-[750px] sm:w-[350px] mx-auto relative"
+      className={`mx-auto ${customHeight} relative ${customWidth} cursor-pointer`}
       onMouseLeave={leaveBanner}
       onMouseEnter={enterBanner}
     >
@@ -36,14 +43,16 @@ const Banner = ({ slides }) => {
           },
         }}
         loop={true}
-        className="desktop-up:h-[500px] tablet-range:h-[400px] sm:h-[200px]"
+        className={`${customHeight} rounded-3xl`}
+        initialSlide={indexSlide || 0}
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
             <img
               src={slide.url}
               alt={slide.caption}
-              className="w-full desktop-up:h-[500px] tablet-range:h-[400px] sm:h-[200px] bg-center bg-cover relative rounded-3xl"
+              className={`${customHeight} w-full bg-center bg-cover relative`}
+              onClick={() => onImageClick(index)}
             />
           </SwiperSlide>
         ))}
@@ -61,13 +70,7 @@ const Banner = ({ slides }) => {
         ></div>
 
         <div className="custom-pagination absolute bottom-[5%] left-[10%] z-10"></div>
-
-        <div className="absolute top-[70%] left-[10%] h-auto z-10 text-sm sm:text-[10px] sm:top-[60%]">
-          <button className="bg-white p-5 sm:p-2 rounded-lg hover:bg-gray-300">
-            <i className="fa fa-shopping-cart mr-4" aria-hidden="true"></i>
-            Start Shopping
-          </button>
-        </div>
+        {children}
       </Swiper>
     </div>
   );

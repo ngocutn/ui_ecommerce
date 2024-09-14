@@ -57,7 +57,7 @@ function PopularProduct() {
         </div>
       </div>
 
-      <div id="product" className="flex justify-start w-full h-auto gap-5 mt-5">
+      <div id="product" className="flex justify-start w-full h-auto gap-9 mt-5">
         {currentProducts.map((item) => (
           <ProductCard product={item}></ProductCard>
         ))}
