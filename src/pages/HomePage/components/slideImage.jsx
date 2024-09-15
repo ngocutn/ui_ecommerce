@@ -49,8 +49,8 @@ const Banner = ({
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
             <img
-              src={slide.url}
-              alt={slide.caption}
+              src={slide}
+              alt={slide}
               className={`${customHeight} w-full bg-center bg-cover relative`}
               onClick={() => onImageClick(index)}
             />
