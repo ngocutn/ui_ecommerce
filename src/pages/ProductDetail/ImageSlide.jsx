@@ -1,9 +1,11 @@
 import { useState } from "react";
 import Banner from "../HomePage/components/slideImage";
 
-const ImageSlide = () => {
+const ImageSlide = ({ images }) => {
   const [viewImage, setViewImage] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  console.log("images slider", images);
 
   const handleViewImage = (index) => {
     setActiveIndex(index);
@@ -36,7 +38,7 @@ const ImageSlide = () => {
     <div className="w-2/3 h-[70vh]">
       <div className="w-full h-full">
         <Banner
-          slides={slideImages}
+          slides={images}
           customWidth={"w-full"}
           customHeight={"h-full"}
           onImageClick={handleViewImage}
@@ -53,7 +55,7 @@ const ImageSlide = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <Banner
-              slides={slideImages}
+              slides={images}
               customWidth={"w-[80%]"}
               customHeight={"h-[75vh]"}
               indexSlide={activeIndex}

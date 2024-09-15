@@ -2,7 +2,7 @@ import { Boxes, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-const DropList = ({ children }) => {
+const DropList = ({ children, title }) => {
   const [isShow, setIsShow] = useState(false);
 
   const handleToggle = () => {
@@ -18,7 +18,7 @@ const DropList = ({ children }) => {
       >
         <div className="flex items-center text-base select-none gap-x-3">
           <Boxes />
-          Specification
+          {title}
         </div>
 
         <span>{isShow ? <ChevronDown /> : <ChevronUp />}</span>
