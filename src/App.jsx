@@ -23,11 +23,11 @@ function App() {
         },
         {
           path: "add-product",
-          element: <AddProduct />,
+          element: <AddProductProvider />,
         },
         {
           path: "new-product",
-          element: <AddProductProvider />,
+          element: <AddProduct />,
         },
       ],
     },

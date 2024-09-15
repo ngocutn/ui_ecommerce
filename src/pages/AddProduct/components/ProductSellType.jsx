@@ -1,14 +1,13 @@
 import { useFormContext } from "react-hook-form";
 
 const ProductSellType = () => {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+  const { register } = useFormContext();
 
   return (
     <div>
-      <p className="text-xl font-semibold mt-7">Selling Type</p>
+      <p className="text-xl font-semibold mt-7">
+        Selling Type <span className="text-red-600">*</span>
+      </p>
       <div
         id="productSellType"
         className="flex flex-col p-4 py-2 my-3 font-semibold border rounded-md 2"

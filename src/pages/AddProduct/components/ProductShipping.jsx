@@ -1,8 +1,9 @@
 import { useFormContext } from "react-hook-form";
 import { useState } from "react";
+import { FormControl, MenuItem, Select, TextField } from "@mui/material";
 
 const ProductShipping = () => {
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState("inch");
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -36,87 +37,113 @@ const ProductShipping = () => {
         <label htmlFor="weight" className="font-semibold text-gray-500">
           Items weight
         </label>
-        <div className="flex p-2 my-2 border-2 rounded-lg 2 flex-nowrap">
-          <input
-            onInput={handleFractionInput}
-            type="number"
-            step="0.01"
-            id="weight"
-            {...register("weight")}
-            className="outline-none w-[90%]"
-          />
-          <select
-            id="unitWeight"
-            // onInput={handleFractionInput}
-            {...register("unitWeight")}
-            className="float-right outline-none"
-          >
-            <option value="kg">kg</option>
-            <option value="pound">Ibs</option>
-          </select>
-        </div>
+
+        <TextField
+          id="weight"
+          type="number"
+          {...register("weight")}
+          inputProps={{ step: "0.01" }}
+          onInput={handleFractionInput}
+          size="small"
+          className="rounded-lg py-2"
+          slotProps={{
+            input: {
+              endAdornment: (
+                <Select
+                  id="unitWeight"
+                  {...register("unitWeight")}
+                  size="small"
+                  defaultValue={"kg"}
+                  sx={{
+                    border: "none",
+                    "& fieldset": {
+                      border: "none",
+                    },
+                  }}
+                >
+                  <MenuItem value="kg">kg</MenuItem>
+                  <MenuItem value="pound">Pound</MenuItem>
+                </Select>
+              ),
+            },
+          }}
+        ></TextField>
+
         <div className="flex justify-between">
           <label className="my-3 font-semibold">Package Size</label>
-          <select
+          <Select
             id="packageUnit"
             {...register("packageUnit")}
-            className="outline-none"
             value={selectedValue}
             onChange={handleChange}
+            size="small"
+            sx={{
+              border: "none",
+              "& fieldset": {
+                border: "none",
+              },
+            }}
           >
-            <option value="inch">in</option>
-            <option value="met">m</option>
-            <option value="cm">cm</option>
-          </select>
+            <MenuItem value="inch">in</MenuItem>
+            <MenuItem value="met">m</MenuItem>
+            <MenuItem value="cm">cm</MenuItem>
+          </Select>
         </div>
         <div className="flex justify-between">
           <div className="flex flex-col w-[30%] ">
             <label htmlFor="length" className="font-semibold text-gray-500">
               Length
             </label>
-            <div className="flex p-1 my-2 border-2 rounded-lg 2 flex-nowrap">
-              <input
-                onInput={handleFractionInput}
-                type="number"
-                step="0.01"
-                id="length"
-                {...register("length")}
-                className="outline-none ml-2 py-1 w-[70%]"
-              />
-              <span className="float-right py-1">{selectedValue || "in"}</span>
-            </div>
+
+            <TextField
+              id="length"
+              {...register("length")}
+              type="number"
+              onInput={handleFractionInput}
+              inputProps={{ step: "0.01" }}
+              size="small"
+              className="rounded-lg py-2"
+              slotProps={{
+                input: { endAdornment: <span>{selectedValue || "in"}</span> },
+              }}
+            ></TextField>
           </div>
+
           <div className="flex flex-col w-[30%]">
             <label htmlFor="breadth" className="font-semibold text-gray-500">
               Breadth
             </label>
-            <div className="flex p-1 my-2 border-2 rounded-lg 2 flex-nowrap">
-              <input
-                onInput={handleFractionInput}
-                type="number"
-                step="0.01"
-                id="breadth"
-                {...register("breadth")}
-                className="outline-none ml-2 py-1 w-[70%]"
-              />
-              <span className="float-right py-1">{selectedValue || "in"}</span>
-            </div>
+            <TextField
+              id="breadth"
+              {...register("breadth")}
+              type="number"
+              onInput={handleFractionInput}
+              inputProps={{ step: "0.01" }}
+              size="small"
+              className="rounded-lg py-2"
+              slotProps={{
+                input: { endAdornment: <span>{selectedValue || "in"}</span> },
+              }}
+            ></TextField>
           </div>
+
           <div className="flex flex-col w-[30%]">
             <label htmlFor="width" className="font-semibold text-gray-500">
               Width
             </label>
-            <div className="flex p-1 my-2 border-2 rounded-lg 2 flex-nowrap">
-              <input
-                onInput={handleFractionInput}
-                type="number"
-                step="0.01"
-                id="width"
-                {...register("width")}
-                className="outline-none ml-2 py-1 w-[70%]"
-              />
-              <span className="float-right py-1">{selectedValue || "in"}</span>
-            </div>
+
+            <TextField
+              id="width"
+              {...register("width")}
+              type="number"
+              onInput={handleFractionInput}
+              inputProps={{ step: "0.01" }}
+              size="small"
+              className="rounded-lg py-2"
+              slotProps={{
+                input: { endAdornment: <span>{selectedValue || "in"}</span> },
+              }}
+            ></TextField>
           </div>
         </div>
       </div>

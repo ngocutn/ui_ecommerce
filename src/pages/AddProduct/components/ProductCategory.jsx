@@ -5,6 +5,11 @@ import {
   getLevel1Categories,
 } from "../../../service/product/api";
 
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+
 const ProductCategory = () => {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
@@ -82,69 +87,66 @@ const ProductCategory = () => {
         className="flex flex-col p-4 py-2 my-3 border rounded-md 2"
       >
         <label htmlFor="categoryIds" className="font-semibold text-gray-500">
-          Product Category
+          Product Category <span className="text-red-600">*</span>
         </label>
-        <select
-          id="productCategory"
-          {...register("categoryIds")}
-          className={`border-2 2 p-2 rounded-lg my-2 font-semibold ${
-            errors.categoryIds ? "border-red-500" : "2"
-          }`}
-          value={selectedCategory}
-          onChange={handleCategoryChange}
+
+        <FormControl error={!!errors.categoryIds}>
+          <Select
+            id="productCategory"
+            {...register("categoryIds")}
+            className="rounded-lg my-2 font-semibold "
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            displayEmpty
+            size="small"
+          >
+            <MenuItem disabled value="">
+              <em>Select a category</em>
+            </MenuItem>
+            {categories.map((cate) => (
+              <MenuItem key={cate.id} value={cate.id}>
+                {cate.name}
+              </MenuItem>
+            ))}
+          </Select>
+          {errors.categoryIds && (
+            <FormHelperText className="text-[#D32F2F]">
+              <i
+                className="text-red-500 fa fa-exclamation-circle mr-1"
+                aria-hidden="true"
+              ></i>
+              {errors.categoryIds.message}
+            </FormHelperText>
+          )}
+        </FormControl>
+
+        <label
+          htmlFor="subCategoryIds"
+          className="font-semibold text-gray-500 mt-2"
         >
-          <option value="">Select a category</option>
-          {categories.map((cate) => (
-            <option key={cate.id} value={cate.id}>
-              {cate.name}
-            </option>
-          ))}
-        </select>
-        {errors?.categoryIds && (
-          <div className="flex items-center">
-            <i
-              className="text-red-500 fa fa-exclamation-circle"
-              aria-hidden="true"
-            ></i>
-
-            <p className="px-2 leading-normal text-red-500 font-nunito text-md">
-              {errors.categoryIds?.message}
-            </p>
-          </div>
-        )}
-
-        <label htmlFor="subCategoryIds" className="font-semibold text-gray-500">
           Product Subcategory
         </label>
-        <select
-          id="productSubcategory"
-          {...register("subCategoryIds")}
-          className={`border-2 2 p-2 rounded-lg my-2 font-semibold ${
-            errors.subCategoryIds ? "border-red-500" : "2"
-          }`}
-          value={selectedSubcategory}
-          onChange={handleSubcategoryChange}
-          disabled={!selectedCategory}
-        >
-          <option value="">Select a subcategory</option>
-          {subcategories.map((sub) => (
-            <option key={sub.id} value={sub.id}>
-              {sub.name}
-            </option>
-          ))}
-        </select>
-        {errors?.subCategoryIds && (
-          <div className="flex items-center">
-            <i
-              className="text-red-500 fa fa-exclamation-circle"
-              aria-hidden="true"
-            ></i>
-
-            <p className="px-2 leading-normal text-red-500 font-nunito text-md">
-              {errors.subCategoryIds?.message}
-            </p>
-          </div>
-        )}
+        <FormControl>
+          <Select
+            id="productSubcategory"
+            {...register("subCategoryIds")}
+            className="rounded-lg my-2 font-semibold "
+            displayEmpty
+            value={selectedSubcategory}
+            onChange={handleSubcategoryChange}
+            disabled={!selectedCategory}
+            size="small"
+          >
+            <MenuItem disabled value="">
+              <em>Select a subcategory</em>
+            </MenuItem>
+            {subcategories.map((sub) => (
+              <MenuItem key={sub.id} value={sub.id}>
+                {sub.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </div>
     </div>
   );

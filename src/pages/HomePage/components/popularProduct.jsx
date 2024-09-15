@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllProducts } from "../../../service/product/api";
+import { getAllProducts, getTopProducts } from "../../../service/product/api";
 import ProductCard from "../../../components/product/ProductCard";
 import { Heart } from "lucide-react";
 import HeartIcon from "../../../icon/HeartIcon";
@@ -12,7 +12,7 @@ function PopularProduct() {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const res = await getAllProducts();
+        const res = await getTopProducts();
         console.log("res", res);
         setProductData(res.data.data);
       } catch (error) {

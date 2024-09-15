@@ -66,7 +66,9 @@ const ProductImage = () => {
 
   return (
     <div>
-      <p className="text-xl font-semibold">Product Image</p>
+      <p className="text-xl font-semibold">
+        Product Image <span className="text-red-600">*</span>
+      </p>
       <div
         id="productImage"
         className="w-full h-[200px] flex items-center justify-between gap-3 my-3 px-6 border 2 py-4 rounded-md"

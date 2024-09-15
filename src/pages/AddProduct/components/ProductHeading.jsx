@@ -1,6 +1,9 @@
 import { useState } from "react";
+import PopUp from "../../../components/popUp";
+import { useNavigate } from "react-router-dom";
 
 const ProductHeading = () => {
+  const navigate = useNavigate();
   const [discardButton, setDiscardButton] = useState(false);
   const handleDiscardButton = () => {
     setDiscardButton(!discardButton);
@@ -17,6 +20,14 @@ const ProductHeading = () => {
         <p className="font-semibold text-gray-500">Back to product list</p>
         <p className="text-2xl font-bold">Add new product</p>
       </div>
+      {discardButton && (
+        <PopUp
+          title="Do you want to discard this product?"
+          rightButton="Discard"
+          onCancel={handleDiscardButton}
+          onDiscard={() => navigate("/admin")}
+        />
+      )}
     </div>
   );
 };

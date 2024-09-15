@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { set, useFormContext } from "react-hook-form";
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -14,18 +14,23 @@ const ProductDescription = () => {
     formState: { errors },
   } = useFormContext();
 
-  //   ////////////////////////////////////
-
   const [fileError, setFileError] = useState("");
 
   const handleChangeName = (event) => {
-    if (event.target.value.length > 120) {
+    const trimmedValue = event.target.value.replace(/\s\s+/g, " ");
+
+    if (trimmedValue.length < 5) {
+      setError("name", {
+        type: "manual",
+        message: "Minimum 5 characters required",
+      });
+    } else if (trimmedValue.length > 120) {
       setError("name", {
         type: "manual",
         message: "Maximum 120 characters allowed",
       });
     } else if (
-      event.target.value.length === 120 &&
+      trimmedValue.length === 120 &&
       event.key !== "Backspace" &&
       event.key !== "Delete"
     ) {
@@ -34,8 +39,8 @@ const ProductDescription = () => {
         message: "Maximum 120 characters allowed",
       });
     } else {
+      setValue("name", trimmedValue);
       clearErrors("name");
-      setValue("name", event.target.value);
     }
   };
 
@@ -117,6 +122,10 @@ const ProductDescription = () => {
 
     if (data.data === true) {
       setIsNameDuplicate(true);
+      setError("name", {
+        type: "manual",
+        message: "Product already exist",
+      });
     } else {
       setIsNameDuplicate(false);
     }
@@ -130,48 +139,32 @@ const ProductDescription = () => {
         className="flex flex-col h-[280px] my-3 p-4 border border-gray-200 py-2 rounded-md "
       >
         <label htmlFor="name" className="font-semibold text-gray-500">
-          Product Name
+          Product Name <span className="text-red-600">*</span>
         </label>
-        {/* <input
-          {...register("name", { required: true })}
-          type="text"
-          id="name"
-          maxLength={120}
-          onChange={handleChangeName}
-          onBlur={duplicateName}
-          className={`border-2 2 p-2 rounded-lg my-2 text-ellipsis ${
-            errors.name || isNameDuplicate ? "border-red-500" : "2"
-          }`}
-        /> */}
         <TextField
           {...register("name")}
-          // label="name"
           id="name"
           error={!!errors.name}
-          helperText={errors.name?.message}
+          size="small"
+          helperText={
+            errors.name && (
+              <span>
+                <i
+                  className="text-red-500 fa fa-exclamation-circle"
+                  aria-hidden="true"
+                ></i>
+                {` ${errors.name?.message}`}
+              </span>
+            )
+          }
           inputProps={{ maxLength: 120 }}
-          onChange={handleChangeName}
-          className="rounded-lg my-2 text-ellipsis"
+          onBlur={(duplicateName, handleChangeName)}
+          className="rounded-lg text-ellipsis  py-2"
         ></TextField>
-        {/* {isNameDuplicate && (
-          <p className="text-red-500">Product already exist</p>
-        )} */}
 
-        {/* {errors?.name && (
-          <div className="flex items-center">
-            <i
-              className="text-red-500 fa fa-exclamation-circle"
-              aria-hidden="true"
-            ></i>
-            <p className="px-2 leading-normal text-red-500 font-nunito text-md">
-              {errors.name?.message}
-            </p>
-          </div>
-        )} */}
-
-        <div className="flex justify-between">
+        <div className="flex justify-between mt-2">
           <label htmlFor="description" className="font-semibold text-gray-500">
-            Business description
+            Business description <span className="text-red-600">*</span>
           </label>
 
           <label htmlFor="textFile" className="text-blue-400 cursor-pointer">

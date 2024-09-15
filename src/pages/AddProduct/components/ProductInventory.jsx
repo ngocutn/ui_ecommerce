@@ -1,4 +1,5 @@
 import { useFormContext } from "react-hook-form";
+import TextField from "@mui/material/TextField";
 
 const ProductIventory = () => {
   const {
@@ -17,45 +18,48 @@ const ProductIventory = () => {
             htmlFor="quantityAvailable"
             className="font-semibold text-gray-500"
           >
-            Quantity
+            Quantity <span className="text-red-600">*</span>
           </label>
-          <input
+
+          <TextField
+            id="quantityAvailable"
+            {...register("quantityAvailable")}
             type="number"
-            step="1"
+            inputProps={{ step: "1" }}
             onKeyDown={(e) => {
               if (e.key === "." || e.key === "-" || e.key === ",") {
                 e.preventDefault();
               }
             }}
-            id="quantityAvailable"
-            {...register("quantityAvailable")}
-            className={`border-2 2 p-2 rounded-lg my-2 ${
-              errors.quantityAvailable ? "border-red-500" : "2"
-            }`}
-          />
-          {errors?.quantityAvailable && (
-            <div className="flex items-center">
-              <i
-                className="text-red-500 fa fa-exclamation-circle"
-                aria-hidden="true"
-              ></i>
-
-              <p className="px-2 leading-normal text-red-500 font-nunito text-md">
-                {errors.quantityAvailable?.message}
-              </p>
-            </div>
-          )}
+            error={!!errors.quantityAvailable}
+            helperText={
+              errors.quantityAvailable && (
+                <span>
+                  <i
+                    className="text-red-500 fa fa-exclamation-circle"
+                    aria-hidden="true"
+                  ></i>
+                  {` ${errors.quantityAvailable?.message}`}
+                </span>
+              )
+            }
+            className="rounded-lg py-2"
+            size="small"
+          ></TextField>
         </div>
+
         <div className="flex flex-col w-2/3">
           <label htmlFor="SKU" className="font-semibold text-gray-500">
             SKU (Optional)
           </label>
-          <input
+
+          <TextField
             type="text"
             id="SKU"
             {...register("SKU")}
-            className="p-2 my-2 border-2 rounded-lg 2"
-          />
+            className="rounded-lg py-2"
+            size="small"
+          ></TextField>
         </div>
       </div>
     </div>

@@ -35,3 +35,9 @@ export const postProduct = (body) => {
 export const getAllProducts = () => {
   return axios.get("https://neo4j-ecommerce.onrender.com/api/v1/products");
 };
+
+export const getTopProducts = () => {
+  return axios.get(
+    `https://neo4j-ecommerce.onrender.com/api/v1/products/top-selling`
+  );
+};

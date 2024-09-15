@@ -7,10 +7,12 @@ const ProductCard = ({ product, children }) => {
   const {
     id,
     name,
+    brandName,
     quantityAvailable,
     primaryImage,
     sellingPrice,
-    categories,
+    discountedPrice,
+    rating,
   } = product;
 
   const navigate = useNavigate();
@@ -37,25 +39,25 @@ const ProductCard = ({ product, children }) => {
         <p className="font-bold text-nowrap  text-ellipsis overflow-hidden">
           {name}
         </p>
-        <p className="text-gray-500 text-lg mb-[8px] text-ellipsis text-nowrap overflow-hidden">
-          {name}
+        <p className="text-gray-500 text-base mb-[8px] text-ellipsis text-nowrap overflow-hidden">
+          {brandName}
         </p>
         <div className="flex items-center gap-2">
           <div className="w-3/4 ">
             <div className="flex gap-2 items-center text-[13px] font-bold">
               <div className="flex items-end justify-center gap-x-2">
                 <StartFillIcon fill={"#f59d60"} size={24}></StartFillIcon>
-                <span className="pr-2 text-base border-r-2">
-                  {quantityAvailable}
-                </span>
+                <span className="pr-2 text-base border-r-2">{rating}</span>
               </div>
               <span className="px-3 py-1 text-sm font-medium bg-gray-200 rounded-md">
                 {quantityAvailable} Sold
               </span>
             </div>
             <div className="flex gap-4 mt-2">
-              <p className="text-gray-500 line-through">$ {sellingPrice}</p>
-              <p className="font-bold">$ {sellingPrice}</p>
+              {sellingPrice && (
+                <p className="text-gray-500 line-through">$ {sellingPrice}</p>
+              )}
+              <p className="font-bold">$ {discountedPrice}</p>
             </div>
           </div>
           <button className="flex items-center justify-center w-10 h-10 p-1 ml-auto bg-black rounded-full hover:scale-110">

@@ -15,7 +15,13 @@ import ProductHeading from "./components/ProductHeading";
 import ProductBtn from "./components/ProductButton";
 
 const AddProdcutProvider = () => {
-  const methods = useForm({ mode: "all", resolver: yupResolver(schema) });
+  const methods = useForm({
+    mode: "all",
+    resolver: yupResolver(schema),
+    defaultValues: {
+      sellingType: "STORE",
+    },
+  });
 
   const [loading, setLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -68,6 +74,7 @@ const AddProdcutProvider = () => {
 
     if (res.status === 201) {
       alert(res.data.message);
+      navigate("/admin");
     } else {
       alert(res.response.data.message);
     }

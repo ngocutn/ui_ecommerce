@@ -1,6 +1,17 @@
 import { useFormContext } from "react-hook-form";
+import TextField from "@mui/material/TextField";
+import { InputAdornment } from "@mui/material";
+import { useEffect } from "react";
 
 const ProductPricing = () => {
+  const {
+    register,
+    formState: { errors },
+    setError,
+    clearErrors,
+    getValues,
+  } = useFormContext();
+
   const handleFractionInput = (e) => {
     const value = e.target.value;
     const floatValue = parseFloat(value);
@@ -13,10 +24,44 @@ const ProductPricing = () => {
       e.target.value = floatValue.toFixed(2);
     }
   };
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+
+  const validatePrices = () => {
+    const { originalPrice, discountedPrice, sellingPrice } = getValues();
+
+    if (!originalPrice || !sellingPrice) {
+      if (!originalPrice) {
+        setError("originalPrice", { message: "MSRP Price is required" });
+      }
+      if (!sellingPrice) {
+        setError("sellingPrice", { message: "Price is required" });
+      }
+      return;
+    }
+
+    if (discountedPrice) {
+      if (Number(originalPrice) >= Number(discountedPrice)) {
+        setError("originalPrice", {
+          message: "MSRP Price must be less than Sale Price",
+        });
+      } else if (Number(discountedPrice) >= Number(sellingPrice)) {
+        setError("discountedPrice", {
+          message: "Sale Price must be less than Price",
+        });
+      } else if (Number(originalPrice) >= Number(sellingPrice)) {
+        setError("originalPrice", {
+          message: "MRSP Price must be less than Price",
+        });
+      } else {
+        clearErrors(["originalPrice", "discountedPrice", "sellingPrice"]);
+      }
+    } else {
+      if (Number(originalPrice) >= Number(sellingPrice)) {
+        setError("originalPrice", { message: "MSRP must be less than Price" });
+      } else {
+        clearErrors(["originalPrice", "sellingPrice"]);
+      }
+    }
+  };
 
   return (
     <div>
@@ -31,39 +76,48 @@ const ProductPricing = () => {
               htmlFor="originalPrice"
               className="font-semibold text-gray-500"
             >
-              MSRP Price
+              MSRP Price <span className="text-red-600">*</span>
             </label>
 
-            <div
-              className={`border-2 2 p-1 rounded-lg my-2 flex items-center  ${
-                errors.originalPrice ? "border-red-500" : "2"
-              }`}
-            >
-              <i
-                className="px-3 py-2 bg-gray-200 rounded-sm fa fa-usd"
-                aria-hidden="true"
-              ></i>
-              <input
-                onInput={handleFractionInput}
-                type="number"
-                step="0.01"
-                id="originalPrice"
-                {...register("originalPrice")}
-                className="outline-none ml-2 w-[80%]"
-              />
-            </div>
-            {errors?.originalPrice && (
-              <div className="flex items-center">
-                <i
-                  className="text-red-500 fa fa-exclamation-circle"
-                  aria-hidden="true"
-                ></i>
-
-                <p className="px-2 leading-normal text-red-500 font-nunito text-md">
-                  {errors.originalPrice?.message}
-                </p>
-              </div>
-            )}
+            <TextField
+              id="originalPrice"
+              {...register("originalPrice")}
+              type="number"
+              size="small"
+              onInput={handleFractionInput}
+              onBlur={validatePrices}
+              inputProps={{ step: "0.01" }}
+              className="rounded-lg py-2"
+              sx={{
+                "& .MuiInputBase-root": {
+                  paddingLeft: "6px",
+                },
+              }}
+              error={!!errors.originalPrice}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <i
+                        className="px-3 py-2 text-black bg-gray-200 rounded-sm fa fa-usd"
+                        aria-hidden="true"
+                      ></i>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              helperText={
+                errors.originalPrice && (
+                  <span>
+                    <i
+                      className="text-red-500 fa fa-exclamation-circle"
+                      aria-hidden="true"
+                    ></i>
+                    {` ${errors.originalPrice?.message}`}
+                  </span>
+                )
+              }
+            ></TextField>
           </div>
           <div className="flex flex-col w-1/2 ">
             <label
@@ -72,71 +126,91 @@ const ProductPricing = () => {
             >
               Sale Price
             </label>
-            <div
-              className={`border-2 2 p-1 rounded-lg my-2 flex items-center  ${
-                errors.discountedPrice ? "border-red-500" : "2"
-              }`}
-            >
-              <i
-                className="px-3 py-2 bg-gray-200 rounded-sm fa fa-usd"
-                aria-hidden="true"
-              ></i>
-              <input
-                onInput={handleFractionInput}
-                type="number"
-                step="0.01"
-                id="discountedPrice"
-                {...register("discountedPrice")}
-                className="outline-none ml-2 w-[80%]"
-              />
-            </div>
-            {errors?.discountedPrice && (
-              <div className="flex items-center">
+            <TextField
+              id="discountedPrice"
+              {...register("discountedPrice")}
+              type="number"
+              size="small"
+              onInput={handleFractionInput}
+              onBlur={validatePrices}
+              inputProps={{ step: "0.01" }}
+              className="rounded-lg py-2"
+              sx={{
+                "& .MuiInputBase-root": {
+                  paddingLeft: "6px",
+                },
+              }}
+              error={!!errors.discountedPrice}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <i
+                        className="px-3 py-2 text-black bg-gray-200 rounded-sm fa fa-usd"
+                        aria-hidden="true"
+                      ></i>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              helperText={
+                errors.discountedPrice && (
+                  <span>
+                    <i
+                      className="text-red-500 fa fa-exclamation-circle"
+                      aria-hidden="true"
+                    ></i>
+                    {` ${errors.discountedPrice?.message}`}
+                  </span>
+                )
+              }
+            ></TextField>
+          </div>
+        </div>
+
+        <label htmlFor="sellingPrice" className="font-semibold text-gray-500">
+          Price <span className="text-red-600">*</span>
+        </label>
+
+        <TextField
+          id="sellingPrice"
+          type="number"
+          {...register("sellingPrice")}
+          size="small"
+          onInput={handleFractionInput}
+          onBlur={validatePrices}
+          inputProps={{ step: "0.01" }}
+          className="rounded-lg py-2"
+          sx={{
+            "& .MuiInputBase-root": {
+              paddingLeft: "6px",
+            },
+          }}
+          error={!!errors.sellingPrice}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <i
+                    className="px-3 py-2 text-black bg-gray-200 rounded-sm fa fa-usd"
+                    aria-hidden="true"
+                  ></i>
+                </InputAdornment>
+              ),
+            },
+          }}
+          helperText={
+            errors.sellingPrice && (
+              <span>
                 <i
                   className="text-red-500 fa fa-exclamation-circle"
                   aria-hidden="true"
                 ></i>
-
-                <p className="px-2 leading-normal text-red-500 font-nunito text-md">
-                  {errors.discountedPrice?.message}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-        <label htmlFor="sellingPrice" className="font-semibold text-gray-500">
-          Price
-        </label>
-        <div
-          className={`border-2 2 p-1 rounded-lg my-2 flex items-center  ${
-            errors.sellingPrice ? "border-red-500" : "2"
-          }`}
-        >
-          <i
-            className="px-3 py-2 bg-gray-200 rounded-sm fa fa-usd"
-            aria-hidden="true"
-          ></i>
-          <input
-            onInput={handleFractionInput}
-            type="number"
-            step="0.01"
-            id="sellingPrice"
-            {...register("sellingPrice")}
-            className="outline-none ml-2 w-[90%]"
-          />
-        </div>
-        {errors?.sellingPrice && (
-          <div className="flex items-center">
-            <i
-              className="text-red-500 fa fa-exclamation-circle"
-              aria-hidden="true"
-            ></i>
-
-            <p className="px-2 leading-normal text-red-500 font-nunito text-md">
-              {errors.sellingPrice?.message}
-            </p>
-          </div>
-        )}
+                {` ${errors.sellingPrice?.message}`}
+              </span>
+            )
+          }
+        ></TextField>
       </div>
     </div>
   );
