@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
-import { getAllProducts } from "../../../service/product/api";
+import { getAllProducts, getTopProducts } from "../../../service/product/api";
 import ProductCard from "../../../components/product/ProductCard";
+import { Heart } from "lucide-react";
+import HeartIcon from "../../../icon/HeartIcon";
 
 function PopularProduct() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [productData, setProductData] = useState([]);
+  const [isLike, setIsLike] = useState(false);
 
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const res = await getAllProducts();
+        const res = await getTopProducts();
         console.log("res", res);
         setProductData(res.data.data);
       } catch (error) {
@@ -26,13 +29,13 @@ function PopularProduct() {
 
   const prevImg = () => {
     const firstImg = currentIndex === 0;
-    const newImg = firstImg ? productData.length - 1 : currentIndex - 1;
+    const newImg = firstImg ? productData.length / 4 - 1 : currentIndex - 1;
     setCurrentIndex(newImg);
   };
   console.log(currentIndex);
 
   const nextImg = () => {
-    const lastImg = currentIndex === productData.length - 1;
+    const lastImg = currentIndex === productData.length / 4 - 1;
     const newImg = lastImg ? 0 : currentIndex + 1;
     setCurrentIndex(newImg);
   };
@@ -59,7 +62,14 @@ function PopularProduct() {
 
       <div id="product" className="flex justify-start w-full h-auto gap-9 mt-5">
         {currentProducts.map((item) => (
-          <ProductCard product={item}></ProductCard>
+          <ProductCard product={item}>
+            <div
+              className={`absolute top-1 left-1 p-3 rounded-full cursor-pointer bg-white`}
+              onClick={() => setIsLike(!isLike)}
+            >
+              {isLike ? <HeartIcon /> : <Heart />}
+            </div>
+          </ProductCard>
         ))}
       </div>
     </div>
