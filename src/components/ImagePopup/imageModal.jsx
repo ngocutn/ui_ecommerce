@@ -79,7 +79,7 @@ const ImageModal = ({ files, images, onClose, onSelect }) => {
     <div className="w-full fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
       <div className="w-3/4 h-1/2 bg-white p-6 rounded-lg relative">
         <h2 className="text-xl font-bold mb-4">Product Image</h2>
-        <div className="w-full flex flex-col lg:flex-row gap-4">
+        <div className="w-full flex flex-col desktop-up:flex-row gap-4">
           {selectedImage && (
             <div className="flex-1 flex justify-center items-center">
               <img
@@ -89,7 +89,7 @@ const ImageModal = ({ files, images, onClose, onSelect }) => {
               />
             </div>
           )}
-          <div className="w-full lg:w-1/2 grid grid-cols-5 gap-2">
+          <div className="w-full desktop-up:w-1/2 grid grid-cols-5 gap-2">
             {imageList.map((image, index) => (
               <div key={index} className="w-24 h-24 relative">
                 <img

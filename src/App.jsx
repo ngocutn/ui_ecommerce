@@ -7,6 +7,9 @@ import ListProduct from "./pages/listProduct";
 import MainProductPage from "./pages/mainProductPage";
 import MainLayout from "./pages/mainLayout";
 import ProductDetails from "./pages/ProductDetail/ProductDetails";
+// import NewProduct from "./pages/AddProduct/NewProduct";
+import AddProductProvider from "./pages/AddProduct/AddProductProvider";
+import NewProduct from "./pages/AddProduct/NewProduct";
 
 function App() {
   const router = createBrowserRouter([
@@ -20,6 +23,10 @@ function App() {
         },
         {
           path: "add-product",
+          element: <AddProductProvider />,
+        },
+        {
+          path: "new-product",
           element: <AddProduct />,
         },
       ],
@@ -33,14 +40,14 @@ function App() {
           element: <HomePage />,
         },
         {
-          path: "/product/:id",
+          path: "/products/:id",
           element: <ProductDetails />,
         },
       ],
     },
     {
-      path: "image",
-      element: <Text />,
+      path: "test",
+      element: <AddProductProvider />,
     },
     // {
     //   path: "add-product",

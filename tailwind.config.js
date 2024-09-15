@@ -38,7 +38,7 @@ export default {
         sans: ["Geologica", "sans-serif"],
       },
       boxShadow: {
-        card: "6px 6px 8px 2px rgba(0,0,0,0.75);",
+        card: "0 0 11px rgba(33,33,33,.2)",
       },
       colors: {
         // primary: "#F73F5D",
@@ -52,8 +52,8 @@ export default {
       },
       keyframes: {
         slideInRight: {
-          "0%": { transform: "translateX(100%)", Opacity: "0" },
-          "100%": { transform: "translateX(0%)", Opacity: "1" },
+          "0%": { transform: "translateX(100%)", opacity: "0" },
+          "100%": { transform: "translateX(0)", opacity: "1" },
         },
         slideOut: {
           "0%": { transform: "translateX(0)", opacity: "1" },
@@ -61,7 +61,7 @@ export default {
         },
       },
       animation: {
-        slideInRight: "slideInRight 0.5s linear",
+        slideInRight: "slideInRight 0.3s linear",
         slideOut: "slideOut 0.5s ease-in",
       },
     },

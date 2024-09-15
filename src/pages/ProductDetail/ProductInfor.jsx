@@ -1,156 +1,192 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Heart, Star } from "lucide-react";
 import DropList from "../../components/DropList";
 import { Button } from "@mui/material";
 import { useState } from "react";
 import HeartIcon from "../../icon/HeartIcon";
 import StartFillIcon from "../../icon/StartFillIcon";
-import ReviewsModal from "../Review/ReviewsModal";
 
-const colors = [
-  {
-    id: 1,
-    color: "d9d9d9",
-    active: true,
-  },
-  {
-    id: 2,
-    color: "5156e5",
-    active: false,
-  },
-  {
-    id: 3,
-    color: "e6696a",
-    active: false,
-  },
-  {
-    id: 4,
-    color: "767d89",
-    active: false,
-  },
-];
-
-const Rams = [
-  {
-    id: 1,
-    ram: "4",
-  },
-  {
-    id: 2,
-    ram: "8",
-  },
-  {
-    id: 3,
-    ram: "16",
-  },
-  {
-    id: 4,
-    ram: "32",
-  },
-];
-
-const Stograges = [
-  {
-    id: 1,
-    store: "32",
-  },
-  {
-    id: 2,
-    store: "64",
-  },
-  {
-    id: 3,
-    store: "128",
-  },
-  {
-    id: 4,
-    store: "256",
-  },
-];
-
-const ProductInfor = ({ setIsShow, isShow }) => {
+const ProductInfor = ({ setIsShow, isShow, product, onVariantChange }) => {
   const [isLike, setIsLike] = useState(false);
   const [ram, setRam] = useState();
   const [store, setStore] = useState();
   const [color, setColor] = useState();
+  const [selectVariant, setSelectVarient] = useState();
+
+  const {
+    name,
+    sellingPrice,
+    brandName,
+    discountedPrice,
+    options,
+    productDimension,
+    rating,
+    productVariants,
+  } = product;
+
+  const findProductVariant = () => {
+    return productVariants.find((variant) => {
+      const colorMatch = variant.variantOptions.some(
+        (option) => option.productType === "COLOR" && option.valueName === color
+      );
+      const ramMatch = variant.variantOptions.some(
+        (option) => option.productType === "RAM" && option.valueName === ram
+      );
+      const storageMatch = variant.variantOptions.some(
+        (option) =>
+          option.productType === "STORAGE" && option.valueName === store
+      );
+
+      return colorMatch, ramMatch, storageMatch;
+    });
+  };
+
+  useEffect(() => {
+    if (options.RAM && options.RAM.length > 0 && !ram) {
+      setRam(options.RAM[0]);
+    }
+
+    if (options.STORAGE && options.STORAGE.length > 0 && !store) {
+      setStore(options.STORAGE[0]);
+    }
+  }, [ram]);
+
+  useEffect(() => {
+    if (color && ram && store) {
+      const variant = findProductVariant();
+      setSelectVarient(variant);
+      onVariantChange(variant.images);
+    }
+  }, [color, ram, store]);
+
+  console.log(selectVariant);
+
   return (
     <div className="flex-1 h-[70vh] overflow-y-scroll scrollbar-hide scroll-smooth px-2">
       <div className="flex items-start justify-between">
-        <h1 className="text-2xl font-bold w-[80%]">
-          Flamenco Frilled & High Waisted
-        </h1>
-        <span className="text-xl font-bold line-through">$155</span>
+        <h1 className="text-2xl font-bold w-[80%]">{name}</h1>
+        <span
+          className={`text-xl font-bold line-through ${
+            discountedPrice ? "" : "line-through"
+          }`}
+        >
+          ${selectVariant ? selectVariant.sellingPrice : sellingPrice}
+        </span>
       </div>
 
       <div className="flex items-start justify-between mt-1">
-        <h1 className="text-xl font-bold w-[70%] text-gray-500">Bikini</h1>
-        <span className="text-2xl font-bold text-red-500">$130</span>
+        <h1 className="text-xl font-bold w-[70%] text-gray-500">{brandName}</h1>
+        <span className="text-2xl font-bold text-red-500">
+          ${selectVariant ? selectVariant.discountedPrice : discountedPrice}
+        </span>
       </div>
 
       <div className="mt-2">
         <p className="text-base">
-          color: <span className="font-bold">Titanium Yellow</span>
+          color: <span className="font-bold">{color}</span>
         </p>
         <div className="flex items-center mt-2 gap-x-4">
-          <div className={`size-[50px] rounded-xl border bg-[#d9d9d9]`}></div>
-          <div className={`size-[50px] rounded-xl border bg-[#d9d9d9]`}></div>
-          <div className={`size-[50px] rounded-xl border bg-[#d9d9d9]`}></div>
-          <div className={`size-[50px] rounded-xl border bg-[#d9d9d9]`}></div>
+          {options.COLOR.map((item) => (
+            <div
+              key={item} // Nên thêm key để tránh cảnh báo React
+              className={`size-[50px] rounded-xl cursor-pointer ${
+                color === item ? "active" : ""
+              }`}
+              style={{ backgroundColor: item }} // Sử dụng inline style để áp dụng màu động
+              onClick={() => setColor(item)}
+            ></div>
+          ))}
         </div>
       </div>
 
       <div className="mt-6">
         <p className="text-base">
-          RAM: <span className="font-bold">{ram ? ram + "GB" : ""}</span>
+          RAM: <span className="font-bold">{ram ? ram : ""}</span>
         </p>
 
         <div className="flex items-center gap-x-5">
-          {Rams.map((item) => (
+          {options.RAM.map((item) => (
             <div
-              key={item.id}
+              key={item}
               className={`bg-white px-5 py-2 text-sm rounded-lg mt-2 font-[300] select-none cursor-pointer ${
-                ram === item.ram ? "active" : ""
+                ram === item ? "active" : ""
               }`}
-              onClick={() => setRam(item.ram)}
+              onClick={() => setRam(item)}
             >
-              <p>{item.ram}GB</p>
+              <p>{item}</p>
             </div>
           ))}
         </div>
       </div>
       <div className="mt-6">
         <p className="text-base">
-          Stograge:{" "}
-          <span className="font-bold">{store ? store + "GB" : ""}</span>
+          Stograge: <span className="font-bold">{store ? store : ""}</span>
         </p>
 
         <div className="flex items-center gap-x-3">
-          {Stograges.map((item) => (
+          {options.STORAGE.map((item) => (
             <div
-              key={item.id}
+              key={item}
               className={`bg-white px-5 py-2 text-sm rounded-lg mt-2 font-[300] select-none cursor-pointer ${
-                store === item.store ? "active" : ""
+                store === item ? "active" : ""
               }`}
-              onClick={() => setStore(item.store)}
+              onClick={() => setStore(item)}
             >
-              <p>{item.store}GB</p>
+              <p>{item}</p>
             </div>
           ))}
         </div>
       </div>
 
       <div className="mt-8">
-        <DropList>
-          <li className="flex items-center py-3 border-b border-gray-300 gap-x-3 first:pt-0 last:border-b-0">
-            <span className="text-base font-semibold">Display</span>
-            <span>data</span>
+        <DropList title={"Dimension"}>
+          <li className="flex items-center justify-between py-3 border-b border-gray-300 gap-x-3 first:pt-0 last:border-b-0">
+            <span className="text-base font-semibold">Breadth</span>
+            <span>{productDimension.breadth}</span>
           </li>
           <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
-            <span className="text-base font-semibold">Display</span>
-            <span>data</span>
+            <span className="text-base font-semibold">Length</span>
+            <span>{productDimension.length}</span>
+          </li>
+          <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
+            <span className="text-base font-semibold">Weight</span>
+            <span>{productDimension.weight}</span>
+          </li>
+          <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
+            <span className="text-base font-semibold">Width</span>
+            <span>{productDimension.width}</span>
+          </li>
+          <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
+            <span className="text-base font-semibold">Package Unit</span>
+            <span>
+              {productDimension.packageUnit
+                ? productDimension.packageUnit
+                : "0"}
+            </span>
+          </li>
+          <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
+            <span className="text-base font-semibold">Unit Weight</span>
+            <span>
+              {productDimension.unitWeight ? productDimension.unitWeight : "0"}
+            </span>
           </li>
         </DropList>
       </div>
+
+      {selectVariant && selectVariant.hasSpecification ? (
+        <div className="mt-4">
+          <DropList title={"Specification"}>
+            {selectVariant.productSpecifications.specificationOptions.map(
+              (item) => (
+                <li className="flex items-center justify-between py-3 border-b border-gray-300 gap-x-3 first:pt-0 last:border-b-0">
+                  <span className="text-base font-semibold">{item.name}</span>
+                  <span>{item.value}</span>
+                </li>
+              )
+            )}
+          </DropList>
+        </div>
+      ) : null}
 
       <div className="p-4 mt-6 bg-white rounded-lg shadow-lg">
         <div className="flex items-center justify-between font-bold">
@@ -166,7 +202,7 @@ const ProductInfor = ({ setIsShow, isShow }) => {
         <div className="flex items-center justify-between mt-4 text-textSecondary">
           <span className="font-bold select-none">Overall rating</span>
           <div className="flex items-center gap-x-2">
-            <span className="text-base font-bold select-none">4.9</span>
+            <span className="text-base font-bold select-none">{rating}</span>
             <StartFillIcon fill={"#f9619b"}></StartFillIcon>
           </div>
         </div>
