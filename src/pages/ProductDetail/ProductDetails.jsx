@@ -12,11 +12,16 @@ const ProductDetails = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [productData, setProductData] = useState([]);
   const { isShow, setIsShow } = useOutletContext();
+  const [Images, setImages] = useState([]);
 
   const dispatch = useDispatch();
   const { message, isLoading, product, error } = useSelector(
     (state) => state.product
   );
+
+  const handleVariantChange = (variantImages) => {
+    setImages(variantImages);
+  };
 
   const productId = useParams();
   console.log(productId.id);
@@ -36,6 +41,12 @@ const ProductDetails = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (product?.data?.images) {
+      setImages(product.data.images);
+    }
+  }, [product]);
+
   //get all products
   useEffect(() => {
     const getProducts = async () => {
@@ -50,12 +61,15 @@ const ProductDetails = () => {
     getProducts();
   }, []);
 
-  console.log("product", product);
+  console.log("product", product.images);
+  console.log(Images);
 
   return (
     <div>
       <div className="flex items-start pt-[140px] gap-x-7 relative">
-        <ImageSlide></ImageSlide>
+        <ImageSlide
+          images={Images ? Images : product?.data?.images}
+        ></ImageSlide>
         {isLoading ? (
           <div>Loading...</div>
         ) : error ? (
@@ -65,6 +79,7 @@ const ProductDetails = () => {
             product={product.data}
             setIsShow={setIsShow}
             isShow={isShow}
+            onVariantChange={handleVariantChange}
           />
         ) : (
           <div>No product data</div> // Nếu không có dữ liệu
