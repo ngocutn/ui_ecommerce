@@ -37,7 +37,7 @@ const ProductInfor = ({ setIsShow, isShow, product, onVariantChange }) => {
           option.productType === "STORAGE" && option.valueName === store
       );
 
-      return colorMatch, ramMatch, storageMatch;
+      return colorMatch && ramMatch && storageMatch;
     });
   };
 
@@ -55,14 +55,14 @@ const ProductInfor = ({ setIsShow, isShow, product, onVariantChange }) => {
     if (color && ram && store) {
       const variant = findProductVariant();
       setSelectVarient(variant);
-      onVariantChange(variant.images);
+      onVariantChange(variant?.images);
     }
   }, [color, ram, store]);
 
   console.log(selectVariant);
 
   return (
-    <div className="flex-1 h-[70vh] overflow-y-scroll scrollbar-hide scroll-smooth px-2">
+    <div className="flex-1 max-w-[1/3] h-[70vh] overflow-y-scroll scrollbar-hide scroll-smooth px-2">
       <div className="flex items-start justify-between">
         <h1 className="text-2xl font-bold w-[80%]">{name}</h1>
         <span
@@ -76,27 +76,34 @@ const ProductInfor = ({ setIsShow, isShow, product, onVariantChange }) => {
 
       <div className="flex items-start justify-between mt-1">
         <h1 className="text-xl font-bold w-[70%] text-gray-500">{brandName}</h1>
-        <span className="text-2xl font-bold text-red-500">
-          ${selectVariant ? selectVariant.discountedPrice : discountedPrice}
-        </span>
+        {selectVariant && selectVariant.discountPrice !== null && (
+          <span className="text-2xl font-bold text-red-500">
+            $
+            {selectVariant && selectVariant.discountPrice !== null
+              ? selectVariant.discountPrice
+              : discountedPrice}
+          </span>
+        )}
       </div>
 
-      <div className="mt-2">
+      <div className="w-full mt-2">
         <p className="text-base">
           color: <span className="font-bold">{color}</span>
         </p>
-        <div className="flex items-center mt-2 gap-x-4">
-          {options.COLOR.map((item) => (
-            <div
-              key={item} // Nên thêm key để tránh cảnh báo React
-              className={`size-[50px] rounded-xl cursor-pointer ${
-                color === item ? "active" : ""
-              }`}
-              style={{ backgroundColor: item }} // Sử dụng inline style để áp dụng màu động
-              onClick={() => setColor(item)}
-            ></div>
-          ))}
-        </div>
+        {options.COLOR && (
+          <div className="flex flex-wrap items-center mt-2 gap-y-2 gap-x-4">
+            {options?.COLOR?.map((item) => (
+              <div
+                key={item} // Nên thêm key để tránh cảnh báo React
+                className={`size-[50px] rounded-xl cursor-pointer ${
+                  color === item ? "active" : ""
+                }`}
+                style={{ backgroundColor: item }} // Sử dụng inline style để áp dụng màu động
+                onClick={() => setColor(item)}
+              ></div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="mt-6">
@@ -104,73 +111,81 @@ const ProductInfor = ({ setIsShow, isShow, product, onVariantChange }) => {
           RAM: <span className="font-bold">{ram ? ram : ""}</span>
         </p>
 
-        <div className="flex items-center gap-x-5">
-          {options.RAM.map((item) => (
-            <div
-              key={item}
-              className={`bg-white px-5 py-2 text-sm rounded-lg mt-2 font-[300] select-none cursor-pointer ${
-                ram === item ? "active" : ""
-              }`}
-              onClick={() => setRam(item)}
-            >
-              <p>{item}</p>
-            </div>
-          ))}
-        </div>
+        {options.RAM && (
+          <div className="flex flex-wrap items-center w-full gap-x-5">
+            {options.RAM.map((item) => (
+              <div
+                key={item}
+                className={`bg-white px-5 py-2 text-sm rounded-lg mt-2 font-[300] select-none cursor-pointer ${
+                  ram === item ? "active" : ""
+                }`}
+                onClick={() => setRam(item)}
+              >
+                <p>{item}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div className="mt-6">
         <p className="text-base">
           Stograge: <span className="font-bold">{store ? store : ""}</span>
         </p>
 
-        <div className="flex items-center gap-x-3">
-          {options.STORAGE.map((item) => (
-            <div
-              key={item}
-              className={`bg-white px-5 py-2 text-sm rounded-lg mt-2 font-[300] select-none cursor-pointer ${
-                store === item ? "active" : ""
-              }`}
-              onClick={() => setStore(item)}
-            >
-              <p>{item}</p>
-            </div>
-          ))}
-        </div>
+        {options.STORAGE && (
+          <div className="flex flex-wrap items-center w-full gap-x-3">
+            {options.STORAGE.map((item) => (
+              <div
+                key={item}
+                className={`bg-white px-5 py-2 text-sm rounded-lg mt-2 font-[300] select-none cursor-pointer ${
+                  store === item ? "active" : ""
+                }`}
+                onClick={() => setStore(item)}
+              >
+                <p>{item}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="mt-8">
-        <DropList title={"Dimension"}>
-          <li className="flex items-center justify-between py-3 border-b border-gray-300 gap-x-3 first:pt-0 last:border-b-0">
-            <span className="text-base font-semibold">Breadth</span>
-            <span>{productDimension.breadth}</span>
-          </li>
-          <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
-            <span className="text-base font-semibold">Length</span>
-            <span>{productDimension.length}</span>
-          </li>
-          <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
-            <span className="text-base font-semibold">Weight</span>
-            <span>{productDimension.weight}</span>
-          </li>
-          <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
-            <span className="text-base font-semibold">Width</span>
-            <span>{productDimension.width}</span>
-          </li>
-          <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
-            <span className="text-base font-semibold">Package Unit</span>
-            <span>
-              {productDimension.packageUnit
-                ? productDimension.packageUnit
-                : "0"}
-            </span>
-          </li>
-          <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
-            <span className="text-base font-semibold">Unit Weight</span>
-            <span>
-              {productDimension.unitWeight ? productDimension.unitWeight : "0"}
-            </span>
-          </li>
-        </DropList>
+        {productDimension && (
+          <DropList title={"Dimension"}>
+            <li className="flex items-center justify-between py-3 border-b border-gray-300 gap-x-3 first:pt-0 last:border-b-0">
+              <span className="text-base font-semibold">Breadth</span>
+              <span>{productDimension.breadth}</span>
+            </li>
+            <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
+              <span className="text-base font-semibold">Length</span>
+              <span>{productDimension.length}</span>
+            </li>
+            <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
+              <span className="text-base font-semibold">Weight</span>
+              <span>{productDimension.weight}</span>
+            </li>
+            <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
+              <span className="text-base font-semibold">Width</span>
+              <span>{productDimension.width}</span>
+            </li>
+            <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
+              <span className="text-base font-semibold">Package Unit</span>
+              <span>
+                {productDimension.packageUnit
+                  ? productDimension.packageUnit
+                  : "0"}
+              </span>
+            </li>
+            <li className="flex items-center justify-between py-3 border-b border-gray-300 first:pt-0 last:border-b-0">
+              <span className="text-base font-semibold">Unit Weight</span>
+              <span>
+                {productDimension.unitWeight
+                  ? productDimension.unitWeight
+                  : "0"}
+              </span>
+            </li>
+          </DropList>
+        )}
       </div>
 
       {selectVariant && selectVariant.hasSpecification ? (
@@ -179,8 +194,8 @@ const ProductInfor = ({ setIsShow, isShow, product, onVariantChange }) => {
             {selectVariant.productSpecifications.specificationOptions.map(
               (item) => (
                 <li className="flex items-center justify-between py-3 border-b border-gray-300 gap-x-3 first:pt-0 last:border-b-0">
-                  <span className="text-base font-semibold">{item.name}</span>
-                  <span>{item.value}</span>
+                  <span className="text-base font-nomal">{item.name}</span>
+                  <span className="text-sm">{item.value}</span>
                 </li>
               )
             )}
@@ -202,7 +217,9 @@ const ProductInfor = ({ setIsShow, isShow, product, onVariantChange }) => {
         <div className="flex items-center justify-between mt-4 text-textSecondary">
           <span className="font-bold select-none">Overall rating</span>
           <div className="flex items-center gap-x-2">
-            <span className="text-base font-bold select-none">{rating}</span>
+            <span className="text-base font-bold select-none">
+              {selectVariant ? selectVariant.avgRating : rating}
+            </span>
             <StartFillIcon fill={"#f9619b"}></StartFillIcon>
           </div>
         </div>
