@@ -11,7 +11,7 @@ const ReviewsModal = ({ setIsShow, isShow }) => {
 
   return (
     <div
-      className={`bg-[#efeeeb] fixed p-5 rounded-lg overflow-hidden top-0 right-0 z-20 mr-5 w-1/3 h-auto my-8 ${
+      className={`bg-[#efeeeb] fixed p-5 rounded-lg overflow-hidden top-0 right-0 z-20 mr-5 sm:w-[90%] h-auto my-8 ${
         isShow ? "animate-slideInRight" : "animate-slideOut"
       }`}
     >
@@ -43,7 +43,7 @@ const ReviewsModal = ({ setIsShow, isShow }) => {
           <option value={"asc"}>Day asc</option>
         </CustomizedSelects>
       </div>
-      <div className="h-full max-h-[400px] overflow-scroll scroll-smooth overflow-x-auto over mt-5">
+      <div className="h-[550px] overflow-scroll scroll-smooth overflow-x-auto over mt-5">
         <ReviewCard></ReviewCard>
         <ReviewCard></ReviewCard>
         <ReviewCard></ReviewCard>

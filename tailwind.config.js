@@ -43,7 +43,8 @@ export default {
       colors: {
         // primary: "#F73F5D",
         // secondary: "#222222",
-        bgGray: "#f2f6f9",
+        // bgGray: "#f2f6f9",
+        bgGray: "#f1eeef",
         background: "#f1eeef",
         borderActive: "#5a5869",
         textSecondary: "#545454",
@@ -52,7 +53,7 @@ export default {
       },
       keyframes: {
         slideInRight: {
-          "0%": { transform: "translateX(100%)", opacity: "0" },
+          "0%": { transform: "translateX(60%)", opacity: "0" },
           "100%": { transform: "translateX(0)", opacity: "1" },
         },
         slideOut: {
@@ -61,7 +62,7 @@ export default {
         },
       },
       animation: {
-        slideInRight: "slideInRight 0.3s linear",
+        slideInRight: "slideInRight 0.2s ease-out",
         slideOut: "slideOut 0.5s ease-in",
       },
     },

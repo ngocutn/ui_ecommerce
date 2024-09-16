@@ -36,7 +36,7 @@ const ProductCard = ({ product, children }) => {
         />
       </div>
       <div className="p-3">
-        <p className="font-bold text-nowrap  text-ellipsis overflow-hidden">
+        <p className="overflow-hidden font-bold text-nowrap text-ellipsis">
           {name}
         </p>
         <p className="text-gray-500 text-base mb-[8px] text-ellipsis text-nowrap overflow-hidden">
@@ -55,9 +55,17 @@ const ProductCard = ({ product, children }) => {
             </div>
             <div className="flex gap-4 mt-2">
               {sellingPrice && (
-                <p className="text-gray-500 line-through">$ {sellingPrice}</p>
+                <p
+                  className={`text-gray-500 ${
+                    discountedPrice ? "line-through" : ""
+                  }`}
+                >
+                  $ {sellingPrice}
+                </p>
               )}
-              <p className="font-bold">$ {discountedPrice}</p>
+              {discountedPrice && (
+                <p className="font-bold">$ {discountedPrice}</p>
+              )}
             </div>
           </div>
           <button className="flex items-center justify-center w-10 h-10 p-1 ml-auto bg-black rounded-full hover:scale-110">

@@ -51,7 +51,7 @@ const Banner = ({
             <img
               src={slide}
               alt={slide}
-              className={`${customHeight} w-full bg-center bg-cover relative`}
+              className={`${customHeight} w-full object-contain relative`}
               onClick={() => onImageClick(index)}
             />
           </SwiperSlide>
