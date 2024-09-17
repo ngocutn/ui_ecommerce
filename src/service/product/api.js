@@ -41,3 +41,9 @@ export const getTopProducts = () => {
     `https://neo4j-ecommerce.onrender.com/api/v1/products/top-selling`
   );
 };
+
+export const getBannerByQuantity = (quantity) => {
+  return axios.get(
+    `https://neo4j-ecommerce.onrender.com/api/v1/products/banners/images/${quantity}`
+  );
+};

@@ -61,7 +61,9 @@ const ProductDetails = () => {
     getProducts();
   }, []);
 
-  console.log("product", productData);
+  console.log("product", product.images);
+  console.log("productData", productData);
+
   console.log(Images);
 
   return (
