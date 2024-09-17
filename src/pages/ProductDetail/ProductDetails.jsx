@@ -39,13 +39,13 @@ const ProductDetails = () => {
     if (productId) {
       dispatch(getProductById(productId.id));
     }
-  }, []);
+  }, [dispatch, productId.id, productId]);
 
   useEffect(() => {
     if (product?.data?.images) {
       setImages(product.data.images);
     }
-  }, [product]);
+  }, [dispatch, product]);
 
   //get all products
   useEffect(() => {
@@ -61,7 +61,7 @@ const ProductDetails = () => {
     getProducts();
   }, []);
 
-  console.log("product", product.images);
+  console.log("product", productData);
   console.log(Images);
 
   return (
@@ -69,6 +69,7 @@ const ProductDetails = () => {
       <div className="flex items-start pt-[140px] gap-x-7 relative">
         <ImageSlide
           images={Images ? Images : product?.data?.images}
+          isLoading={isLoading}
         ></ImageSlide>
         {isLoading ? (
           <div>Loading...</div>
@@ -90,7 +91,7 @@ const ProductDetails = () => {
       )}
       <div className="pt-16">
         <h1 className="mb-3 text-xl font-bold">You may also like</h1>
-        <div className="flex flex-wrap items-center justify-between">
+        <div className="grid grid-cols-4 gap-10">
           {productData.slice(0, 4).map((item) => (
             <ProductCard key={item.id} product={item}></ProductCard>
           ))}

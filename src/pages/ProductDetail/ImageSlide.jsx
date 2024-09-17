@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Banner from "../HomePage/components/slideImage";
 
-const ImageSlide = ({ images }) => {
+const ImageSlide = ({ images, isLoading }) => {
   const [viewImage, setViewImage] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
   console.log("images slider", images);
+  console.log("image loading: ", isLoading);
 
   const handleViewImage = (index) => {
     setActiveIndex(index);
@@ -16,33 +17,43 @@ const ImageSlide = ({ images }) => {
     setViewImage(false);
   };
 
-  const slideImages = [
-    {
-      url: "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-      caption: "Slide 1",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80",
-      caption: "Slide 2",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1536987333706-fc9adfb10d91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-      caption: "Slide 3",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80",
-      caption: "Slide 2",
-    },
-  ];
+  // const slideImages = [
+  //   {
+  //     url: "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+  //     caption: "Slide 1",
+  //   },
+  //   {
+  //     url: "https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80",
+  //     caption: "Slide 2",
+  //   },
+  //   {
+  //     url: "https://images.unsplash.com/photo-1536987333706-fc9adfb10d91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+  //     caption: "Slide 3",
+  //   },
+  //   {
+  //     url: "https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80",
+  //     caption: "Slide 2",
+  //   },
+  // ];
   return (
-    <div className="w-2/3 h-[70vh]">
+    <div className="w-2/3 h-[70vh] bg-white rounded-2xl">
       <div className="w-full h-full">
-        <Banner
+        {/* <Banner
           slides={images}
           customWidth={"w-full"}
           customHeight={"h-full"}
           onImageClick={handleViewImage}
-        ></Banner>
+        ></Banner> */}
+        {isLoading ? (
+          "loading..."
+        ) : (
+          <Banner
+            slides={images}
+            customWidth={"w-full"}
+            customHeight={"h-full"}
+            onImageClick={handleViewImage}
+          ></Banner>
+        )}
       </div>
 
       {viewImage && (
