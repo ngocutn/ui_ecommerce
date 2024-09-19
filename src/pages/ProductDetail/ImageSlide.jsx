@@ -47,17 +47,17 @@ const ImageSlide = ({ images, isLoading }) => {
 
       {viewImage && (
         <div
-          className="fixed left-0 top-0 z-[2] flex h-full w-screen items-center justify-center overflow-hidden bg-black bg-opacity-20 shadow-custom"
+          className="fixed left-0 top-0 z-[20] flex h-full w-screen items-center justify-center overflow-hidden bg-black bg-opacity-20 shadow-custom"
           onClick={handleButtonClose}
         >
           <div
-            className="mt-[90px] w-[80%] h-[75vh] relative"
+            className="mt-[90px] w-[60%] h-[70vh] relative"
             onClick={(e) => e.stopPropagation()}
           >
             <Banner
               slides={images}
-              customWidth={"w-[80%]"}
-              customHeight={"h-[75vh]"}
+              customWidth={"w-full"}
+              customHeight={"h-full"}
               indexSlide={activeIndex}
             >
               <button
