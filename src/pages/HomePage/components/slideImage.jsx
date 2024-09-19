@@ -1,6 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar } from "swiper/modules";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ImageZoom from "../../../utils/ImageZoom";
 
 const Banner = ({
   slides,
@@ -9,6 +10,9 @@ const Banner = ({
   customHeight,
   onImageClick,
   indexSlide,
+  isCover,
+  handleMouseMove,
+  currentImageSrc,
 }) => {
   const [buttonBanner, setButtonBanner] = useState(false);
 
@@ -20,11 +24,24 @@ const Banner = ({
     setButtonBanner(false);
   };
 
+  useEffect(() => {
+    if (currentImageSrc) {
+      const cleanup = ImageZoom();
+      return cleanup;
+    }
+  }, [currentImageSrc]);
+
   return (
     <div
       className={`mx-auto ${customHeight} relative ${customWidth} cursor-pointer`}
       onMouseLeave={leaveBanner}
       onMouseEnter={enterBanner}
+      style={{
+        "--url": `${currentImageSrc}`,
+        "--zoom-x": "0%",
+        "--zoom-y": "0%",
+        "--display": "none",
+      }}
     >
       <Swiper
         modules={[Navigation, Pagination]}
@@ -45,14 +62,18 @@ const Banner = ({
         loop={true}
         className={`${customHeight} rounded-3xl`}
         initialSlide={indexSlide || 0}
+        id="imageZoom"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
             <img
               src={slide}
               alt={slide}
-              className={`${customHeight} w-full object-contain relative`}
+              className={`${customHeight} w-full ${
+                isCover ? "object-cover" : "object-contain"
+              } relative`}
               onClick={() => onImageClick(index)}
+              onMouseMove={() => handleMouseMove(slide)}
             />
           </SwiperSlide>
         ))}

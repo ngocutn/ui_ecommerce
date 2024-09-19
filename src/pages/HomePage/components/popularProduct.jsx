@@ -3,20 +3,25 @@ import { getAllProducts, getTopProducts } from "../../../service/product/api";
 import ProductCard from "../../../components/product/ProductCard";
 import { Heart } from "lucide-react";
 import HeartIcon from "../../../icon/HeartIcon";
+import ProductCardSkeleton from "../../../components/skeleton/ProductCardSkeleton";
 
 function PopularProduct() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [productData, setProductData] = useState([]);
   const [isLike, setIsLike] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getProducts = async () => {
       try {
+        setIsLoading(true);
         const res = await getTopProducts();
         console.log("res", res);
         setProductData(res.data.data);
       } catch (error) {
         console.log("Error", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     getProducts();
@@ -41,7 +46,7 @@ function PopularProduct() {
   };
 
   return (
-    <div id="popularProduct" className="w-[80%] mx-auto mt-12">
+    <div id="popularProduct" className="mx-auto mt-12">
       <div className="flex items-center justify-between w-full h-auto m-auto">
         <h1 className="text-xl font-bold">Popular Product 2023</h1>
         <div>
@@ -60,17 +65,25 @@ function PopularProduct() {
         </div>
       </div>
 
-      <div id="product" className="flex justify-start w-full h-auto gap-9 mt-5">
-        {currentProducts.map((item) => (
-          <ProductCard product={item}>
-            <div
-              className={`absolute top-1 left-1 p-3 rounded-full cursor-pointer bg-white`}
-              onClick={() => setIsLike(!isLike)}
-            >
-              {isLike ? <HeartIcon /> : <Heart />}
-            </div>
-          </ProductCard>
-        ))}
+      <div id="product" className="flex justify-start w-full h-auto mt-5 gap-9">
+        {isLoading ? (
+          <>
+            {Array.from({ length: 4 }).map((_, index) => (
+              <ProductCardSkeleton></ProductCardSkeleton>
+            ))}
+          </>
+        ) : (
+          currentProducts.map((item) => (
+            <ProductCard product={item}>
+              <div
+                className={`absolute top-1 left-1 p-3 rounded-full cursor-pointer bg-white`}
+                onClick={() => setIsLike(!isLike)}
+              >
+                {isLike ? <HeartIcon /> : <Heart />}
+              </div>
+            </ProductCard>
+          ))
+        )}
       </div>
     </div>
   );

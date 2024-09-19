@@ -15,12 +15,13 @@ function HomePage() {
     <div className="pt-[130px]">
       <Banner
         slides={slideImages}
-        customWidth="desktop-up:w-[1100px] tablet-range:w-[750px] sm:w-[350px]"
-        customHeight="desktop-up:h-[550px] tablet-range:h-[400px] sm:h-[200px]"
+        customWidth="desktop-up:w-80% tablet-range:w-[750px] sm:w-[350px]"
+        customHeight="desktop-up:h-[550px] tablet-range:h-[400px] sm:h-[200px] in-xl:h-[450px]"
+        isCover={true}
       >
         <div className="absolute top-[70%] left-[10%] h-auto z-10 text-sm sm:text-[10px] sm:top-[60%]">
-          <button className="bg-white p-5 sm:p-2 rounded-lg hover:bg-gray-300">
-            <i className="fa fa-shopping-cart mr-4" aria-hidden="true"></i>
+          <button className="p-5 bg-white rounded-lg sm:p-2 hover:bg-gray-300">
+            <i className="mr-4 fa fa-shopping-cart" aria-hidden="true"></i>
             Start Shopping
           </button>
         </div>
