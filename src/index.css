@@ -40,3 +40,16 @@
 .MuiFormControl-root {
   margin: 0 !important;
 }
+
+/* Zoom effect */
+#image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Hoặc object-contain nếu bạn muốn ảnh chứa trong khung */
+  transition: transform 0.3s ease; /* Hiệu ứng chuyển tiếp */
+}
+
+/* CSS cho ảnh phóng to */
+#image.zoomed {
+  transform: scale(2); /* Thay đổi kích thước phóng to */
+}

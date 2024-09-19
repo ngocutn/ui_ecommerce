@@ -43,7 +43,7 @@ const ReviewsModal = ({ setIsShow, isShow }) => {
           <option value={"asc"}>Day asc</option>
         </CustomizedSelects>
       </div>
-      <div className="h-[550px] overflow-scroll scroll-smooth overflow-x-auto over mt-5">
+      <div className="desktop-up:h-[400px] in-xl:h-[360px] in-lg:h-[330px] overflow-scroll scroll-smooth overflow-x-auto over mt-5">
         <ReviewCard></ReviewCard>
         <ReviewCard></ReviewCard>
         <ReviewCard></ReviewCard>

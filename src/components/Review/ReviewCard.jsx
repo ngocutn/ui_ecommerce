@@ -27,10 +27,6 @@ const ReviewCard = () => {
           <span>10 - I'll recommend to everyone!</span>
         </li>
         <li className="flex justify-between py-3 border-b border-gray-200">
-          <span>Fitting</span>
-          <span>True to size</span>
-        </li>
-        <li className="flex justify-between py-3 border-b border-gray-200">
           <span>Shipping</span>
           <span>Yes</span>
         </li>

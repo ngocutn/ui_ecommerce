@@ -7,6 +7,9 @@ import ReviewsModal from "../Review/ReviewsModal";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../../store/slice/productSlice";
+import { Skeleton } from "@mui/material";
+import ProductInfoSkeleton from "../../components/skeleton/ProductInfoSkeleton";
+import ProductCardSkeleton from "../../components/skeleton/ProductCardSkeleton";
 
 const ProductDetails = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -15,7 +18,7 @@ const ProductDetails = () => {
   const [Images, setImages] = useState([]);
 
   const dispatch = useDispatch();
-  const { message, isLoading, product, error } = useSelector(
+  const { message, product, error, isLoading } = useSelector(
     (state) => state.product
   );
 
@@ -67,36 +70,51 @@ const ProductDetails = () => {
   console.log(Images);
 
   return (
-    <div>
+    <div className="pb-10">
       <div className="flex items-start pt-[140px] gap-x-7 relative">
-        <ImageSlide
-          images={Images ? Images : product?.data?.images}
-          isLoading={isLoading}
-        ></ImageSlide>
         {isLoading ? (
-          <div>Loading...</div>
-        ) : error ? (
-          <div>Error: {error}</div>
-        ) : product && product.data ? (
-          <ProductInfor
-            product={product.data}
-            setIsShow={setIsShow}
-            isShow={isShow}
-            onVariantChange={handleVariantChange}
-          />
+          <Skeleton
+            variant="rounded"
+            width="70%"
+            height={500}
+            animation="wave"
+          ></Skeleton>
         ) : (
-          <div>No product data</div> // Nếu không có dữ liệu
+          <ImageSlide
+            images={Images ? Images : product?.data?.images}
+            isLoading={isLoading}
+          ></ImageSlide>
+        )}
+        {product && product.data ? (
+          !isLoading ? (
+            <ProductInfor
+              product={product.data}
+              setIsShow={setIsShow}
+              isShow={isShow}
+              onVariantChange={handleVariantChange}
+            />
+          ) : (
+            <ProductInfoSkeleton></ProductInfoSkeleton>
+          )
+        ) : (
+          "No data available"
         )}
       </div>
       {isShow && (
         <ReviewsModal setIsShow={setIsShow} isShow={isShow}></ReviewsModal>
       )}
       <div className="pt-16">
-        <h1 className="mb-3 text-xl font-bold">You may also like</h1>
+        <h1 className="mb-3 text-2xl font-bold">You may also like</h1>
         <div className="grid grid-cols-4 gap-10">
-          {productData.slice(0, 4).map((item) => (
-            <ProductCard key={item.id} product={item}></ProductCard>
-          ))}
+          {productData
+            .slice(0, 4)
+            .map((item) =>
+              isLoading ? (
+                <ProductCardSkeleton></ProductCardSkeleton>
+              ) : (
+                <ProductCard key={item.id} product={item}></ProductCard>
+              )
+            )}
         </div>
       </div>
     </div>

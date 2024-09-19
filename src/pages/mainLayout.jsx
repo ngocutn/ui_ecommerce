@@ -11,7 +11,7 @@ const MainLayout = () => {
       <HeaderHome></HeaderHome>
 
       <div className={location.pathname === "/" ? "bg-white" : "bg-bgGray"}>
-        <div className="w-[90%] mx-auto">
+        <div className="w-[80%] mx-auto">
           <Outlet context={{ isShow, setIsShow }}></Outlet>
         </div>
       </div>

@@ -1,12 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Banner from "../HomePage/components/slideImage";
+import ImageZoom from "../../utils/ImageZoom.js";
 
 const ImageSlide = ({ images, isLoading }) => {
   const [viewImage, setViewImage] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-
-  console.log("images slider", images);
-  console.log("image loading: ", isLoading);
+  const [currentImageSrc, setCurrentImageSrc] = useState("");
 
   const handleViewImage = (index) => {
     setActiveIndex(index);
@@ -17,25 +16,33 @@ const ImageSlide = ({ images, isLoading }) => {
     setViewImage(false);
   };
 
+  const handleMouseMove = (src) => {
+    setCurrentImageSrc(src);
+  };
+
+  console.log("currentImageSrc", currentImageSrc);
+
   return (
-    <div className="w-2/3 h-[70vh] bg-white rounded-2xl">
+    <div className="w-[60%] h-[70vh] bg-white rounded-2xl relative">
       <div className="w-full h-full">
-        {/* <Banner
+        <Banner
           slides={images}
           customWidth={"w-full"}
           customHeight={"h-full"}
           onImageClick={handleViewImage}
-        ></Banner> */}
-        {isLoading ? (
-          "loading..."
-        ) : (
-          <Banner
-            slides={images}
-            customWidth={"w-full"}
-            customHeight={"h-full"}
-            onImageClick={handleViewImage}
-          ></Banner>
-        )}
+          isCover={false}
+          handleMouseMove={handleMouseMove}
+          currentImageSrc={currentImageSrc}
+        ></Banner>
+
+        <div className="w-[70%] h-[70vh] bg-white rounded-2xl absolute top-0 right-[-72%] z-10 overflow-hidden">
+          <img
+            className="object-cover w-full h-full"
+            alt="image"
+            id="image"
+            src={currentImageSrc}
+          />
+        </div>
       </div>
 
       {viewImage && (

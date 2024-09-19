@@ -6,7 +6,13 @@ import { useState } from "react";
 import HeartIcon from "../../icon/HeartIcon";
 import StartFillIcon from "../../icon/StartFillIcon";
 
-const ProductInfor = ({ setIsShow, isShow, product, onVariantChange }) => {
+const ProductInfor = ({
+  setIsShow,
+  isShow,
+  product,
+  onVariantChange,
+  className,
+}) => {
   const [isLike, setIsLike] = useState(false);
   const [ram, setRam] = useState();
   const [store, setStore] = useState();
@@ -62,7 +68,9 @@ const ProductInfor = ({ setIsShow, isShow, product, onVariantChange }) => {
   console.log(selectVariant);
 
   return (
-    <div className="flex-1 max-w-[1/3] h-[70vh] overflow-y-scroll scrollbar-hide scroll-smooth px-2">
+    <div
+      className={`flex-1 max-w-[1/3] h-[70vh] overflow-y-scroll scrollbar-hide scroll-smooth px-2`}
+    >
       <div className="flex items-start justify-between">
         <h1 className="text-2xl font-bold w-[80%]">{name}</h1>
         <span
@@ -88,14 +96,14 @@ const ProductInfor = ({ setIsShow, isShow, product, onVariantChange }) => {
 
       <div className="w-full mt-2">
         <p className="text-base">
-          color: <span className="font-bold">{color}</span>
+          color: <span className="font-bold uppercase">{color}</span>
         </p>
         {options.COLOR && (
           <div className="flex flex-wrap items-center mt-2 gap-y-2 gap-x-4">
             {options?.COLOR?.map((item) => (
               <div
                 key={item} // Nên thêm key để tránh cảnh báo React
-                className={`size-[50px] rounded-xl cursor-pointer ${
+                className={`size-[50px] rounded-md cursor-pointer ${
                   color === item ? "active" : ""
                 }`}
                 style={{ backgroundColor: item }} // Sử dụng inline style để áp dụng màu động
@@ -116,7 +124,7 @@ const ProductInfor = ({ setIsShow, isShow, product, onVariantChange }) => {
             {options.RAM.map((item) => (
               <div
                 key={item}
-                className={`bg-white px-5 py-2 text-sm rounded-lg mt-2 font-[300] select-none cursor-pointer ${
+                className={`bg-white px-5 py-2 text-sm rounded-md mt-2 font-[300] select-none cursor-pointer ${
                   ram === item ? "active" : ""
                 }`}
                 onClick={() => setRam(item)}
@@ -137,7 +145,7 @@ const ProductInfor = ({ setIsShow, isShow, product, onVariantChange }) => {
             {options.STORAGE.map((item) => (
               <div
                 key={item}
-                className={`bg-white px-5 py-2 text-sm rounded-lg mt-2 font-[300] select-none cursor-pointer ${
+                className={`bg-white px-5 py-2 text-sm rounded-md mt-2 font-[300] select-none cursor-pointer ${
                   store === item ? "active" : ""
                 }`}
                 onClick={() => setStore(item)}
@@ -203,11 +211,11 @@ const ProductInfor = ({ setIsShow, isShow, product, onVariantChange }) => {
         </div>
       ) : null}
 
-      <div className="p-4 mt-6 bg-white rounded-lg shadow-lg">
+      <div className="p-4 mt-6 bg-white rounded-md shadow-lg">
         <div className="flex items-center justify-between font-bold">
           <span className="text-base">
             Reviews
-            <span>(5)</span>
+            <span>({selectVariant?.countOfReviews})</span>
           </span>
           <span className="select-none text-textSecondary">
             Write a comment
