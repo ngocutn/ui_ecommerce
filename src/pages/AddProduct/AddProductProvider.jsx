@@ -13,6 +13,9 @@ import ProductShipping from "./components/ProductShipping";
 import ProductPricing from "./components/ProductPricing";
 import ProductHeading from "./components/ProductHeading";
 import ProductBtn from "./components/ProductButton";
+import { View } from "lucide-react";
+import ViewImage from "./components/ViewImage";
+import { Switch } from "@mui/material";
 
 const AddProdcutProvider = () => {
   const methods = useForm({
@@ -25,6 +28,15 @@ const AddProdcutProvider = () => {
 
   const [loading, setLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
+
+  // Switch button
+  const [checked, setChecked] = useState(true);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
+
+  // Submit form
 
   const onSubmit = async (data) => {
     const {
@@ -118,12 +130,21 @@ const AddProdcutProvider = () => {
             <div className="w-1/2 m-3">
               <ProductDescription />
               <ProductCategory />
-              <ProductIventory />
               <ProductSellType />
-              <ProductVariant />
+              <div className="flex justify-between items-center mt-7">
+                <p className="text-xl font-semibold">Have variant?</p>
+                <Switch checked={checked} onChange={handleChange} />
+              </div>
+
+              <ProductIventory />
+              {checked && (
+                <>
+                  <ProductVariant />
+                </>
+              )}
             </div>
             <div className="w-1/2 m-3">
-              <ProductImage />
+              <ViewImage />
               <ProductShipping />
               <ProductPricing />
               <ProductBtn />
