@@ -41,7 +41,7 @@ function PopularProduct() {
   };
 
   return (
-    <div id="popularProduct" className="w-[80%] mx-auto mt-12">
+    <div id="popularProduct" className=" mx-auto mt-12">
       <div className="flex items-center justify-between w-full h-auto m-auto">
         <h1 className="text-xl font-bold">Popular Product 2023</h1>
         <div>
