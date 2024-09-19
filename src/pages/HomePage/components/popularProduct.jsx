@@ -46,7 +46,11 @@ function PopularProduct() {
   };
 
   return (
+<<<<<<<<< Temporary merge branch 1
+    <div id="popularProduct" className="mx-auto mt-12 ">
+=========
     <div id="popularProduct" className="mx-auto mt-12">
+>>>>>>>>> Temporary merge branch 2
       <div className="flex items-center justify-between w-full h-auto m-auto">
         <h1 className="text-xl font-bold">Popular Product 2023</h1>
         <div>
