@@ -40,6 +40,7 @@ export default {
       },
       boxShadow: {
         card: "0 0 11px rgba(33,33,33,.2)",
+        primary: "rgba(17, 12, 46, 0.15) 0px 48px 100px 0px",
       },
       colors: {
         // primary: "#F73F5D",

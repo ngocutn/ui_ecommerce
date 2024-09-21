@@ -11,6 +11,7 @@ const Banner = ({
   onImageClick,
   indexSlide,
   isCover,
+  isHover,
 }) => {
   const [buttonBanner, setButtonBanner] = useState(false);
   const [currentImageSrc, setCurrentImageSrc] = useState("");
@@ -28,17 +29,21 @@ const Banner = ({
   };
 
   useEffect(() => {
-    if (currentImageSrc) {
-      const cleanup = ImageZoom();
-      return () => {
-        cleanup;
-      };
+    if (isHover) {
+      if (currentImageSrc) {
+        const cleanup = ImageZoom();
+        return () => {
+          cleanup;
+        };
+      }
     }
   }, [currentImageSrc]);
 
   return (
     <div
-      className={`mx-auto ${customHeight} relative ${customWidth} cursor-pointer`}
+      className={`mx-auto ${customHeight} relative ${customWidth} cursor-pointer ${
+        isHover ? "hover-enabled" : "hover-disabled"
+      } select-none`}
       onMouseLeave={leaveBanner}
       onMouseEnter={enterBanner}
       style={{
