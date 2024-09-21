@@ -1,23 +1,42 @@
 const ImageZoom = () => {
   let imageZoom = document.getElementById("imageZoom");
   let image = document.getElementById("image");
-  imageZoom.addEventListener("mousemove", (e) => {
-    image.style.setProperty("display", "block");
-    let pointer = {
-      x: (e.offsetX * 100) / image.offsetWidth,
-      y: (e.offsetY * 100) / image.offsetHeight,
-    };
+  let imageWrapper = document.getElementById("image-wrapper");
+  let imageContainer = document.getElementById("image-container");
 
-    // image.style.setProperty("--zom-x", pointer.x + "%");
-    // image.style.setProperty("--zom-y", pointer.y + "%");
+  let x, y, width, height;
 
-    imageZoom.style.transformOrigin = `${pointer.x}% ${pointer.y}%`;
-    imageZoom.classList.add("zoomed");
+  imageZoom.addEventListener("mouseenter", (e) => {
+    imageWrapper.style.setProperty("display", "block");
+
+    const size = imageContainer.getBoundingClientRect();
+
+    x = size.x;
+    y = size.y;
+    width = size.width;
+    height = size.height;
+
+    console.log(
+      "x: " + x + " y: " + y + " width:" + width + " height:" + height
+    );
   });
 
-  imageZoom.addEventListener("mouseout", () => {
-    image.style.setProperty("display", "none");
-    imageZoom.classList.remove("zoomed");
+  imageZoom.addEventListener("mousemove", (e) => {
+    const offsetX = e.clientX - x;
+    const offsetY = e.clientY - y;
+
+    const horizontal = (offsetX / width - 0.5) * 100;
+    const vertical = (offsetY / height - 0.5) * 100;
+
+    // Đặt transform-origin dựa trên vị trí chuột
+    image.style.setProperty("--x", `${40 + horizontal}%`);
+    image.style.setProperty("--y", `${40 + vertical}%`);
+    image.style.setProperty("--zoom", "3");
+  });
+
+  imageZoom.addEventListener("mouseout", function () {
+    image.style.setProperty("--zoom", "1");
+    imageWrapper.style.setProperty("display", "none");
   });
 };
 

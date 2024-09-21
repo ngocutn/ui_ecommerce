@@ -28,7 +28,7 @@ function TopCategory() {
   console.log("cate2", category);
 
   return (
-    <div className=" mx-auto mt-12">
+    <div className="mx-auto mt-12">
       <div id="top-categories" className="flex justify-between">
         <h1 className="text-xl font-bold ">Top categories</h1>
         <span className="p-2 text-base text-gray-500 cursor-pointer hover:bg-gray-400 hover:text-white">

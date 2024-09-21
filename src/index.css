@@ -42,14 +42,25 @@
 }
 
 /* Zoom effect */
+#image-wrapper {
+  display: none;
+}
+
 #image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Hoặc object-contain nếu bạn muốn ảnh chứa trong khung */
-  transition: transform 0.3s ease; /* Hiệu ứng chuyển tiếp */
+  -o-object-fit: contain;
+  object-fit: contain;
+  transform-origin: var(--x) var(--y);
+  transform: scale(var(--zoom, 1));
+  transition: transform 0.3s ease;
 }
 
 /* CSS cho ảnh phóng to */
-#image.zoomed {
-  transform: scale(2); /* Thay đổi kích thước phóng to */
+#image-container:hover #image {
+  --zoom: 3;
+}
+
+#image-container:hover #image-wrapper {
+  display: block;
 }
