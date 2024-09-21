@@ -146,8 +146,7 @@ const Footer = () => {
         <div className="text-gray-500">
           <a href="" className="hover:text-[#ffbfcc] font-semibold">
             Terms of service
-          </a>{" "}
-          ·{" "}
+          </a>
           <a href="" className="hover:text-[#ffbfcc] font-semibold">
             Privacy Policy
           </a>
