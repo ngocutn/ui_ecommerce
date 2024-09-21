@@ -57,10 +57,18 @@
 }
 
 /* CSS cho ảnh phóng to */
-#image-container:hover #image {
+.hover-enabled #image {
   --zoom: 3;
 }
 
-#image-container:hover #image-wrapper {
+.hover-enabled:hover #image-wrapper {
   display: block;
+}
+
+.hover-disabled #image {
+  --zoom: 1;
+}
+
+.hover-disabled:hover #image-wrapper {
+  display: none;
 }

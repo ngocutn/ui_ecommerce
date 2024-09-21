@@ -15,20 +15,21 @@ const ImageSlide = ({ images, isLoading }) => {
     setViewImage(false);
   };
   return (
-    <div className="w-[60%] h-[70vh] bg-white rounded-2xl relative">
-      <div className="w-full h-full">
+    <div className="w-[60%] h-[70vh] bg-white rounded-lg relative shadow-primary">
+      <div className="w-full h-full select-none">
         <Banner
           slides={images}
           customWidth={"w-full"}
           customHeight={"h-full"}
           onImageClick={handleViewImage}
           isCover={false}
+          isHover={true}
         ></Banner>
       </div>
 
       {viewImage && (
         <div
-          className="fixed left-0 top-0 z-[20] flex h-full w-screen items-center justify-center overflow-hidden bg-black bg-opacity-20 shadow-custom"
+          className="fixed left-0 top-0 z-[20] flex h-full w-screen items-center justify-center overflow-hidden bg-black bg-opacity-20 shadow-custom select-none"
           onClick={handleButtonClose}
         >
           <div

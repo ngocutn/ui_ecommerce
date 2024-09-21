@@ -28,6 +28,7 @@ function HomePage() {
         customWidth="desktop-up:w-80% tablet-range:w-[750px] sm:w-[350px]"
         customHeight="desktop-up:h-[550px] tablet-range:h-[400px] sm:h-[200px] in-xl:h-[450px]"
         isCover={true}
+        isHover={false}
       >
         <div className="absolute top-[70%] left-[10%] h-auto z-10 text-sm sm:text-[10px] sm:top-[60%]">
           <button className="p-5 bg-white rounded-lg sm:p-2 hover:bg-gray-300">
