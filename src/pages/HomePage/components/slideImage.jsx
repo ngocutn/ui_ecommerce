@@ -11,10 +11,9 @@ const Banner = ({
   onImageClick,
   indexSlide,
   isCover,
-  handleMouseMove,
-  currentImageSrc,
 }) => {
   const [buttonBanner, setButtonBanner] = useState(false);
+  const [currentImageSrc, setCurrentImageSrc] = useState("");
 
   const enterBanner = () => {
     setButtonBanner(true);
@@ -24,10 +23,16 @@ const Banner = ({
     setButtonBanner(false);
   };
 
+  const handleMouseMove = (src) => {
+    setCurrentImageSrc(src);
+  };
+
   useEffect(() => {
     if (currentImageSrc) {
       const cleanup = ImageZoom();
-      return cleanup;
+      return () => {
+        cleanup;
+      };
     }
   }, [currentImageSrc]);
 
@@ -42,12 +47,11 @@ const Banner = ({
         "--zoom-y": "0%",
         "--display": "none",
       }}
+      id="image-container"
     >
       <Swiper
         modules={[Navigation, Pagination]}
         slidesPerView={1}
-        // onSlideChange={() => console.log("slide change")}
-        // onSwiper={(swiper) => console.log(swiper)}
         navigation={{
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev",
@@ -93,6 +97,17 @@ const Banner = ({
         <div className="custom-pagination absolute bottom-[5%] left-[10%] z-10"></div>
         {children}
       </Swiper>
+      <div
+        className="w-[70%] h-[70vh] bg-white rounded-2xl absolute top-0 right-[-72%] z-10 overflow-hidden "
+        id="image-wrapper"
+      >
+        <img
+          className="object-cover w-full h-full"
+          alt="image"
+          id="image"
+          src={currentImageSrc}
+        />
+      </div>
     </div>
   );
 };
