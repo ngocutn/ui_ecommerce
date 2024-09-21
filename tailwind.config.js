@@ -26,9 +26,10 @@ export default {
       //   "max-sm": { max: "767px" },
       //   "max-md": { max: "1023px" },
       "tablet-range": { min: "768px", max: "1023px" },
-      "tablet-up": { min: "768px" },
-      "desktop-up": { min: "1024px" },
-      "in-lg": { min: "1024px", max: "1280px" },
+      "tablet-up": { min: "768px", max: "1039px" },
+      "desktop-up": { min: "1024px", max: "1139px" },
+      "in-lg": { min: "1024px", max: "1279px" },
+      "in-xl": { min: "1280px" },
       //   "max-xl": { max: "1535px" },
       "min-md": { min: "1024px" },
       "min-sm": { min: "768px" },
@@ -39,6 +40,7 @@ export default {
       },
       boxShadow: {
         card: "0 0 11px rgba(33,33,33,.2)",
+        primary: "rgba(17, 12, 46, 0.15) 0px 48px 100px 0px",
       },
       colors: {
         // primary: "#F73F5D",

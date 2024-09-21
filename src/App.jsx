@@ -10,6 +10,7 @@ import ProductDetails from "./pages/ProductDetail/ProductDetails";
 // import NewProduct from "./pages/AddProduct/NewProduct";
 import AddProductProvider from "./pages/AddProduct/AddProductProvider";
 import NewProduct from "./pages/AddProduct/NewProduct";
+import BuyerLayout from "./pages/Auth/BuyerLayout";
 
 function App() {
   const router = createBrowserRouter([
@@ -48,6 +49,10 @@ function App() {
     {
       path: "test",
       element: <AddProductProvider />,
+    },
+    {
+      path: "/buyer",
+      element: <BuyerLayout></BuyerLayout>,
     },
     // {
     //   path: "add-product",

@@ -11,7 +11,7 @@ const DropList = ({ children, title }) => {
   };
 
   return (
-    <div className="flex flex-col w-full bg-[#fff] rounded-lg px-6 shadow-md">
+    <div className="flex flex-col w-full bg-[#fff] rounded-md px-6 shadow-md">
       <div
         className="flex items-center justify-between w-full px-3 py-3 text-lg font-semibold"
         onClick={handleToggle}

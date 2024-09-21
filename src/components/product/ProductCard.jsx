@@ -24,25 +24,25 @@ const ProductCard = ({ product, children }) => {
   return (
     <div
       key={id}
-      className="w-[280px] h-auto text-lg cursor-pointer group hover:bg-white hover:shadow-card transiton-all duration-200 hover:-translate-x-1 hover:-translate-y-1 rounded-lg overflow-hidden"
+      className="w-[100%] border border-gray-200 h-auto text-lg cursor-pointer group hover:bg-white hover:shadow-card transiton-all duration-100 hover:-translate-y-1 rounded-lg overflow-hidden"
       onClick={handleClick}
       anges
     >
-      <div className="w-full h-[250px] overflow-hidden flex justify-center items-center bg-white mt-2">
+      <div className="flex items-center justify-center w-full p-2 overflow-hidden bg-white h-fit">
         <img
           src={primaryImage}
           alt="Product Image"
           className="object-cover w-[80%] h-[80%] transition duration-300 group-hover:scale-110"
         />
       </div>
-      <div className="p-3">
-        <p className="overflow-hidden font-bold text-nowrap text-ellipsis">
+      <div className="px-3 py-8">
+        <p className="overflow-hidden text-xl font-bold text-nowrap text-ellipsis">
           {name}
         </p>
         <p className="text-gray-500 text-base mb-[8px] text-ellipsis text-nowrap overflow-hidden">
           {brandName}
         </p>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mt-3">
           <div className="w-3/4 ">
             <div className="flex gap-2 items-center text-[13px] font-bold">
               <div className="flex items-end justify-center gap-x-2">
