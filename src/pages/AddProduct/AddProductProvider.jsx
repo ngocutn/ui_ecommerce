@@ -16,6 +16,8 @@ import ProductBtn from "./components/ProductButton";
 import { View } from "lucide-react";
 import ViewImage from "./components/ViewImage";
 import { Switch } from "@mui/material";
+import ProductCollection from "./components/ProductCollection";
+import ProductSpecification from "./components/ProductSpecification";
 
 const AddProdcutProvider = () => {
   const methods = useForm({
@@ -133,20 +135,27 @@ const AddProdcutProvider = () => {
               <ProductSellType />
               <div className="flex justify-between items-center mt-7">
                 <p className="text-xl font-semibold">Have variant?</p>
-                <Switch checked={checked} onChange={handleChange} />
+                <Switch
+                  checked={checked}
+                  onChange={handleChange}
+                  className="transition duration-75"
+                />
               </div>
 
-              <ProductIventory />
-              {checked && (
+              {checked ? (
+                <ProductVariant />
+              ) : (
                 <>
-                  <ProductVariant />
+                  <ProductIventory />
+                  <ProductPricing />
                 </>
               )}
             </div>
             <div className="w-1/2 m-3">
               <ViewImage />
               <ProductShipping />
-              <ProductPricing />
+              <ProductSpecification />
+              <ProductCollection />
               <ProductBtn />
             </div>
           </div>

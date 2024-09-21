@@ -4,6 +4,7 @@ import TopCategory from "./components/topCategory";
 import PopularProduct from "./components/popularProduct";
 import { useEffect, useState } from "react";
 import { getBannerByQuantity } from "../../service/product/api";
+import Footer from "../../components/Footer";
 
 function HomePage() {
   const [slideImages, setSlideImages] = useState([]);
@@ -14,6 +15,7 @@ function HomePage() {
         const res = await getBannerByQuantity(4);
         console.log("res", res);
         setSlideImages(res.data.data);
+        console.log("slideImages", slideImages);
       } catch (error) {
         console.log("Error", error);
       }
@@ -39,6 +41,7 @@ function HomePage() {
       </Banner>
       <TopCategory></TopCategory>
       <PopularProduct></PopularProduct>
+      <Footer></Footer>
     </div>
   );
 }
