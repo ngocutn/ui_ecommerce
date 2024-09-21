@@ -16,12 +16,12 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import CategoryIcon from "@mui/icons-material/Category";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function HeaderHome() {
   const navigate = useNavigate();
   return (
-    <AppBar className="z-10 bg-white pr-7">
+    <AppBar className="z-50 bg-white pr-7">
       <Toolbar component="div" className="flex justify-between my-3">
         <Stack
           direction="row"
@@ -71,7 +71,10 @@ function HeaderHome() {
           direction="row"
           className="flex items-center justify-center gap-5 "
         >
-          <Button className="text-black capitalize">
+          <Link
+            to="/buyer"
+            className="flex items-center p-2 text-black capitalize rounded-lg hover:bg-gray-100"
+          >
             <PermIdentityOutlinedIcon />
             <Typography
               variant="body1"
@@ -80,7 +83,7 @@ function HeaderHome() {
               <span className="text-[12px]">Sign in</span>
               <span>Account</span>
             </Typography>
-          </Button>
+          </Link>
 
           <EmailOutlinedIcon className="text-black cursor-pointer" />
 
