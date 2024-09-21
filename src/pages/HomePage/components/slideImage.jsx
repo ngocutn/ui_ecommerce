@@ -89,17 +89,21 @@ const Banner = ({
 
         {/* For CSS */}
         <div
-          className={`swiper-button-next mx-5 sm:hidden tablet-range:hidden ${
-            buttonBanner ? "text-white" : "hidden"
-          }`}
+          className={`swiper-button-next mx-5 text-sm rounded-full py-9 pl-9 pr-8 bg-white sm:hidden tablet-range:hidden ${
+            buttonBanner ? "text-black" : "hidden"
+          } ${slides.length === 1 ? "hidden" : ""}`}
         ></div>
         <div
-          className={`swiper-button-prev mx-5 sm:hidden tablet-range:hidden ${
-            buttonBanner ? "text-white" : "hidden"
-          }`}
+          className={`swiper-button-prev mx-5  rounded-full py-9 pl-8 pr-9 bg-white sm:hidden tablet-range:hidden ${
+            buttonBanner ? "text-black" : "hidden"
+          } ${slides.length === 1 ? "hidden" : ""}`}
         ></div>
 
-        <div className="custom-pagination absolute bottom-[5%] left-[10%] z-10"></div>
+        <div
+          className={`custom-pagination absolute bottom-[5%] left-[10%] z-10 ${
+            slides.length === 1 ? "hidden" : ""
+          }`}
+        ></div>
         {children}
       </Swiper>
       <div
