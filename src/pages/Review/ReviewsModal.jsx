@@ -11,7 +11,7 @@ const ReviewsModal = ({ setIsShow, isShow }) => {
 
   return (
     <div
-      className={`bg-[#efeeeb] fixed p-5 rounded-lg overflow-hidden top-0 right-0 z-20 mr-5 sm:w-[90%] h-auto my-8 ${
+      className={`bg-[#f6f6f6] fixed p-5 rounded-lg overflow-hidden top-0 right-0 z-40 mr-5 sm:w-[90%] h-auto my-8 ${
         isShow ? "animate-slideInRight" : "animate-slideOut"
       }`}
     >

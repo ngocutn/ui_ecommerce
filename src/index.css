@@ -86,6 +86,7 @@
 
 .hover-enabled:hover #image-wrapper {
   display: block;
+  border: 3px solid #888;
 }
 
 .hover-disabled #image {

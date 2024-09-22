@@ -8,11 +8,11 @@ const ProductCard = ({ product, children }) => {
     id,
     name,
     brandName,
-    quantityAvailable,
+    sumSoldQuantity,
     primaryImage,
     sellingPrice,
     discountedPrice,
-    rating,
+    avgRating,
   } = product;
 
   const navigate = useNavigate();
@@ -47,10 +47,10 @@ const ProductCard = ({ product, children }) => {
             <div className="flex gap-2 items-center text-[13px] font-bold">
               <div className="flex items-end justify-center gap-x-2">
                 <StartFillIcon fill={"#f59d60"} size={24}></StartFillIcon>
-                <span className="pr-2 text-base border-r-2">{rating}</span>
+                <span className="pr-2 text-base border-r-2">{avgRating}</span>
               </div>
               <span className="px-3 py-1 text-sm font-medium bg-gray-200 rounded-md">
-                {quantityAvailable} Sold
+                {sumSoldQuantity} Sold
               </span>
             </div>
             <div className="flex gap-4 mt-2">

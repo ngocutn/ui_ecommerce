@@ -26,8 +26,11 @@ const ProductInfor = ({
     discountedPrice,
     options,
     productDimension,
-    rating,
+    avgRating,
     productVariants,
+    hasVariants,
+    productSpecifications,
+    hasSpecification,
   } = product;
 
   const findProductVariant = () => {
@@ -65,7 +68,7 @@ const ProductInfor = ({
     }
   }, [color, ram, store]);
 
-  console.log(selectVariant);
+  console.log("product details", product);
 
   return (
     <div
@@ -74,88 +77,96 @@ const ProductInfor = ({
       <div className="flex items-start justify-between">
         <h1 className="text-2xl font-bold w-[80%]">{name}</h1>
         <span
-          className={`text-xl font-bold line-through ${
-            discountedPrice ? "" : "line-through"
+          className={`text-xl font-bold ${
+            selectVariant
+              ? selectVariant.discountedPrice
+                ? "line-through"
+                : ""
+              : discountedPrice
+              ? "line-through"
+              : ""
           }`}
         >
-          ${selectVariant ? selectVariant.sellingPrice : sellingPrice}
+          {selectVariant ? selectVariant.sellingPrice : sellingPrice}
         </span>
       </div>
 
       <div className="flex items-start justify-between mt-1">
         <h1 className="text-xl font-bold w-[70%] text-gray-500">{brandName}</h1>
-        {selectVariant && selectVariant.discountPrice !== null && (
+        {selectVariant && selectVariant.discountedPrice ? (
           <span className="text-2xl font-bold text-red-500">
-            $
-            {selectVariant && selectVariant.discountPrice !== null
-              ? selectVariant.discountPrice
-              : discountedPrice}
+            {selectVariant.discountedPrice}
+          </span>
+        ) : (
+          <span className="text-2xl font-bold text-red-500">
+            {discountedPrice}
           </span>
         )}
       </div>
 
-      <div className="w-full mt-2">
-        <p className="text-base">
-          color: <span className="font-bold uppercase">{color}</span>
-        </p>
-        {options.COLOR && (
-          <div className="flex flex-wrap items-center mt-2 gap-y-2 gap-x-4">
-            {options?.COLOR?.map((item) => (
-              <div
-                key={item} // Nên thêm key để tránh cảnh báo React
-                className={`size-[50px] rounded-md cursor-pointer ${
-                  color === item ? "active" : ""
-                }`}
-                style={{ backgroundColor: item }} // Sử dụng inline style để áp dụng màu động
-                onClick={() => setColor(item)}
-              ></div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="mt-6">
-        <p className="text-base">
-          RAM: <span className="font-bold">{ram ? ram : ""}</span>
-        </p>
-
-        {options.RAM && (
-          <div className="flex flex-wrap items-center w-full gap-x-5">
-            {options.RAM.map((item) => (
-              <div
-                key={item}
-                className={`bg-white px-5 py-2 text-sm rounded-md mt-2 font-[300] select-none cursor-pointer ${
-                  ram === item ? "active" : ""
-                }`}
-                onClick={() => setRam(item)}
-              >
-                <p>{item}</p>
+      {hasVariants && (
+        <div>
+          <div className="w-full mt-2">
+            <p className="text-base">
+              color: <span className="font-bold uppercase">{color}</span>
+            </p>
+            {options.COLOR && (
+              <div className="flex flex-wrap items-center mt-2 gap-y-2 gap-x-4">
+                {options?.COLOR?.map((item) => (
+                  <div
+                    key={item} // Nên thêm key để tránh cảnh báo React
+                    className={`size-[50px] rounded-md cursor-pointer ${
+                      color === item ? "active" : ""
+                    }`}
+                    style={{ backgroundColor: item }} // Sử dụng inline style để áp dụng màu động
+                    onClick={() => setColor(item)}
+                  ></div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
-        )}
-      </div>
-      <div className="mt-6">
-        <p className="text-base">
-          Stograge: <span className="font-bold">{store ? store : ""}</span>
-        </p>
-
-        {options.STORAGE && (
-          <div className="flex flex-wrap items-center w-full gap-x-3">
-            {options.STORAGE.map((item) => (
-              <div
-                key={item}
-                className={`bg-white px-5 py-2 text-sm rounded-md mt-2 font-[300] select-none cursor-pointer ${
-                  store === item ? "active" : ""
-                }`}
-                onClick={() => setStore(item)}
-              >
-                <p>{item}</p>
+          <div className="mt-6">
+            <p className="text-base">
+              RAM: <span className="font-bold">{ram ? ram : ""}</span>
+            </p>
+            {options.RAM && (
+              <div className="flex flex-wrap items-center w-full gap-x-5">
+                {options.RAM.map((item) => (
+                  <div
+                    key={item}
+                    className={`bg-white px-5 py-2 text-sm rounded-md mt-2 font-[300] select-none cursor-pointer ${
+                      ram === item ? "active" : ""
+                    }`}
+                    onClick={() => setRam(item)}
+                  >
+                    <p>{item}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
-        )}
-      </div>
+          <div className="mt-6">
+            <p className="text-base">
+              Stograge: <span className="font-bold">{store ? store : ""}</span>
+            </p>
+            {options.STORAGE && (
+              <div className="flex flex-wrap items-center w-full gap-x-3">
+                {options.STORAGE.map((item) => (
+                  <div
+                    key={item}
+                    className={`bg-white px-5 py-2 text-sm rounded-md mt-2 font-[300] select-none cursor-pointer ${
+                      store === item ? "active" : ""
+                    }`}
+                    onClick={() => setStore(item)}
+                  >
+                    <p>{item}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="mt-8">
         {productDimension && (
@@ -196,20 +207,18 @@ const ProductInfor = ({
         )}
       </div>
 
-      {selectVariant && selectVariant.hasSpecification ? (
+      {hasSpecification && (
         <div className="mt-4">
           <DropList title={"Specification"}>
-            {selectVariant.productSpecifications.specificationOptions.map(
-              (item) => (
-                <li className="flex items-center justify-between py-3 border-b border-gray-300 gap-x-3 first:pt-0 last:border-b-0">
-                  <span className="text-base font-nomal">{item.name}</span>
-                  <span className="text-sm">{item.value}</span>
-                </li>
-              )
-            )}
+            {productSpecifications.map((item) => (
+              <li className="flex items-center justify-between py-3 border-b border-gray-300 gap-x-3 first:pt-0 last:border-b-0">
+                <span className="text-base font-nomal">{item.name}</span>
+                <span className="text-sm">{item.value}</span>
+              </li>
+            ))}
           </DropList>
         </div>
-      ) : null}
+      )}
 
       <div className="p-4 mt-6 bg-white rounded-md shadow-lg">
         <div className="flex items-center justify-between font-bold">
@@ -226,7 +235,7 @@ const ProductInfor = ({
           <span className="font-bold select-none">Overall rating</span>
           <div className="flex items-center gap-x-2">
             <span className="text-base font-bold select-none">
-              {selectVariant ? selectVariant.avgRating : rating}
+              {avgRating ? avgRating : 0}
             </span>
             <StartFillIcon fill={"#f9619b"}></StartFillIcon>
           </div>

@@ -21,7 +21,7 @@ import { Link, useNavigate } from "react-router-dom";
 function HeaderHome() {
   const navigate = useNavigate();
   return (
-    <AppBar className="z-50 bg-white pr-7">
+    <AppBar className="z-20 bg-white pr-7">
       <Toolbar component="div" className="flex justify-between my-3">
         <Stack
           direction="row"
