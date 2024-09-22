@@ -27,17 +27,17 @@ function PopularProduct() {
     getProducts();
   }, []);
 
-  const currentProducts = productData.slice(
-    currentIndex * 4,
-    (currentIndex + 1) * 4
-  );
+  // const currentProducts = productData?.slice(
+  //   currentIndex * 4,
+  //   (currentIndex + 1) * 4
+  // );
 
   const prevImg = () => {
     const firstImg = currentIndex === 0;
     const newImg = firstImg ? productData.length / 4 - 1 : currentIndex - 1;
     setCurrentIndex(newImg);
   };
-  console.log(currentIndex);
+  // console.log(currentIndex);
 
   const nextImg = () => {
     const lastImg = currentIndex === productData.length / 4 - 1;
@@ -65,7 +65,7 @@ function PopularProduct() {
         </div>
       </div>
       <div id="product" className="flex justify-start w-full h-auto mt-5 gap-9">
-        {isLoading ? (
+        {/* {isLoading ? (
           <>
             {Array.from({ length: 4 }).map((_, index) => (
               <ProductCardSkeleton></ProductCardSkeleton>
@@ -82,7 +82,7 @@ function PopularProduct() {
               </div>
             </ProductCard>
           ))
-        )}
+        )} */}
       </div>
     </div>
   );

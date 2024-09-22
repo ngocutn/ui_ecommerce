@@ -52,6 +52,7 @@ export default {
         textSecondary: "#545454",
         strokeColor: "#f2f2f2",
         buttonBg: "#353132",
+        text1: "#717375",
       },
       keyframes: {
         slideInRight: {

@@ -4,7 +4,7 @@ import ImageSlide from "./ImageSlide";
 import ProductInfor from "./ProductInfor";
 import { getAllProducts } from "../../service/product/api";
 import ReviewsModal from "../Review/ReviewsModal";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../../store/slice/productSlice";
 import { Skeleton } from "@mui/material";
