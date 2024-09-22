@@ -1,5 +1,6 @@
 import { MenuItem, Select } from "@mui/material";
 import download from "../assets/image/download.webp";
+import { Dot } from "lucide-react";
 
 const Footer = () => {
   const sections = [
@@ -75,7 +76,7 @@ const Footer = () => {
             <input
               type="text"
               placeholder="Email address"
-              className=" border-2 border-gray-300 rounded-lg p-2 mt-2 w-[75%]"
+              className=" border-2 border-gray-300 rounded-lg p-2 mt-2 w-[70%]"
             />
             <button className="bg-[#ffbfcc] text-white font-semibold text-xl rounded-xl px-4 py-3 mt-2">
               Subscribe
@@ -89,9 +90,9 @@ const Footer = () => {
 
       <div className="flex justify-between mt-10">
         <div classNamw="w-1/4">
-          <p className="text-2xl font-bold">hey harper</p>
+          <p className="text-xl font-bold">hey harper</p>
         </div>
-        <div className="flex w-3/4 justify-between text-lg">
+        <div className="flex w-3/4 justify-between text-base">
           {sections.map((section, index) => (
             <div key={index}>
               <p className=" font-bold">{section.title}</p>
@@ -143,10 +144,13 @@ const Footer = () => {
             ))}
           </Select>
         </div>
-        <div className="text-gray-500">
-          <a href="" className="hover:text-[#ffbfcc] font-semibold">
+        <div className="text-gray-500 flex items-center">
+          <a href="" className="hover:text-[#ffbfcc] font-semibold ">
             Terms of service
           </a>
+          <span>
+            <Dot />
+          </span>
           <a href="" className="hover:text-[#ffbfcc] font-semibold">
             Privacy Policy
           </a>
