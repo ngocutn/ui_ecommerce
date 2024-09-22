@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import HeartIcon from "../../icon/HeartIcon";
 import StartFillIcon from "../../icon/StartFillIcon";
+import { Link } from "react-router-dom";
 
 const ProductInfor = ({
   setIsShow,
@@ -31,7 +32,11 @@ const ProductInfor = ({
     hasVariants,
     productSpecifications,
     hasSpecification,
+    countOfReviews,
+    hasReviews,
   } = product;
+
+  const rating = Math.round(avgRating * 10) / 10;
 
   const findProductVariant = () => {
     return productVariants.find((variant) => {
@@ -91,6 +96,7 @@ const ProductInfor = ({
         </span>
       </div>
 
+      {/* Discounted price */}
       <div className="flex items-start justify-between mt-1">
         <h1 className="text-xl font-bold w-[70%] text-gray-500">{brandName}</h1>
         {selectVariant && selectVariant.discountedPrice ? (
@@ -104,6 +110,7 @@ const ProductInfor = ({
         )}
       </div>
 
+      {/* Variant */}
       {hasVariants && (
         <div>
           <div className="w-full mt-2">
@@ -224,18 +231,20 @@ const ProductInfor = ({
         <div className="flex items-center justify-between font-bold">
           <span className="text-base">
             Reviews
-            <span>({selectVariant?.countOfReviews})</span>
+            {hasReviews && <span>({countOfReviews})</span>}
           </span>
-          <span className="select-none text-textSecondary">
-            Write a comment
-          </span>
+          <Link className="select-none text-textSecondary hover:opacity-70">
+            {hasReviews ? "Write a comment" : "Write the first one"}
+          </Link>
         </div>
 
         <div className="flex items-center justify-between mt-4 text-textSecondary">
-          <span className="font-bold select-none">Overall rating</span>
+          <span className="font-bold select-none">
+            {hasReviews ? "Overall rating" : "No reviews for this product"}
+          </span>
           <div className="flex items-center gap-x-2">
             <span className="text-base font-bold select-none">
-              {avgRating ? avgRating : 0}
+              {rating ? rating : "0.00"}
             </span>
             <StartFillIcon fill={"#f9619b"}></StartFillIcon>
           </div>

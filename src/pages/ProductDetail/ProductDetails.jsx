@@ -101,7 +101,11 @@ const ProductDetails = () => {
         )}
       </div>
       {isShow && (
-        <ReviewsModal setIsShow={setIsShow} isShow={isShow}></ReviewsModal>
+        <ReviewsModal
+          setIsShow={setIsShow}
+          isShow={isShow}
+          productId={productId.id}
+        ></ReviewsModal>
       )}
       <div className="pt-16">
         <h1 className="mb-3 text-2xl font-bold">You may also like</h1>
