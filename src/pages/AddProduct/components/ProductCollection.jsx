@@ -1,5 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
@@ -12,7 +13,7 @@ import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { useState } from "react";
 
-const names = [
+const collections = [
   "Oliver Hansen",
   "Van Henry",
   "April Tucker",
@@ -24,24 +25,29 @@ const names = [
   "Virginia Andrews",
   "Kelly Snyder",
 ];
-
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight: personName.includes(name)
-      ? theme.typography.fontWeightMedium
-      : theme.typography.fontWeightRegular,
-  };
-}
+// function getStyles(name, collection, theme) {
+//   return {
+//     fontWeight: collection.includes(name)
+//       ? theme.typography.fontWeightMedium
+//       : theme.typography.fontWeightRegular,
+//   };
+// }
 const ProductCollection = () => {
-  const theme = useTheme();
-  const [personName, setPersonName] = useState([]);
+  // const theme = useTheme();
+  // const [collection, setCollection] = useState([]);
 
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(typeof value === "string" ? value.split(",") : value);
-  };
+  // const handleChange = (event) => {
+  //   const {
+  //     target: { value },
+  //   } = event;
+  //   setCollection(typeof value === "string" ? value.split(",") : value);
+  // };
+
+  // const handleDelete = (chipToDelete) => () => {
+  //   setChipData((chips) =>
+  //     chips.filter((chip) => chip.key !== chipToDelete.key)
+  //   );
+  // };
 
   const {
     register,
@@ -51,38 +57,46 @@ const ProductCollection = () => {
   return (
     <div>
       <p className="text-xl font-semibold mt-7">Collection</p>
-      {/* <div
+
+      <Autocomplete
+        className="w-full my-3 border rounded-md"
+        multiple
         id="productCollection"
-        className="flex gap-4 p-4 py-2 my-3 border rounded-md 2"
-      > */}
-      <FormControl className="flex justify-between p-4 py-2 my-3 border rounded-md 2">
-        <Select
-          labelId="demo-multiple-checkbox-label"
-          id="demo-multiple-checkbox"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          renderValue={(selected) => (
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-              {selected.length > 1 ? (
-                <>
-                  <Chip key={selected[0]} label={selected[0]} />
-                  <Chip label={`+${selected.length - 1} more`} />
-                </>
-              ) : (
-                selected.map((value) => <Chip key={value} label={value} />)
-              )}
-            </Box>
-          )}
-        >
-          {names.map((name) => (
-            <MenuItem key={name} value={name}>
-              <Checkbox checked={personName.includes(name)} />
-              <ListItemText primary={name} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+        options={collections}
+        disableCloseOnSelect
+        limitTags={3}
+        renderOption={(props, option, { selected }) => {
+          const { key, ...optionProps } = props;
+          return (
+            <li key={key} {...optionProps}>
+              <Checkbox style={{ marginRight: 8 }} checked={selected} />
+              {option}
+            </li>
+          );
+        }}
+        renderTags={(value, getTagProps) =>
+          value.map((option, index) => (
+            <Chip
+              label={option}
+              {...getTagProps({ index })}
+              sx={{ backgroundColor: "#0559fe", color: "#fff" }}
+            />
+          ))
+        }
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            placeholder="Collections"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  border: "none",
+                },
+              },
+            }}
+          />
+        )}
+      />
       {/* </div> */}
     </div>
   );
