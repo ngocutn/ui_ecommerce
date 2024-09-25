@@ -101,7 +101,7 @@ const VariantTable = ({ values }) => {
                       shrink: true,
                     },
                   }}
-                  onChange={(e) => handleQuantity(e, index)}
+                  //onChange={(e) => handleQuantity(e, index)}
                 />
               </TableCell>
               <TableCell>
