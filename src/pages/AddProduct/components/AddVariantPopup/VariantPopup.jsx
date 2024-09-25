@@ -11,7 +11,6 @@ const VariantPopup = ({ setAddVariant }) => {
   const handleValuesChange = (newValues) => {
     setValues(newValues);
   };
-  console.log(values);
 
   return (
     <div className="w-full fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-[30]">

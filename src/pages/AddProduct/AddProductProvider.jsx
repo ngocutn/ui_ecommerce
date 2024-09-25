@@ -59,7 +59,6 @@ const AddProdcutProvider = () => {
       images,
       ...otherFields
     } = data;
-    console.log("data", data);
 
     const request = {
       ...otherFields,
@@ -84,7 +83,6 @@ const AddProdcutProvider = () => {
 
     const res = await addProduct(request);
     setLoading(false);
-    console.log("res 3333", res);
 
     if (res.status === 201) {
       alert(res.data.message);
@@ -105,20 +103,15 @@ const AddProdcutProvider = () => {
       formData.append("files", selectedFiles[i]);
     }
 
-    console.log("formData", formData);
-    console.log("files", selectedFiles);
-
     return axios({
       method: "post",
       url: `https://neo4j-ecommerce.onrender.com/api/v1/products`,
       data: formData,
     })
       .then((response) => {
-        console.log("response", response);
         return response;
       })
       .catch((error) => {
-        console.log("error", error);
         return error;
       });
   };

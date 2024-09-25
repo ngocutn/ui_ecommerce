@@ -26,10 +26,8 @@ const ReviewsModal = ({ setIsShow, isShow, productId }) => {
   useEffect(() => {
     if (isShow && productId) {
       if (rating == 0) {
-        console.log("Calling getAllReview API");
         dispatch(getAllReview(productId, page, sort));
       } else {
-        console.log("Calling getAllReviewFilter API");
         dispatch(getAllReviewFilter(productId, page, rating));
       }
     }

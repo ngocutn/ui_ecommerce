@@ -14,18 +14,15 @@ function TopCategory() {
       try {
         setIsLoading(true);
         const res = await getLevel1Categories();
-        console.log("res", res);
+
         setCategory(res.data.data);
       } catch (error) {
-        console.log("Error", error);
       } finally {
         setIsLoading(false);
       }
     };
     getCategory();
   }, []);
-
-  console.log("cate2", category);
 
   return (
     <div className="mx-auto mt-12">

@@ -10,8 +10,8 @@ const ImageUploader = ({ setFile }) => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    console.log(file);
-    setFile(file.name);
+
+    setFile(file);
   };
 
   return (

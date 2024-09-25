@@ -39,7 +39,6 @@ const ImageModal = ({ files, images, onClose, onSelect }) => {
       setImageList(newImageList);
       setFileList(newFileList);
       setSelectedImage(newImageList[firstIndex]);
-      console.log("preview", newImageList);
     }
   };
 
@@ -48,8 +47,6 @@ const ImageModal = ({ files, images, onClose, onSelect }) => {
       onSelect(selectedImage, imageList, fileList);
     }
     onClose();
-    console.log("add", imageList);
-    console.log("add file", fileList);
   };
 
   const handleDeleteClick = (url) => {
@@ -63,16 +60,12 @@ const ImageModal = ({ files, images, onClose, onSelect }) => {
 
     const files = Array.from(fileList);
     const newFileList = files.filter((_, index) => index !== indexToRemove);
-    console.log("file list", files);
 
     setFileList(newFileList);
     setImageList(newImageList);
     if (selectedImage === url) {
       setSelectedImage(newImageList.length > 0 ? newImageList[0] : null);
     }
-
-    console.log("delete", newImageList);
-    console.log("delete file", newFileList);
   };
 
   return (

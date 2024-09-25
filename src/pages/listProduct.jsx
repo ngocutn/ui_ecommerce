@@ -13,11 +13,9 @@ function ListProduct() {
     const getProducts = async () => {
       try {
         const res = await getAllProducts();
-        console.log("res", res);
+
         setProducts(res.data.data);
-      } catch (error) {
-        console.log("Error", error);
-      }
+      } catch (error) {}
     };
     getProducts();
   }, []);

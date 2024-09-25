@@ -13,12 +13,9 @@ function HomePage() {
     const getBanner = async () => {
       try {
         const res = await getBannerByQuantity(4);
-        console.log("res", res);
+
         setSlideImages(res.data.data);
-        console.log("slideImages", slideImages);
-      } catch (error) {
-        console.log("Error", error);
-      }
+      } catch (error) {}
     };
     getBanner();
   }, []);
