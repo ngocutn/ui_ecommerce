@@ -7,9 +7,7 @@ import ListProduct from "./pages/listProduct";
 import MainProductPage from "./pages/mainProductPage";
 import MainLayout from "./pages/mainLayout";
 import ProductDetails from "./pages/ProductDetail/ProductDetails";
-// import NewProduct from "./pages/AddProduct/NewProduct";
 import AddProductProvider from "./pages/AddProduct/AddProductProvider";
-// import NewProduct from "./pages/AddProduct/NewProduct";
 import BuyerLayout from "./pages/Auth/BuyerLayout";
 
 function App() {

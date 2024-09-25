@@ -8,11 +8,11 @@ const ProductCard = ({ product, children }) => {
     id,
     name,
     brandName,
-    quantityAvailable,
+    sumSoldQuantity,
     primaryImage,
     sellingPrice,
     discountedPrice,
-    rating,
+    avgRating,
   } = product;
 
   const navigate = useNavigate();
@@ -20,6 +20,8 @@ const ProductCard = ({ product, children }) => {
   const handleClick = () => {
     navigate(`/products/${id}`);
   };
+
+  const rating = Math.round(avgRating * 10) / 10;
 
   return (
     <div
@@ -50,7 +52,7 @@ const ProductCard = ({ product, children }) => {
                 <span className="pr-2 text-base border-r-2">{rating}</span>
               </div>
               <span className="px-3 py-1 text-sm font-medium bg-gray-200 rounded-md">
-                {quantityAvailable} Sold
+                {sumSoldQuantity} Sold
               </span>
             </div>
             <div className="flex gap-4 mt-2">

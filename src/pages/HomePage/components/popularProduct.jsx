@@ -27,10 +27,9 @@ function PopularProduct() {
     getProducts();
   }, []);
 
-  const currentProducts = productData.slice(
-    currentIndex * 4,
-    (currentIndex + 1) * 4
-  );
+  const currentProducts =
+    productData.length > 0 &&
+    productData.slice(currentIndex * 4, (currentIndex + 1) * 4);
 
   const prevImg = () => {
     const firstImg = currentIndex === 0;
@@ -72,6 +71,7 @@ function PopularProduct() {
             ))}
           </>
         ) : (
+          currentProducts &&
           currentProducts.map((item) => (
             <ProductCard product={item}>
               <div
