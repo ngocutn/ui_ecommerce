@@ -4,6 +4,11 @@ const ImageZoom = () => {
   let imageWrapper = document.getElementById("image-wrapper");
   let imageContainer = document.getElementById("image-container");
 
+  if (!imageZoom || !image || !imageWrapper || !imageContainer) {
+    console.error("One or more required elements are missing");
+    return; // Ngưng hàm nếu các phần tử không tồn tại
+  }
+
   let x, y, width, height;
 
   imageZoom.addEventListener("mouseenter", (e) => {
@@ -15,10 +20,6 @@ const ImageZoom = () => {
     y = size.y;
     width = size.width;
     height = size.height;
-
-    console.log(
-      "x: " + x + " y: " + y + " width:" + width + " height:" + height
-    );
   });
 
   imageZoom.addEventListener("mousemove", (e) => {

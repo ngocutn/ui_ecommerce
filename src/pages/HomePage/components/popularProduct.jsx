@@ -16,10 +16,9 @@ function PopularProduct() {
       try {
         setIsLoading(true);
         const res = await getTopProducts();
-        console.log("res", res);
+
         setProductData(res.data.data);
       } catch (error) {
-        console.log("Error", error);
       } finally {
         setIsLoading(false);
       }
@@ -37,7 +36,7 @@ function PopularProduct() {
     const newImg = firstImg ? productData.length / 4 - 1 : currentIndex - 1;
     setCurrentIndex(newImg);
   };
-  // console.log(currentIndex);
+  //
 
   const nextImg = () => {
     const lastImg = currentIndex === productData.length / 4 - 1;

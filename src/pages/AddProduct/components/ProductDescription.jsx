@@ -80,7 +80,6 @@ const ProductDescription = () => {
       reader.onload = (event) => {
         const text = event.target.result;
         const wordCount = text.split("").length;
-        console.log("Word count:", wordCount);
 
         if (wordCount > 1000) {
           setFileError(
@@ -118,7 +117,6 @@ const ProductDescription = () => {
       `https://neo4j-ecommerce.onrender.com/api/v1/products/exists?name=${name}`
     );
     const data = await response.json();
-    console.log("data name", data.data);
 
     if (data.data === true) {
       setIsNameDuplicate(true);

@@ -73,8 +73,6 @@ const ProductInfor = ({
     }
   }, [color, ram, store]);
 
-  console.log("product details", product);
-
   return (
     <div
       className={`flex-1 max-w-[1/3] h-[70vh] overflow-y-scroll scrollbar-hide scroll-smooth px-2`}

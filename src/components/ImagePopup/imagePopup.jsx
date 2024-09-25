@@ -18,7 +18,6 @@ const ImagePopup = ({ files, onClose, onSelect }) => {
 
       setFileList(newFileList);
       setSelectedImage(newFileList[0].preview);
-      console.log("preview", newFileList);
     }
   };
 
@@ -27,7 +26,6 @@ const ImagePopup = ({ files, onClose, onSelect }) => {
       onSelect(fileList);
     }
     onClose();
-    console.log("add file", fileList);
   };
 
   const handleDeleteClick = (name) => {

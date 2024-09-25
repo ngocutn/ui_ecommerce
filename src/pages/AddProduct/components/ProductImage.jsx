@@ -14,8 +14,6 @@ const ProductImage = () => {
     const selectedFile = e.target.files;
     setSelectedFiles(selectedFile);
 
-    console.log("selectedFile", selectedFile);
-
     const selectedFilesArray = Array.from(selectedFile).map((file) =>
       URL.createObjectURL(file)
     );
@@ -33,8 +31,6 @@ const ProductImage = () => {
     const [fst, ...remain] = selectedFiles;
     // const files = selectedFiles.slice(1);
     setSelectedFiles(remain);
-
-    console.log("selectedFiles Remove", selectedFiles);
   };
 
   const replaceImage = (newImageUrl, updatedImageList, updatedFileList) => {
@@ -46,12 +42,8 @@ const ProductImage = () => {
     setSelectedImages(updatedImageList);
     setSelectedFiles(updatedFileList);
     // setSelectedFiles(updatedImageList);
-    console.log("updatedImageList", updatedImageList);
-    console.log("updatedFileList", updatedFileList);
 
     setShowModal(false);
-
-    console.log("selectedFiles replace", selectedFiles);
   };
 
   const handleReplace = (index) => {

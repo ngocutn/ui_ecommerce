@@ -14,7 +14,7 @@ const VariantName = () => {
   const [selectedValue, setSelectedValue] = useState(variantOptions[0]);
 
   //set value for each variant
-  const [variantInputs, setVariantInputs] = useState({});
+  const [variantInputs, setVariantInputs] = useState([]);
   const [currentInput, setCurrentInput] = useState("");
 
   const handleChange = (event) => {
@@ -35,10 +35,13 @@ const VariantName = () => {
       const newValue = currentInput[variant];
 
       if (newValue) {
-        setVariantInputs((prev) => ({
-          ...prev,
-          [variant]: [...(prev[variant] || []), newValue],
-        }));
+        setVariantInputs((prev) =>
+          prev.map((v) =>
+            v.variantType === variant
+              ? { ...v, values: [...v.values, newValue] }
+              : v
+          )
+        );
 
         setCurrentInput((prev) => ({
           ...prev,
@@ -51,20 +54,26 @@ const VariantName = () => {
   };
 
   const handleDetele = (variant, valueToRemove) => {
-    setVariantInputs((prev) => ({
-      ...prev,
-      [variant]: prev[variant]?.filter((value) => value !== valueToRemove),
-    }));
+    setVariantInputs((prev) =>
+      prev.map((v) =>
+        v.variantType === variant
+          ? {
+              ...v,
+              values: v.values.filter((value) => value !== valueToRemove),
+            }
+          : v
+      )
+    );
   };
 
   useEffect(() => {
     if (variantOptions.length > 0) {
       setSelectedValue(variantOptions[0]);
 
-      const initialInputs = variantOptions.reduce((acc, option) => {
-        acc[option] = [];
-        return acc;
-      }, {});
+      const initialInputs = variantOptions.map((option) => ({
+        variantType: option,
+        values: [],
+      }));
       setVariantInputs(initialInputs);
     }
   }, [variantOptions]);
@@ -74,9 +83,6 @@ const VariantName = () => {
     dispatch(setVariantOptions(variantOptions));
     dispatch(setVariantValues(variantInputs));
   }, [variantInputs, selectedValue]);
-
-  console.log("variantInputs", variantInputs);
-  console.log("variantOptions", variantOptions);
 
   return (
     <div className="flex justify-center mt-8 gap-x-10">
@@ -102,7 +108,7 @@ const VariantName = () => {
       <div className="flex-1 p-3 rounded-md outline-dashed outline-offset-2 outline-gray-300">
         <h1 className="mb-5 font-bold text-text1">Variant Type</h1>
         <div className="flex flex-col w-full gap-y-5">
-          {variantOptions.map((item, index) => (
+          {variantInputs.map((variant, index) => (
             <Box
               key={index}
               sx={{
@@ -112,13 +118,15 @@ const VariantName = () => {
                 alignItems: "center",
               }}
             >
-              <p className="w-[10%] mr-3 font-bold text-text1">{item}</p>
+              <p className="w-[10%] mr-3 font-bold text-text1">
+                {variant.variantType}
+              </p>
               <div className="flex items-center w-full px-2 py-2 overflow-hidden border rounded-md border-text1 gap-x-1">
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
-                  {variantInputs[item]?.map((value) => (
+                  {variant.values?.map((value) => (
                     <Tag
                       value={value}
-                      item={item}
+                      item={variant.variantType}
                       handleDetele={handleDetele}
                     ></Tag>
                   ))}
@@ -126,8 +134,8 @@ const VariantName = () => {
                 <input
                   type="text"
                   className="border-none outline-none"
-                  onChange={(e) => handleChangeInput(e, item)}
-                  onKeyDown={(e) => handleKeyDown(e, item)}
+                  onChange={(e) => handleChangeInput(e, variant.variantType)}
+                  onKeyDown={(e) => handleKeyDown(e, variant.variantType)}
                 />
               </div>
             </Box>

@@ -7,7 +7,8 @@ export const productVariantSlice = createSlice({
     variantOptions: [],
     variantValues: [],
     primaryVariant: null,
-    variantImage: [],
+    variantImages: [],
+    variantImageUrl: null,
     isLoading: false,
     error: null,
     message: null,
@@ -25,23 +26,22 @@ export const productVariantSlice = createSlice({
       state.primaryVariant = action.payload;
     },
 
-    setVariantImage: (state, action) => {
-      state.variantImage = action.payload;
+    setVariantImages: (state, action) => {
+      state.variantImages = action.payload;
     },
 
     uploadFileRequest: (state, action) => {
-      state.variantImage = [];
       state.isLoading = true;
       state.error = null;
     },
     uploadFileSuccess: (state, action) => {
-      state.variantImage = [...state.variantImage, action.payload];
+      state.variantImageUrl = action.payload;
       state.isLoading = false;
       state.error = null;
       state.message = "Upload file successfully";
     },
     uploadFileError: (state, action) => {
-      state.variantImage = [];
+      state.variantImageUrl = null;
       state.isLoading = false;
       state.error = action.payload;
     },
@@ -53,12 +53,12 @@ export const productVariantSlice = createSlice({
   },
 });
 
-export const uploadImage = (fileName) => async (dispatch) => {
+export const uploadImage = (file) => async (dispatch) => {
   dispatch(productVariantSlice.actions.uploadFileRequest());
 
   try {
     const formData = new FormData();
-    formData.append("file", fileName);
+    formData.append("file", file);
 
     const res = await axios.post(
       `https://neo4j-ecommerce.onrender.com/api/v1/files/upload?folder=products`,
@@ -70,12 +70,16 @@ export const uploadImage = (fileName) => async (dispatch) => {
     dispatch(productVariantSlice.actions.clearAllErrors());
   } catch (e) {
     dispatch(
-      productVariantSlice.actions.uploadFileError(e.responst.data.message)
+      productVariantSlice.actions.uploadFileError(e.response?.data?.message)
     );
   }
 };
 
-export const { setVariantOptions, setVariantValues, setPrimaryVariant } =
-  productVariantSlice.actions;
+export const {
+  setVariantOptions,
+  setVariantValues,
+  setPrimaryVariant,
+  setVariantImages,
+} = productVariantSlice.actions;
 
 export default productVariantSlice.reducer;

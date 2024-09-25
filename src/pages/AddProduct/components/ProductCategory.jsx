@@ -24,7 +24,6 @@ const ProductCategory = () => {
 
   useEffect(() => {
     if (error) {
-      console.log("API error", error);
     }
 
     dispatch(getAllCategories());
@@ -32,7 +31,6 @@ const ProductCategory = () => {
 
   useEffect(() => {
     if (error) {
-      console.log("API error", error);
     }
 
     if (category) {
@@ -42,18 +40,12 @@ const ProductCategory = () => {
 
   useEffect(() => {
     if (error) {
-      console.log("API error", error);
     }
 
     if (subCategory) {
       dispatch(setVariantOptions(subCategory.variantOptions));
     }
   }, [subCategory]);
-
-  console.log("categories: ", categoriesData);
-  console.log("sub categories: ", subCategoriesData);
-  console.log("categoryId: ", category);
-  console.log("subCategory: ", subCategory.variantOptions);
 
   const {
     register,

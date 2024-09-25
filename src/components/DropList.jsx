@@ -7,7 +7,6 @@ const DropList = ({ children, title }) => {
 
   const handleToggle = () => {
     setIsShow(!isShow);
-    console.log(isShow);
   };
 
   return (

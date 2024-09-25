@@ -31,11 +31,7 @@ const RegisterBuyer = ({ className }) => {
     mode: "onChange",
   });
 
-  console.log(errors.email?.message);
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const onSubmit = (data) => {};
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

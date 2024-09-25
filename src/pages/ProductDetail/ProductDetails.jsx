@@ -6,19 +6,21 @@ import { getAllProducts } from "../../service/product/api";
 import ReviewsModal from "../Review/ReviewsModal";
 import { useOutletContext, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductById } from "../../store/slice/productSlice";
+import {
+  getProductByCategory,
+  getProductById,
+} from "../../store/slice/productSlice";
 import { Skeleton } from "@mui/material";
 import ProductInfoSkeleton from "../../components/skeleton/ProductInfoSkeleton";
 import ProductCardSkeleton from "../../components/skeleton/ProductCardSkeleton";
 
 const ProductDetails = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [productData, setProductData] = useState([]);
   const { isShow, setIsShow } = useOutletContext();
   const [Images, setImages] = useState([]);
+  const [cateId, setCateId] = useState("");
 
   const dispatch = useDispatch();
-  const { message, product, error, isLoading } = useSelector(
+  const { message, product, error, isLoading, productCategory } = useSelector(
     (state) => state.product
   );
 
@@ -27,20 +29,27 @@ const ProductDetails = () => {
   };
 
   const productId = useParams();
-  console.log(productId.id);
 
   //get product by id
   useEffect(() => {
     if (error) {
-      console.log("API", error);
     }
 
     if (message) {
-      console.log(message);
     }
 
     if (productId) {
       dispatch(getProductById(productId.id));
+
+      product.categories?.map((cate) => {
+        if (cate.isFeatured) {
+          const categoryId = cate[1].id;
+        }
+        const categoryId = cate[0].id;
+        setCateId(categoryId);
+      });
+
+      dispatch(getProductByCategory(product.categories, productId.id));
     }
   }, [dispatch, productId.id, productId]);
 
@@ -51,23 +60,21 @@ const ProductDetails = () => {
   }, [dispatch, product]);
 
   //get all products
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const res = await getAllProducts();
-        console.log("res", res);
-        setProductData(res.data.data);
-      } catch (error) {
-        console.log("Error", error);
-      }
-    };
-    getProducts();
-  }, []);
+  // useEffect(() => {
+  //   const getProducts = async () => {
+  //     try {
+  //       const res = await getAllProducts();
+  //
+  //       setProductData(res.data.data);
+  //     } catch (error) {
+  //
+  //     }
+  //   };
+  //   getProducts();
+  // }, []);
 
-  console.log("product", product.images);
-  console.log("productData", productData);
-
-  console.log(Images);
+  //
+  //
 
   return (
     <div className="pb-10">
@@ -110,7 +117,7 @@ const ProductDetails = () => {
       <div className="pt-16">
         <h1 className="mb-3 text-2xl font-bold">You may also like</h1>
         <div className="grid grid-cols-4 gap-10">
-          {productData
+          {/* {productData
             .slice(0, 4)
             .map((item) =>
               isLoading ? (
@@ -118,7 +125,7 @@ const ProductDetails = () => {
               ) : (
                 <ProductCard key={item.id} product={item}></ProductCard>
               )
-            )}
+            )} */}
         </div>
       </div>
     </div>
