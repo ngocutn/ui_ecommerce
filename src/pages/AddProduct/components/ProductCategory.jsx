@@ -24,22 +24,25 @@ const ProductCategory = () => {
 
   useEffect(() => {
     if (error) {
+      console.log("api", error);
     }
 
     dispatch(getAllCategories());
-  }, [error, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (error) {
+      console.log("api", error);
     }
 
     if (category) {
       dispatch(getAllSubCategories(category));
     }
-  }, [error, dispatch, category]);
+  }, [dispatch, category]);
 
   useEffect(() => {
     if (error) {
+      console.log("api", error);
     }
 
     if (subCategory) {
