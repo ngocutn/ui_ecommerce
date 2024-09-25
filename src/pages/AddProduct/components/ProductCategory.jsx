@@ -1,78 +1,52 @@
 import { useFormContext } from "react-hook-form";
 import { useState, useEffect } from "react";
-import {
-  getCategoriesByParentId,
-  getLevel1Categories,
-} from "../../../service/product/api";
-
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllCategories,
+  getAllSubCategories,
+  setVariantOptions,
+} from "../../../store/slice/categorySlice";
 
 const ProductCategory = () => {
-  const [categories, setCategories] = useState([]);
-  const [subcategories, setSubcategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [category, setCategory] = useState("");
+  const [subCategory, setSubCategory] = useState("");
+
+  const dispatch = useDispatch();
+  const {
+    error,
+    categories: categoriesData,
+    subCategories: subCategoriesData,
+  } = useSelector((state) => state.category);
 
   useEffect(() => {
-    const getCategory = async () => {
-      try {
-        const res = await getLevel1Categories();
-        setCategories(res.data.data);
-      } catch (error) {
-        console.log("Error", error);
-      }
-    };
-    getCategory();
-  }, []);
-
-  useEffect(() => {
-    const fetchSubcategories = async () => {
-      if (!selectedCategory) return;
-
-      try {
-        const response = await getCategoriesByParentId(selectedCategory);
-
-        setSubcategories(response.data.data);
-      } catch (error) {
-        console.error("Error fetching subcategories:", error);
-      }
-    };
-
-    fetchSubcategories();
-  }, [selectedCategory]);
-
-  const handleCategoryChange = (event) => {
-    const categoryId = event.target.value;
-
-    setSelectedCategory(categoryId);
-  };
-
-  useEffect(() => {
-    if (selectedCategory) {
-      setSelectedSubcategory("");
+    if (error) {
     }
-  }, [selectedCategory]);
+
+    dispatch(getAllCategories());
+  }, [error, dispatch]);
 
   useEffect(() => {
-    if (selectedCategory) {
-      clearErrors("categoryIds");
+    if (error) {
     }
-  }, [selectedCategory]);
+
+    if (category) {
+      dispatch(getAllSubCategories(category));
+    }
+  }, [error, dispatch, category]);
 
   useEffect(() => {
-    if (selectedSubcategory) {
-      clearErrors("subCategoryIds");
+    if (error) {
     }
-  }, [selectedSubcategory]);
 
-  const handleSubcategoryChange = (event) => {
-    setSelectedSubcategory(event.target.value);
-  };
+    if (subCategory) {
+      dispatch(setVariantOptions(subCategory.variantOptions));
+    }
+  }, [subCategory]);
 
-  // ///////////////////////////////////
   const {
     register,
     clearErrors,
@@ -94,16 +68,16 @@ const ProductCategory = () => {
           <Select
             id="productCategory"
             {...register("categoryIds")}
-            className="rounded-lg my-2 font-semibold "
-            value={selectedCategory}
-            onChange={handleCategoryChange}
+            className="my-2 font-semibold rounded-lg "
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             displayEmpty
             size="small"
           >
             <MenuItem disabled value="">
               <em>Select a category</em>
             </MenuItem>
-            {categories.map((cate) => (
+            {categoriesData.map((cate) => (
               <MenuItem key={cate.id} value={cate.id}>
                 {cate.name}
               </MenuItem>
@@ -112,7 +86,7 @@ const ProductCategory = () => {
           {errors.categoryIds && (
             <FormHelperText className="text-[#D32F2F]">
               <i
-                className="text-red-500 fa fa-exclamation-circle mr-1"
+                className="mr-1 text-red-500 fa fa-exclamation-circle"
                 aria-hidden="true"
               ></i>
               {errors.categoryIds.message}
@@ -122,7 +96,7 @@ const ProductCategory = () => {
 
         <label
           htmlFor="subCategoryIds"
-          className="font-semibold text-gray-500 mt-2"
+          className="mt-2 font-semibold text-gray-500"
         >
           Product Subcategory
         </label>
@@ -130,18 +104,18 @@ const ProductCategory = () => {
           <Select
             id="productSubcategory"
             {...register("subCategoryIds")}
-            className="rounded-lg my-2 font-semibold "
+            className="my-2 font-semibold rounded-lg "
             displayEmpty
-            value={selectedSubcategory}
-            onChange={handleSubcategoryChange}
-            disabled={!selectedCategory}
+            value={subCategory}
+            onChange={(e) => setSubCategory(e.target.value)}
+            disabled={!category}
             size="small"
           >
             <MenuItem disabled value="">
               <em>Select a subcategory</em>
             </MenuItem>
-            {subcategories.map((sub) => (
-              <MenuItem key={sub.id} value={sub.id}>
+            {subCategoriesData.map((sub) => (
+              <MenuItem key={sub.id} value={sub}>
                 {sub.name}
               </MenuItem>
             ))}

@@ -15,8 +15,6 @@ const ViewImage = () => {
   const replaceImage = (updatedFileList) => {
     setFiles(updatedFileList);
     setShowModal(false);
-
-    console.log("selectedFiles replace", files);
   };
   const onDrop = useCallback((acceptedFiles) => {
     if (acceptedFiles?.length) {
@@ -44,8 +42,6 @@ const ViewImage = () => {
   const removeImage = (name) => {
     setFiles((prevFiles) => prevFiles.filter((file) => file.name !== name));
   };
-
-  console.log("files", files);
 
   const {
     register,

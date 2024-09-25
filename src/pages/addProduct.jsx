@@ -151,7 +151,6 @@ function AddProduct() {
       reader.onload = (event) => {
         const text = event.target.result;
         const wordCount = text.split("").length;
-        console.log("Word count:", wordCount);
 
         if (wordCount > 1000) {
           setFileError(
@@ -191,9 +190,7 @@ function AddProduct() {
       try {
         const res = await getLevel1Categories();
         setCategories(res.data.data);
-      } catch (error) {
-        console.log("Error", error);
-      }
+      } catch (error) {}
     };
     getCategory();
   }, []);
@@ -268,7 +265,6 @@ function AddProduct() {
       `https://neo4j-ecommerce.onrender.com/api/v1/products/exists?name=${name}`
     );
     const data = await response.json();
-    console.log("data name", data.data);
 
     if (data.data === true) {
       setIsNameDuplicate(true);
@@ -290,8 +286,6 @@ function AddProduct() {
     const selectedFile = e.target.files;
     setSelectedFiles(selectedFile);
 
-    console.log("selectedFile", selectedFile);
-
     const selectedFilesArray = Array.from(selectedFile).map((file) =>
       URL.createObjectURL(file)
     );
@@ -309,8 +303,6 @@ function AddProduct() {
     const [fst, ...remain] = selectedFiles;
     // const files = selectedFiles.slice(1);
     setSelectedFiles(remain);
-
-    console.log("selectedFiles Remove", selectedFiles);
   };
 
   const replaceImage = (newImageUrl, updatedImageList, updatedFileList) => {
@@ -322,12 +314,8 @@ function AddProduct() {
     setSelectedImages(updatedImageList);
     setSelectedFiles(updatedFileList);
     // setSelectedFiles(updatedImageList);
-    console.log("updatedImageList", updatedImageList);
-    console.log("updatedFileList", updatedFileList);
 
     setShowModal(false);
-
-    console.log("selectedFiles replace", selectedFiles);
   };
 
   const handleReplace = (index) => {
@@ -355,7 +343,6 @@ function AddProduct() {
       images,
       ...otherFields
     } = data;
-    console.log("data", data);
 
     const request = {
       ...otherFields,
@@ -380,7 +367,6 @@ function AddProduct() {
 
     const res = await addProduct(request);
     setLoading(false);
-    console.log("res 3333", res);
 
     if (res.status === 201) {
       alert(res.data.message);
@@ -400,26 +386,20 @@ function AddProduct() {
       formData.append("files", selectedFiles[i]);
     }
 
-    console.log("formData", formData);
-    console.log("files", selectedFiles);
-
     return axios({
       method: "post",
       url: `https://neo4j-ecommerce.onrender.com/api/v1/products`,
       data: formData,
     })
       .then((response) => {
-        console.log("response", response);
         return response;
       })
       .catch((error) => {
-        console.log("error", error);
         return error;
       });
   };
 
   const isFormValid = formState.isValid;
-  console.log("isFormValid", isFormValid);
 
   return (
     <div id="add-product" className="my-16 mr-12">

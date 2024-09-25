@@ -17,9 +17,9 @@ const ProductVariant = () => {
         </span>
       </div>
 
-      {addVariant && <VariantPopup></VariantPopup>}
-
-      {/* <VariantPopup></VariantPopup> */}
+      {addVariant && (
+        <VariantPopup setAddVariant={setAddVariant}></VariantPopup>
+      )}
     </div>
   );
 };
