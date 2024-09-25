@@ -33,9 +33,11 @@ const ProductDetails = () => {
   //get product by id
   useEffect(() => {
     if (error) {
+      console.log("api", error);
     }
 
     if (message) {
+      console.log("message", message);
     }
 
     if (productId) {
