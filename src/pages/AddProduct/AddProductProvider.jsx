@@ -8,12 +8,10 @@ import ProductCategory from "./components/ProductCategory";
 import ProductIventory from "./components/ProductInventory";
 import ProductSellType from "./components/ProductSellType";
 import ProductVariant from "./components/ProductVariant";
-import ProductImage from "./components/ProductImage";
 import ProductShipping from "./components/ProductShipping";
 import ProductPricing from "./components/ProductPricing";
 import ProductHeading from "./components/ProductHeading";
 import ProductBtn from "./components/ProductButton";
-import { View } from "lucide-react";
 import ViewImage from "./components/ViewImage";
 import { Switch } from "@mui/material";
 import ProductCollection from "./components/ProductCollection";
@@ -79,17 +77,19 @@ const AddProdcutProvider = () => {
       },
     };
 
-    setLoading(true);
+    console.log(request);
 
-    const res = await addProduct(request);
-    setLoading(false);
+    // setLoading(true);
 
-    if (res.status === 201) {
-      alert(res.data.message);
-      navigate("/admin");
-    } else {
-      alert(res.response.data.message);
-    }
+    // const res = await addProduct(request);
+    // setLoading(false);
+
+    // if (res.status === 201) {
+    //   alert(res.data.message);
+    //   navigate("/admin");
+    // } else {
+    //   alert(res.response.data.message);
+    // }
   };
 
   const addProduct = async (request) => {
@@ -126,7 +126,7 @@ const AddProdcutProvider = () => {
               <ProductDescription />
               <ProductCategory />
               <ProductSellType />
-              <div className="flex justify-between items-center mt-7">
+              <div className="flex items-center justify-between mt-7">
                 <p className="text-xl font-semibold">Have variant?</p>
                 <Switch
                   checked={checked}
