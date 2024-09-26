@@ -61,23 +61,6 @@ const ProductDetails = () => {
     }
   }, [dispatch, product]);
 
-  //get all products
-  // useEffect(() => {
-  //   const getProducts = async () => {
-  //     try {
-  //       const res = await getAllProducts();
-  //
-  //       setProductData(res.data.data);
-  //     } catch (error) {
-  //
-  //     }
-  //   };
-  //   getProducts();
-  // }, []);
-
-  //
-  //
-
   return (
     <div className="pb-10">
       <div className="flex items-start pt-[140px] gap-x-7 relative">

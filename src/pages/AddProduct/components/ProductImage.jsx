@@ -56,6 +56,8 @@ const ProductImage = () => {
     formState: { errors },
   } = useFormContext();
 
+  console.log("selecteImage", selectedImages);
+
   return (
     <div>
       <p className="text-xl font-semibold">

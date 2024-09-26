@@ -56,6 +56,8 @@ const ProductCategory = () => {
     formState: { errors },
   } = useFormContext();
 
+  console.log("sub", subCategory);
+
   return (
     <div>
       <p className="text-xl font-semibold mt-7">Category</p>
@@ -118,7 +120,7 @@ const ProductCategory = () => {
               <em>Select a subcategory</em>
             </MenuItem>
             {subCategoriesData.map((sub) => (
-              <MenuItem key={sub.id} value={sub}>
+              <MenuItem key={sub.id} value={sub.id}>
                 {sub.name}
               </MenuItem>
             ))}

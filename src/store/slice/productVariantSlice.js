@@ -8,6 +8,7 @@ export const productVariantSlice = createSlice({
     variantValues: [],
     primaryVariant: null,
     variantImages: [],
+    productVariants: [],
     variantImageUrl: null,
     isLoading: false,
     error: null,
@@ -27,7 +28,13 @@ export const productVariantSlice = createSlice({
     },
 
     setVariantImages: (state, action) => {
-      state.variantImages = action.payload;
+      state.variantImages = Array.isArray(action.payload)
+        ? [...action.payload]
+        : [];
+    },
+
+    setProductVariants: (state, action) => {
+      state.productVariants = [...action.payload];
     },
 
     uploadFileRequest: (state, action) => {
@@ -80,6 +87,7 @@ export const {
   setVariantValues,
   setPrimaryVariant,
   setVariantImages,
+  setProductVariants,
 } = productVariantSlice.actions;
 
 export default productVariantSlice.reducer;

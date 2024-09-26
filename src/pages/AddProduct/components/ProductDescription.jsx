@@ -1,8 +1,17 @@
-import { set, useFormContext } from "react-hook-form";
-import { useState } from "react";
+import { Controller, set, useFormContext } from "react-hook-form";
+import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import TextField from "@mui/material/TextField";
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { GetAllBrandName } from "../../../store/slice/brandNameSlice";
 
 const ProductDescription = () => {
   const {
@@ -11,10 +20,25 @@ const ProductDescription = () => {
     setError,
     setValue,
     clearErrors,
+    control,
     formState: { errors },
   } = useFormContext();
 
   const [fileError, setFileError] = useState("");
+  const dispatch = useDispatch();
+  const { error, brandName: brandNameData } = useSelector(
+    (state) => state.brandName
+  );
+
+  useEffect(() => {
+    if (error) {
+      console.log("api", error);
+    }
+
+    dispatch(GetAllBrandName());
+  }, [error]);
+
+  console.log("brandName", brandNameData);
 
   const handleChangeName = (event) => {
     const trimmedValue = event.target.value.replace(/\s\s+/g, " ");
@@ -157,8 +181,37 @@ const ProductDescription = () => {
           }
           inputProps={{ maxLength: 120 }}
           onBlur={(duplicateName, handleChangeName)}
-          className="rounded-lg text-ellipsis  py-2"
+          className="py-2 rounded-lg text-ellipsis"
         ></TextField>
+
+        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+          <label htmlFor="brandName" className="font-semibold text-gray-500">
+            Brand Name <span className="text-red-600">*</span>
+          </label>
+          <Controller
+            name="brandName" // Name for the form field
+            control={control} // Pass control to the Controller
+            defaultValue="" // Default value for the select
+            render={({ field }) => (
+              <Select
+                id="productCategory"
+                className="my-2 font-semibold rounded-lg "
+                displayEmpty
+                size="small"
+                {...field} // Spread the field properties
+              >
+                {brandNameData.data?.map((brand) => (
+                  <MenuItem key={brand.id} value={brand.name}>
+                    <em>{brand.name}</em>
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+          <FormHelperText className="text-red-600">
+            {errors.brandName?.message}
+          </FormHelperText>
+        </FormControl>
 
         <div className="flex justify-between mt-2">
           <label htmlFor="description" className="font-semibold text-gray-500">

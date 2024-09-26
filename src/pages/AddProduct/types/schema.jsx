@@ -3,6 +3,7 @@ import * as yup from "yup";
 export const schema = yup
   .object({
     name: yup.string().required("Name is not allowed to be empty"),
+    brandName: yup.string().required("Brand Name is not allowed to be empty"),
     description: yup
       .string()
       .required("Description is required")
