@@ -32,7 +32,7 @@ function TopCategory() {
           See all
         </span>
       </div>
-      <div className="flex justify-between w-full my-3 text-base">
+      <div className="grid grid-cols-10 grid-rows-1 my-3 text-base">
         {isLoading ? (
           <>
             {Array.from({ length: 10 }).map((_, index) => (
@@ -42,7 +42,7 @@ function TopCategory() {
         ) : (
           category.slice(0, 10).map((item) => (
             <div className="flex flex-col items-center">
-              <div className="w-[70px] h-[70px] rounded-full bg-gray-200 p-4 hover:bg-gray-100 cursor-pointer">
+              <div className="w-[60px] h-[60px] rounded-full bg-gray-200 p-4 hover:bg-gray-100 cursor-pointer">
                 <img
                   src={item.icon}
                   alt="image"
@@ -50,7 +50,9 @@ function TopCategory() {
                 />
                 {/* {item.icon} */}
               </div>
-              <p className="mt-2 font-semibold text-center">{item.name}</p>
+              <p className="mt-2 text-sm font-semibold text-center">
+                {item.name}
+              </p>
             </div>
           ))
         )}

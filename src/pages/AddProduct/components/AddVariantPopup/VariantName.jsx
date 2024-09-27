@@ -10,8 +10,8 @@ import {
 
 const VariantName = () => {
   const dispatch = useDispatch();
-  const { variantOptions } = useSelector((state) => state.category);
-  const [selectedValue, setSelectedValue] = useState(variantOptions[0]);
+  const { variantOptional } = useSelector((state) => state.category);
+  const [selectedValue, setSelectedValue] = useState(variantOptional[0]);
 
   //set value for each variant
   const [variantInputs, setVariantInputs] = useState([]);
@@ -67,20 +67,20 @@ const VariantName = () => {
   };
 
   useEffect(() => {
-    if (variantOptions.length > 0) {
-      setSelectedValue(variantOptions[0]);
+    if (variantOptional?.length > 0) {
+      setSelectedValue(variantOptional[0]);
 
-      const initialInputs = variantOptions.map((option) => ({
+      const initialInputs = variantOptional?.map((option) => ({
         variantType: option,
         values: [],
       }));
       setVariantInputs(initialInputs);
     }
-  }, [variantOptions]);
+  }, [variantOptional]);
 
   useEffect(() => {
     dispatch(setPrimaryVariant(selectedValue));
-    dispatch(setVariantOptions(variantOptions));
+    dispatch(setVariantOptions(variantOptional));
     dispatch(setVariantValues(variantInputs));
   }, [variantInputs, selectedValue]);
 
@@ -89,7 +89,7 @@ const VariantName = () => {
       <div className="p-3 rounded-md outline-dashed outline-offset-2 outline-gray-300">
         <h1 className="mb-5 font-bold text-text1">Primary Variant</h1>
         <div className="flex flex-col">
-          {variantOptions.map((item, index) => (
+          {variantOptional?.map((item, index) => (
             <div>
               <Radio
                 checked={selectedValue === item}
@@ -108,7 +108,7 @@ const VariantName = () => {
       <div className="flex-1 p-3 rounded-md outline-dashed outline-offset-2 outline-gray-300">
         <h1 className="mb-5 font-bold text-text1">Variant Type</h1>
         <div className="flex flex-col w-full gap-y-5">
-          {variantInputs.map((variant, index) => (
+          {variantInputs?.map((variant, index) => (
             <Box
               key={index}
               sx={{

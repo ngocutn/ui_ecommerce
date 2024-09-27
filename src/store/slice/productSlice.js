@@ -6,6 +6,7 @@ export const productSlice = createSlice({
   initialState: {
     product: {},
     productCategory: [],
+    popularProduct: [],
     message: null,
     error: null,
     isLoading: false,
@@ -42,6 +43,25 @@ export const productSlice = createSlice({
     },
     getAllProductByCategoryError: (state, action) => {
       state.productCategory = [];
+      state.isLoading = false;
+      state.error = action.payload;
+      state.message = null;
+    },
+
+    getPopularProductRequest: (state, action) => {
+      state.popularProduct = [];
+      state.isLoading = true;
+      state.error = null;
+      state.message = null;
+    },
+    getPopularProductSuccess: (state, action) => {
+      state.popularProduct = action.payload;
+      state.isLoading = false;
+      state.error = null;
+      state.message = "Get popular product successfully";
+    },
+    getPopularProductError: (state, action) => {
+      state.popularProduct = [];
       state.isLoading = false;
       state.error = action.payload;
       state.message = null;
@@ -89,6 +109,28 @@ export const getProductByCategory = (cateId, productId) => async (dispatch) => {
   } catch (e) {
     dispatch(
       productSlice.actions.getAllProductByCategoryError(
+        e.response?.data?.message || "Something went wrong"
+      )
+    );
+  }
+};
+
+//get popular product
+export const getPopularProduct = () => async (dispatch) => {
+  dispatch(productSlice.actions.getPopularProductRequest());
+
+  try {
+    const res = await axios.get(
+      `https://neo4j-ecommerce.onrender.com/api/v1/products/top-selling?page=0&size=20`
+    );
+
+    dispatch(
+      productSlice.actions.getPopularProductSuccess(res.data.data.result)
+    );
+    dispatch(productSlice.actions.clearAllErrors());
+  } catch (e) {
+    dispatch(
+      productSlice.actions.getPopularProductError(
         e.response?.data?.message || "Something went wrong"
       )
     );

@@ -25,11 +25,11 @@ function HeaderHome() {
       <Toolbar component="div" className="flex justify-between my-3">
         <Stack
           direction="row"
-          className="flex items-center text-3xl font-black text-blue-600 cursor-pointer logo"
+          className="flex items-center text-xl font-black text-blue-600 cursor-pointer logo"
           onClick={() => navigate("/")}
         >
           <img
-            className="w-[4rem] h-[4rem] md:w-[5rem] md:h-[5rem]"
+            className="w-[2rem] h-[2rem] md:w-[5rem] md:h-[5rem]"
             src="https://media.licdn.com/dms/image/v2/C4E0BAQGx-TFoWYNJcg/company-logo_200_200/company-logo_200_200/0/1659539191896?e=1733356800&v=beta&t=6Q59ItomXoSc2VXB7_RWGddV0P5FLE6FcCQPVCuJDIM"
             alt=""
           />
@@ -38,20 +38,20 @@ function HeaderHome() {
 
         <Stack
           direction="row"
-          className="items-center justify-center text-lg grow"
+          className="items-center justify-center text-sm grow"
         >
           <Input
             type="search"
             variant="outlined"
             disableUnderline
-            className="w-2/3 px-3 py-3 border border-gray-200 rounded-md"
+            className="w-2/3 px-3 py-3 text-sm border border-gray-200 rounded-md"
             placeholder="Search Products"
           >
             <SearchIcon className="text-black" />
           </Input>
           <Select
             defaultValue="All categories"
-            className="border border-gray-200 "
+            className="text-sm border border-gray-200"
             sx={{
               "& fieldset": {
                 borderColor: "transparent", // Ẩn viền gốc của Material UI
@@ -69,16 +69,16 @@ function HeaderHome() {
 
         <Stack
           direction="row"
-          className="flex items-center justify-center gap-5 "
+          className="flex items-center justify-center gap-x-5"
         >
           <Link
             to="/buyer"
-            className="flex items-center p-2 text-black capitalize rounded-lg hover:bg-gray-100"
+            className="flex items-center p-2 text-sm text-black capitalize rounded-lg hover:bg-gray-100"
           >
             <PermIdentityOutlinedIcon />
             <Typography
               variant="body1"
-              className="flex flex-col items-start gap-0 ml-2 font-semibold"
+              className="flex flex-col items-start gap-0 ml-2 text-sm font-semibold"
             >
               <span className="text-[12px]">Sign in</span>
               <span>Account</span>

@@ -6,7 +6,7 @@ export const categorySlice = createSlice({
   initialState: {
     categories: [],
     subCategories: [],
-    variantOptions: [],
+    variantOptional: [],
     primaryVariantOptions: null,
     isLoading: false,
     error: null,
@@ -46,7 +46,7 @@ export const categorySlice = createSlice({
     },
 
     setVariantOptions: (state, action) => {
-      state.variantOptions = action.payload;
+      state.variantOptional = action.payload;
     },
 
     setPrimaryVariantOptions: (state, action) => {

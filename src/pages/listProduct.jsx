@@ -17,15 +17,16 @@ function ListProduct() {
         setProducts(res.data.data);
       } catch (error) {}
     };
+
     getProducts();
   }, []);
 
   return (
     <div className="mt-14">
       <div className="flex justify-between mt-14">
-        <h1 className="text-2xl font-bold mb-4">Product List</h1>
+        <h1 className="mb-4 text-2xl font-bold">Product List</h1>
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+          className="px-4 py-2 mb-4 text-white bg-blue-500 rounded"
           onClick={() => {
             navigate("./add-product");
           }}
@@ -38,13 +39,13 @@ function ListProduct() {
           products.map((product) => (
             <div
               key={product.id}
-              className="border rounded-lg p-4 shadow-sm bg-white hover:bg-gray-100 flex"
+              className="flex p-4 bg-white border rounded-lg shadow-sm hover:bg-gray-100"
             >
-              <div className="w-20 h-20 bg-gray-200 rounded mr-4">
+              <div className="w-20 h-20 mr-4 bg-gray-200 rounded">
                 <img
                   src={product.primaryImage}
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  className="object-cover w-full h-full"
                 />
               </div>
               <div>

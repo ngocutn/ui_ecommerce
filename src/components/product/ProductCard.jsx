@@ -13,6 +13,7 @@ const ProductCard = ({ product, children }) => {
     sellingPrice,
     discountedPrice,
     avgRating,
+    image,
   } = product;
 
   const navigate = useNavigate();
@@ -32,24 +33,26 @@ const ProductCard = ({ product, children }) => {
     >
       <div className="flex items-center justify-center w-full p-2 overflow-hidden bg-white h-fit">
         <img
-          src={primaryImage}
+          src={image}
           alt="Product Image"
-          className="object-cover w-[80%] h-[80%] transition duration-300 group-hover:scale-110"
+          className="object-cover w-[70%] h-[70%] transition duration-300 group-hover:scale-110"
         />
       </div>
-      <div className="px-3 py-8">
-        <p className="overflow-hidden text-xl font-bold text-nowrap text-ellipsis">
+      <div className="px-3 py-5">
+        <p className="overflow-hidden text-[16px] font-bold text-nowrap text-ellipsis">
           {name}
         </p>
-        <p className="text-gray-500 text-base mb-[8px] text-ellipsis text-nowrap overflow-hidden">
+        <p className="text-gray-500 text-[14px] mb-[8px] text-ellipsis text-nowrap overflow-hidden">
           {brandName}
         </p>
         <div className="flex items-center gap-2 mt-3">
           <div className="w-3/4 ">
-            <div className="flex gap-2 items-center text-[13px] font-bold">
-              <div className="flex items-end justify-center gap-x-2">
-                <StartFillIcon fill={"#f59d60"} size={24}></StartFillIcon>
-                <span className="pr-2 text-base border-r-2">{rating}</span>
+            <div className="flex items-center gap-2 font-bold">
+              <div className="flex items-center justify-center gap-x-1">
+                <StartFillIcon fill={"#f59d60"} size={20}></StartFillIcon>
+                <span className="pr-2 border-r-2 text-[14px]">
+                  {rating ? rating : "0.0"}
+                </span>
               </div>
               <span className="px-3 py-1 text-sm font-medium bg-gray-200 rounded-md">
                 {sumSoldQuantity} Sold

@@ -120,7 +120,7 @@ const ProductCategory = () => {
               <em>Select a subcategory</em>
             </MenuItem>
             {subCategoriesData.map((sub) => (
-              <MenuItem key={sub.id} value={sub.id}>
+              <MenuItem key={sub.id} value={sub}>
                 {sub.name}
               </MenuItem>
             ))}

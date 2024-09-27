@@ -1,5 +1,4 @@
 import { MenuItem, Select } from "@mui/material";
-import download from "../assets/image/download.webp";
 import { Dot } from "lucide-react";
 
 const Footer = () => {
@@ -62,98 +61,78 @@ const Footer = () => {
   ];
   return (
     <div>
-      <div className="flex gap-5 justify-center mt-10">
-        <div className="w-[40%] flex flex-col items-stretch bg-[#f2f1ed] p-4 rounded-xl justify-between">
-          <div>
-            <p className="text-2xl font-bold">
-              Special treat with your 1st order
-            </p>
-            <p className="text-2xl font-semibold">
-              Join our newsletter to claim it
-            </p>
-          </div>
-          <div className="flex justify-between">
-            <input
-              type="text"
-              placeholder="Email address"
-              className=" border-2 border-gray-300 rounded-lg p-2 mt-2 w-[70%]"
+      <div className="w-full px-16 shadow-lg">
+        <div className="flex justify-between mt-10">
+          <div className="  w-[100px] h-[100px] flex items-center">
+            <img
+              src="https://media.licdn.com/dms/image/v2/C4E0BAQGx-TFoWYNJcg/company-logo_200_200/company-logo_200_200/0/1659539191896?e=1733356800&v=beta&t=6Q59ItomXoSc2VXB7_RWGddV0P5FLE6FcCQPVCuJDIM"
+              alt=""
+              className="object-cover"
             />
-            <button className="bg-[#ffbfcc] text-white font-semibold text-xl rounded-xl px-4 py-3 mt-2">
-              Subscribe
-            </button>
+            <span className="text-3xl font-bold text-[#2363eb]">ccessed</span>
+          </div>
+          <div className="flex justify-between w-3/4 text-small">
+            {sections.map((section, index) => (
+              <div key={index}>
+                <p className="font-bold ">{section.title}</p>
+                <ul>
+                  {section.items.map((item, index) => (
+                    <li
+                      key={index}
+                      className="hover:text-[#ffbfcc] cursor-pointer my-4 font-semibold"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="w-[60%]">
-          <img src={download} alt="" className="w-full  rounded-xl" />
-        </div>
-      </div>
-
-      <div className="flex justify-between mt-10">
-        <div classNamw="w-1/4">
-          <p className="text-xl font-bold">hey harper</p>
-        </div>
-        <div className="flex w-3/4 justify-between text-base">
-          {sections.map((section, index) => (
-            <div key={index}>
-              <p className=" font-bold">{section.title}</p>
-              <ul>
-                {section.items.map((item, index) => (
-                  <li
-                    key={index}
-                    className="hover:text-[#ffbfcc] cursor-pointer my-4 font-semibold"
-                  >
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex justify-between mt-10">
-        <div>
-          <Select
-            defaultValue="USD"
-            sx={{
-              border: "none",
-              "& .MuiOutlinedInput-notchedOutline": {
+        <div className="flex justify-between mt-10">
+          <div>
+            <Select
+              defaultValue="USD"
+              sx={{
                 border: "none",
-              },
-            }}
-          >
-            {currency.map((item, index) => (
-              <MenuItem key={index} value={item.value}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </Select>
-          <Select
-            defaultValue="en"
-            sx={{
-              border: "none",
-              "& .MuiOutlinedInput-notchedOutline": {
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "none",
+                },
+              }}
+            >
+              {currency.map((item, index) => (
+                <MenuItem key={index} value={item.value}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+            <Select
+              defaultValue="en"
+              sx={{
                 border: "none",
-              },
-            }}
-          >
-            {language.map((item, index) => (
-              <MenuItem key={index} value={item.value}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-        <div className="text-gray-500 flex items-center">
-          <a href="" className="hover:text-[#ffbfcc] font-semibold ">
-            Terms of service
-          </a>
-          <span>
-            <Dot />
-          </span>
-          <a href="" className="hover:text-[#ffbfcc] font-semibold">
-            Privacy Policy
-          </a>
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "none",
+                },
+              }}
+            >
+              {language.map((item, index) => (
+                <MenuItem key={index} value={item.value}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+          <div className="flex items-center text-gray-500">
+            <a href="" className="hover:text-[#ffbfcc] font-semibold ">
+              Terms of service
+            </a>
+            <span>
+              <Dot />
+            </span>
+            <a href="" className="hover:text-[#ffbfcc] font-semibold">
+              Privacy Policy
+            </a>
+          </div>
         </div>
       </div>
     </div>

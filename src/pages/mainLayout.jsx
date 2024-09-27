@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import HeaderHome from "../components/headerHome";
+import Footer from "../components/Footer";
 
 const MainLayout = () => {
   const location = useLocation();
@@ -24,6 +25,8 @@ const MainLayout = () => {
       ) : (
         ""
       )}
+
+      <Footer></Footer>
     </div>
   );
 };
