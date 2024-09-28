@@ -26,7 +26,7 @@ function HomePage() {
       <Banner
         slides={slideImages}
         customWidth="desktop-up:w-80% tablet-range:w-[750px] sm:w-[350px]"
-        customHeight="desktop-up:h-[450px] tablet-range:h-[400px] sm:h-[200px] in-xl:h-[330px]"
+        customHeight="desktop-up:h-[450px] tablet-range:h-[400px] sm:h-[200px] in-xl:h-[360px]"
         isCover={true}
         isHover={false}
       >

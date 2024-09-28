@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllCategories,
   getAllSubCategories,
+  setSpecification,
   setVariantOptions,
 } from "../../../store/slice/categorySlice";
 
@@ -47,6 +48,7 @@ const ProductCategory = () => {
 
     if (subCategory) {
       dispatch(setVariantOptions(subCategory.variantOptions));
+      dispatch(setSpecification(subCategory.specificationOptions));
     }
   }, [subCategory]);
 

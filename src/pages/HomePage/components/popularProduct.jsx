@@ -85,16 +85,9 @@ function PopularProduct() {
             ))}
           </>
         ) : (
-          popularProduct.slice(1, 5).map((item) => (
-            <ProductCard product={item}>
-              <div
-                className={`absolute top-1 left-1 p-3 rounded-full cursor-pointer bg-white`}
-                onClick={() => setIsLike(!isLike)}
-              >
-                {isLike ? <HeartIcon /> : <Heart />}
-              </div>
-            </ProductCard>
-          ))
+          popularProduct
+            .slice(1, 5)
+            .map((item) => <ProductCard product={item}></ProductCard>)
         )}
       </div>
     </div>

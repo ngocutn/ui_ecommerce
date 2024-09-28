@@ -7,6 +7,7 @@ export const categorySlice = createSlice({
     categories: [],
     subCategories: [],
     variantOptional: [],
+    specification: [],
     primaryVariantOptions: null,
     isLoading: false,
     error: null,
@@ -53,6 +54,10 @@ export const categorySlice = createSlice({
       state.primaryVariantOptions = action.payload;
     },
 
+    setSpecification: (state, action) => {
+      state.specification = action.payload;
+    },
+
     clearAllErrors: (state, action) => {
       state.error = null;
     },
@@ -93,6 +98,6 @@ export const getAllSubCategories = (categoryId) => async (dispatch) => {
   }
 };
 
-export const { setVariantOptions, setPrimaryVariantOptions } =
+export const { setVariantOptions, setPrimaryVariantOptions, setSpecification } =
   categorySlice.actions;
 export default categorySlice.reducer;
