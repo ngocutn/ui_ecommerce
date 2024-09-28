@@ -19,10 +19,7 @@ const BuyerLayout = () => {
 
   useEffect(() => {
     toast.success(message);
-    dispatch(clearAllError);
   }, [message]);
-
-  console.log(message);
 
   return (
     <div className="relative flex items-center justify-center w-full h-screen">

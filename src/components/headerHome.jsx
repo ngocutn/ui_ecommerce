@@ -20,7 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu } from "@mui/material";
 import { useEffect, useState } from "react";
-import { checkToken, Logout } from "../store/slice/userSlice";
+import { checkToken, clearAllError, Logout } from "../store/slice/userSlice";
 
 function HeaderHome() {
   const navigate = useNavigate();
@@ -41,16 +41,13 @@ function HeaderHome() {
 
   const handleLogout = () => {
     dispatch(Logout());
+
     localStorage.removeItem("token");
+
     dispatch(checkToken());
+
     navigate("/buyer");
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    dispatch(checkToken());
-    console.log(token);
-  }, [dispatch]);
 
   console.log("authen", isAuthenticated);
 

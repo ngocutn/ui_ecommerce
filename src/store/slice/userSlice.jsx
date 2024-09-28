@@ -39,7 +39,6 @@ const userSlice = createSlice({
       state.isLoading = false;
       state.isAuthenticated = false;
       state.error = null;
-      state.message = "logout successful";
     },
     logoutError: (state, action) => {
       state.user = {};
@@ -72,8 +71,8 @@ const userSlice = createSlice({
     },
 
     clearAllError: (state) => {
-      state.isLoading = false;
       state.error = null;
+      state.message = null;
     },
   },
 });
@@ -105,7 +104,6 @@ export const Login = (userData) => async (dispatch) => {
     localStorage.setItem("token", data.data.token);
 
     dispatch(userSlice.actions.loginSuccess(data.data));
-    dispatch(userSlice.actions.clearAllError());
   } catch (e) {
     dispatch(userSlice.actions.loginError(e.response?.data?.message));
   }
@@ -115,7 +113,7 @@ export const Logout = () => async (dispatch) => {
   try {
     const { data } = await axios.post(`${API_URL}/auth/logout`);
 
-    dispatch(userSlice.actions.logoutSuccess(data.message));
+    dispatch(userSlice.actions.logoutSuccess());
     dispatch(checkToken());
     dispatch(userSlice.actions.clearAllError());
   } catch (e) {
