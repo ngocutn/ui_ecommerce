@@ -10,7 +10,6 @@ import ProductDetails from "./pages/ProductDetail/ProductDetails";
 import AddProductProvider from "./pages/AddProduct/AddProductProvider";
 import BuyerLayout from "./pages/Auth/BuyerLayout";
 import EmailConfirm from "./pages/Auth/EmailConfirm";
-import { ToastContainer } from "react-toastify";
 
 function App() {
   const router = createBrowserRouter([

@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import LoginBuyer from "./components/LoginBuyer";
 import RegisterBuyer from "./components/RegisterBuyer";
 import BuyerAuth from "../../utils/BuyerAuth";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { clearAllError } from "../../store/slice/userSlice";
 
 const BuyerLayout = () => {
   useEffect(() => {
@@ -13,11 +14,12 @@ const BuyerLayout = () => {
       cleanup;
     };
   }, []);
-
+  const dispatch = useDispatch();
   const { message } = useSelector((state) => state.user);
 
   useEffect(() => {
     toast.success(message);
+    dispatch(clearAllError);
   }, [message]);
 
   console.log(message);
@@ -28,7 +30,7 @@ const BuyerLayout = () => {
         <img
           src="https://media.licdn.com/dms/image/v2/C4E0BAQGx-TFoWYNJcg/company-logo_200_200/company-logo_200_200/0/1659539191896?e=1733356800&v=beta&t=6Q59ItomXoSc2VXB7_RWGddV0P5FLE6FcCQPVCuJDIM"
           alt=""
-          className="object-cover w-full h-full"
+          className="object-cover w-full h-full mb-10"
         />
       </div>
 
