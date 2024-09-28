@@ -10,6 +10,8 @@ import ProductDetails from "./pages/ProductDetail/ProductDetails";
 import AddProductProvider from "./pages/AddProduct/AddProductProvider";
 import BuyerLayout from "./pages/Auth/BuyerLayout";
 import EmailConfirm from "./pages/Auth/EmailConfirm";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import ResetPassword from "./pages/Auth/ResetPassword";
 
 function App() {
   const router = createBrowserRouter([
@@ -56,6 +58,14 @@ function App() {
     {
       path: "/confirm",
       element: <EmailConfirm></EmailConfirm>,
+    },
+    {
+      path: "/forgot",
+      element: <ForgotPassword></ForgotPassword>,
+    },
+    {
+      path: "/reset",
+      element: <ResetPassword></ResetPassword>,
     },
   ]);
   return (
