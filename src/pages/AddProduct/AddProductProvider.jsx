@@ -1,7 +1,7 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { schema } from "./types/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductDescription from "./components/ProductDescription";
 import ProductCategory from "./components/ProductCategory";
@@ -16,7 +16,9 @@ import ViewImage from "./components/ViewImage";
 import { Switch } from "@mui/material";
 import ProductCollection from "./components/ProductCollection";
 import ProductSpecification from "./components/ProductSpecification";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct } from "../../store/slice/addProductSlice";
+import { useNavigation } from "react-router-dom";
 
 const AddProdcutProvider = () => {
   const methods = useForm({
@@ -24,6 +26,7 @@ const AddProdcutProvider = () => {
     resolver: yupResolver(schema),
     defaultValues: {
       sellingType: "STORE",
+      collections: [],
     },
   });
 
@@ -32,7 +35,14 @@ const AddProdcutProvider = () => {
   const { specification: specificationData } = useSelector(
     (state) => state.category
   );
-  const { primaryVariant } = useSelector((state) => state.productVariant);
+  const { primaryVariant, productVariants: productVariantData } = useSelector(
+    (state) => state.productVariant
+  );
+  const { productImages, error, message, isLoading } = useSelector(
+    (state) => state.addProduct
+  );
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   // Switch button
   const [checked, setChecked] = useState(true);
@@ -62,8 +72,13 @@ const AddProdcutProvider = () => {
       images,
       specification,
       collections,
+      sku,
+      brandName,
+      sellingType,
       ...otherFields
     } = data;
+
+    console.log("collections", collections);
 
     const formattredSpecification = (specificationData, specification) => {
       if (specificationData.length !== specification.length) {
@@ -85,16 +100,25 @@ const AddProdcutProvider = () => {
       return formattedSpecifications;
     };
 
+    const categories = [categoryIds, subCategoryIds.id];
+    const collectionIds = data.selectedCollections.map((collection) => {
+      return collection.id;
+    });
+
     const request = {
-      ...otherFields,
       name: name.trim(),
+      brandName: brandName.trim(),
       description: description.trim(),
-      quantityAvailable: parseInt(quantityAvailable),
-      sellingPrice: parseFloat(sellingPrice),
-      originalPrice: parseFloat(originalPrice),
-      discountedPrice: parseFloat(discountedPrice),
-      categoryIds: [categoryIds, subCategoryIds.id, collections],
-      hasVariants: checked,
+      sku: !checked ? sku.trim() : "",
+      quantityAvailable: !checked ? parseInt(quantityAvailable) : 1,
+      sellingPrice: !checked ? parseFloat(sellingPrice) : 1299.14,
+      originalPrice: !checked ? parseFloat(originalPrice) : 150.12,
+      discountedPrice: !checked ? parseFloat(discountedPrice) : 1040.13,
+      sellingType,
+      soldQuantity: 0,
+      rating: 0,
+      categoryIds: categories.concat(collectionIds),
+      hasVariants: checked ? checked : false,
       productDimension: {
         width: parseFloat(width),
         weight: parseFloat(weight),
@@ -103,10 +127,12 @@ const AddProdcutProvider = () => {
         unitWeight,
         packageUnit,
       },
+      productImages: productImages ? productImages : [],
       hasSpecification: specification.length > 0 ? true : false,
       specifications: formattredSpecification(specificationData, specification),
-      primaryVariantType: checked ? primaryVariant : "",
-      hasCollection: "",
+      ...(checked && { primaryVariantType: primaryVariant }),
+      hasCollection: collections.length > 0 ? true : false,
+      productVariants: checked ? productVariantData : [],
       reviewOptions: [
         {
           type: "RECOMMENDED",
@@ -121,42 +147,19 @@ const AddProdcutProvider = () => {
 
     console.log("data", request);
 
-    // setLoading(true);
-
-    // const res = await addProduct(request);
-    // setLoading(false);
-
-    // if (res.status === 201) {
-    //   alert(res.data.message);
-    //   navigate("/admin");
-    // } else {
-    //   alert(res.response.data.message);
-    // }
+    dispatch(addProduct(request));
   };
 
-  const addProduct = async (request) => {
-    const formData = new FormData();
-    const jsonBlob = new Blob([JSON.stringify(request)], {
-      type: "application/json",
-    });
-    formData.append("request", jsonBlob);
-
-    for (let i = 0; i < selectedFiles.length; i++) {
-      formData.append("files", selectedFiles[i]);
+  useEffect(() => {
+    if (error) {
+      console.log("error", error);
     }
 
-    return axios({
-      method: "post",
-      url: `https://neo4j-ecommerce.onrender.com/api/v1/products`,
-      data: formData,
-    })
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        return error;
-      });
-  };
+    if (message) {
+      console.log("message", message);
+      // navigation("/admin");
+    }
+  }, [dispatch]);
 
   return (
     <FormProvider {...methods}>

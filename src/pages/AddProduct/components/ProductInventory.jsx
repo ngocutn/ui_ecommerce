@@ -43,21 +43,21 @@ const ProductIventory = () => {
                 </span>
               )
             }
-            className="rounded-lg py-2"
+            className="py-2 rounded-lg"
             size="small"
           ></TextField>
         </div>
 
         <div className="flex flex-col w-2/3">
-          <label htmlFor="SKU" className="font-semibold text-gray-500">
+          <label htmlFor="sku" className="font-semibold text-gray-500">
             SKU (Optional)
           </label>
 
           <TextField
             type="text"
-            id="SKU"
-            {...register("SKU")}
-            className="rounded-lg py-2"
+            id="sku"
+            {...register("sku")}
+            className="py-2 rounded-lg"
             size="small"
           ></TextField>
         </div>

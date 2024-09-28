@@ -3,10 +3,15 @@ import { useFormContext } from "react-hook-form";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import ImagePopup from "../../../components/ImagePopup/imagePopup";
+import { useDispatch, useSelector } from "react-redux";
+import { Files } from "lucide-react";
+import { uploadFile } from "../../../store/slice/addProductSlice";
 
 const ViewImage = () => {
   const [files, setFiles] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch();
+  const { error, productImages } = useSelector((state) => state.addProduct);
 
   const handleReplace = () => {
     setShowModal(true);
@@ -44,9 +49,24 @@ const ViewImage = () => {
   };
 
   const {
-    register,
     formState: { errors },
   } = useFormContext();
+
+  useEffect(() => {
+    if (files.length > 0) {
+      console.log("load");
+      dispatch(uploadFile(files));
+    }
+  }, [files, dispatch]);
+
+  useEffect(() => {
+    return () => {
+      files.forEach((file) => URL.revokeObjectURL(file.preview));
+    };
+  }, [files]);
+
+  console.log("files", files);
+  console.log("productImages", productImages);
 
   return (
     <div>
@@ -63,15 +83,6 @@ const ViewImage = () => {
             files.length > 1 ? "w-1/3" : "w-full"
           } ${files.length === 1 ? "w-1/2 " : ""}`}
         >
-          {/* 
-            <input
-              type="file"
-              name="images"
-              multiple
-              accept="image/png, image/jpg, image/jpeg"
-              className="hidden" */}
-          {/* // {...register("images", { onChange: onSelectFile })} */}
-          {/* /> */}
           <input {...getInputProps()} />
           {isDragActive ? (
             <p>Drop the files here ...</p>

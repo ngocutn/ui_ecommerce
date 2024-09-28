@@ -40,8 +40,14 @@ export const GetAllBrandName = () => async (dispatch) => {
   dispatch(BrandNameSlice.actions.getAllRequest());
 
   try {
+    const token = localStorage.getItem("token");
     const res = await axios.get(
-      "https://neo4j-ecommerce.onrender.com/api/v1/brands"
+      "https://neo4j-ecommerce.onrender.com/api/v1/brands",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
     dispatch(BrandNameSlice.actions.getAllSuccess(res.data));

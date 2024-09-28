@@ -10,6 +10,7 @@ const userSlice = createSlice({
     message: null,
     user: {},
     token: null,
+    isConfirm: false,
     isAuthenticated: false,
   },
   reducers: {
@@ -57,12 +58,14 @@ const userSlice = createSlice({
       state.isLoading = false;
       state.isAuthenticated = false;
       state.error = null;
+      state.isConfirm = true;
       state.message = "register successful";
     },
     registerError: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
       state.message = null;
+      state.isConfirm = false;
       state.isAuthenticated = false;
     },
 
@@ -86,7 +89,6 @@ export const Register = (userData) => async (dispatch) => {
     });
 
     dispatch(userSlice.actions.registerSuccess(data.data));
-    dispatch(userSlice.actions.clearAllError());
   } catch (e) {
     dispatch(userSlice.actions.registerError(e.response?.data?.message));
   }

@@ -13,8 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../../components/Loading";
 import SocialLink from "../../../components/form/SocialLink";
 import { useDispatch, useSelector } from "react-redux";
-import { Register } from "../../../store/slice/userSlice";
-import { toast } from "react-toastify";
+import { clearAllError, Register } from "../../../store/slice/userSlice";
 
 const schema = yup.object({
   firstName: yup.string().required("First name is required"),
@@ -43,7 +42,7 @@ const RegisterBuyer = ({ className }) => {
 
   const dispatch = useDispatch();
   const navigatioTo = useNavigate();
-  const { error, message } = useSelector((state) => state.user);
+  const { error, message, isConfirm } = useSelector((state) => state.user);
 
   const onSubmit = (data) => {
     const formData = new FormData();
@@ -66,9 +65,12 @@ const RegisterBuyer = ({ className }) => {
       console.log("error", error);
     }
 
-    if (message) {
+    if (isConfirm) {
+      navigatioTo("/confirm");
       reset();
     }
+
+    dispatch(clearAllError());
   }, [error, message, dispatch]);
 
   return (
