@@ -37,18 +37,34 @@ export const productVariantSlice = createSlice({
       state.productVariants = [...action.payload];
     },
 
+    // uploadFileRequest: (state, action) => {
+    //   state.isLoading = true;
+    //   state.error = null;
+    // },
+    // uploadFileSuccess: (state, action) => {
+    //   state.variantImageUrl = action.payload;
+    //   state.isLoading = false;
+    //   state.error = null;
+    //   state.message = "Upload file successfully";
+    // },
+    // uploadFileError: (state, action) => {
+    //   state.variantImageUrl = null;
+    //   state.isLoading = false;
+    //   state.error = action.payload;
+    // },
+
     uploadFileRequest: (state, action) => {
       state.isLoading = true;
       state.error = null;
     },
     uploadFileSuccess: (state, action) => {
-      state.variantImageUrl = action.payload;
+      state.variantImages = action.payload;
       state.isLoading = false;
       state.error = null;
       state.message = "Upload file successfully";
     },
     uploadFileError: (state, action) => {
-      state.variantImageUrl = null;
+      state.variantImages = null;
       state.isLoading = false;
       state.error = action.payload;
     },
@@ -75,6 +91,38 @@ export const uploadImage = (file) => async (dispatch) => {
 
     dispatch(productVariantSlice.actions.uploadFileSuccess(res.data.data));
     dispatch(productVariantSlice.actions.clearAllErrors());
+  } catch (e) {
+    dispatch(
+      productVariantSlice.actions.uploadFileError(e.response?.data?.message)
+    );
+  }
+};
+
+export const uploadFile = (files) => async (dispatch) => {
+  dispatch(productVariantSlice.actions.uploadFileRequest());
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const uploadPromises = files.map(async (file) => {
+      const formData = new FormData();
+      formData.append("file", file.images);
+
+      const { data } = await axios.post(
+        `${API_URL}/files/upload?folder=products`,
+        formData,
+        {
+          headers: {
+            Authorization: `bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return data.data;
+    });
+
+    const results = await Promise.all(uploadPromises);
+    dispatch(productVariantSlice.actions.uploadFileSuccess(results));
   } catch (e) {
     dispatch(
       productVariantSlice.actions.uploadFileError(e.response?.data?.message)
