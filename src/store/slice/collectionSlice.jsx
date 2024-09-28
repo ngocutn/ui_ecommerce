@@ -5,6 +5,7 @@ const collectionSlice = createSlice({
   name: "collection",
   initialState: {
     collections: [],
+    collectionData: [],
     error: null,
     message: null,
     isLoading: false,
@@ -29,6 +30,10 @@ const collectionSlice = createSlice({
         (state.message = null);
     },
 
+    setCollectionData: (state, action) => {
+      state.collectionData = action.payload;
+    },
+
     clearAllError: (state, action) => {
       (state.error = null), (state.message = null);
     },
@@ -51,5 +56,7 @@ export const getAllCollection = () => async (dispatch) => {
     );
   }
 };
+
+export const { setCollectionData } = collectionSlice.actions;
 
 export default collectionSlice.reducer;

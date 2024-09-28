@@ -36,7 +36,7 @@ const ProductDescription = () => {
     }
 
     dispatch(GetAllBrandName());
-  }, [error]);
+  }, []);
 
   console.log("brandName", brandNameData);
 
