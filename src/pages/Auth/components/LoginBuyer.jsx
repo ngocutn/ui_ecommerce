@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../../components/Loading";
 import SocialLink from "../../../components/form/SocialLink";
 import { useDispatch, useSelector } from "react-redux";
-import { Login } from "../../../store/slice/userSlice";
+import { Login, setIsAuthenticated } from "../../../store/slice/userSlice";
 
 const schema = yup.object({
   email: yup.string().email().required("Email is required"),
@@ -21,6 +21,7 @@ const LoginBuyer = ({ className }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid, isLoading },
   } = useForm({
     resolver: yupResolver(schema),
@@ -38,6 +39,7 @@ const LoginBuyer = ({ className }) => {
     formData.append("password", data.password);
 
     dispatch(Login(formData));
+    reset();
   };
 
   useEffect(() => {
@@ -54,11 +56,11 @@ const LoginBuyer = ({ className }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={`w-1/2 p-10 text-center ${className} login-container`}
+      className={`w-1/2 h-full p-10 text-center ${className} login-container overflow-y-scroll`}
     >
       <h1 className="text-3xl font-bold text-center">Login Buyer.</h1>
 
-      <div className="flex flex-col mt-10 mb-4 gap-y-8">
+      <div className="flex flex-col mt-6 mb-4 gap-y-7">
         <TextField
           {...register("email")}
           label="Email"
@@ -77,9 +79,8 @@ const LoginBuyer = ({ className }) => {
           helperText={errors.password?.message}
           fullWidth
         />
-
-        {error && <p className="text-red-400 text-start">{error}</p>}
       </div>
+      {error && <p className="p-0 m-0 text-red-400 text-start">{error}</p>}
 
       <div className="flex items-center justify-between mb-4 text-sm cursor-pointer">
         <FormControlLabel

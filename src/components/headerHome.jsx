@@ -20,7 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Logout } from "../store/slice/userSlice";
+import { checkToken, Logout } from "../store/slice/userSlice";
 
 function HeaderHome() {
   const navigate = useNavigate();
@@ -41,10 +41,18 @@ function HeaderHome() {
 
   const handleLogout = () => {
     dispatch(Logout());
+    localStorage.removeItem("token");
+    dispatch(checkToken());
     navigate("/buyer");
   };
 
-  console.log("user", userData);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    dispatch(checkToken());
+    console.log(token);
+  }, [dispatch]);
+
+  console.log("authen", isAuthenticated);
 
   return (
     <AppBar className="z-20 bg-white pr-7">
@@ -120,7 +128,7 @@ function HeaderHome() {
                     padding: "0",
                   }}
                 >
-                  {userData.user.firstName}
+                  {/* {userData.user?.firstName} */}ád
                 </Button>
                 <Menu
                   id="basic-menu"
@@ -132,7 +140,6 @@ function HeaderHome() {
                   }}
                 >
                   <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
