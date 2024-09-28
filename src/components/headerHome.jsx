@@ -17,9 +17,35 @@ import SearchIcon from "@mui/icons-material/Search";
 import CategoryIcon from "@mui/icons-material/Category";
 
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Menu } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Logout } from "../store/slice/userSlice";
 
 function HeaderHome() {
   const navigate = useNavigate();
+  const { isAuthenticated, user: userData } = useSelector(
+    (state) => state.user
+  );
+  const dispatch = useDispatch();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(Logout());
+    navigate("/buyer");
+  };
+
+  console.log("user", userData);
+
   return (
     <AppBar className="z-20 bg-white pr-7">
       <Toolbar component="div" className="flex justify-between my-3">
@@ -38,7 +64,7 @@ function HeaderHome() {
 
         <Stack
           direction="row"
-          className="items-center justify-center text-sm grow"
+          className="items-center justify-center text-sm grow w-[80%]"
         >
           <Input
             type="search"
@@ -71,19 +97,61 @@ function HeaderHome() {
           direction="row"
           className="flex items-center justify-center gap-x-5"
         >
-          <Link
-            to="/buyer"
-            className="flex items-center p-2 text-sm text-black capitalize rounded-lg hover:bg-gray-100"
-          >
-            <PermIdentityOutlinedIcon />
-            <Typography
-              variant="body1"
-              className="flex flex-col items-start gap-0 ml-2 text-sm font-semibold"
+          {isAuthenticated ? (
+            <div className="flex items-center">
+              <div className="w-11 h-11">
+                <img
+                  src="https://i.pinimg.com/564x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg"
+                  alt=""
+                  className="object-contain w-full h-full"
+                />
+              </div>
+              <div>
+                <Button
+                  id="basic-button"
+                  aria-controls={open ? "basic-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={handleClick}
+                  style={{
+                    fontSize: "12px",
+                    color: "Black",
+                    fontWeight: "bold",
+                    padding: "0",
+                  }}
+                >
+                  {userData.user.firstName}
+                </Button>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
+              </div>
+            </div>
+          ) : (
+            <Link
+              to="/buyer"
+              className="flex items-center p-2 text-sm text-black capitalize rounded-lg hover:bg-gray-100"
             >
-              <span className="text-[12px]">Sign in</span>
-              <span>Account</span>
-            </Typography>
-          </Link>
+              <PermIdentityOutlinedIcon />
+              <Typography
+                variant="body1"
+                className="flex flex-col items-start gap-0 ml-2 text-sm font-semibold"
+              >
+                <span className="text-[12px]">Sign in</span>
+                <span>Account</span>
+              </Typography>
+            </Link>
+          )}
 
           <EmailOutlinedIcon className="text-black cursor-pointer" />
 
@@ -104,36 +172,6 @@ function HeaderHome() {
           </Button>
         </Stack>
       </Toolbar>
-
-      {/* <Toolbar component="div" className="flex justify-between mt-2">
-        <Button>
-          <CategoryIcon className="text-black" />
-          <Typography className="ml-4 text-black">Categories</Typography>
-        </Button>
-        <ButtonGroup
-          sx={{
-            "& .MuiButton-root": {
-              border: "none",
-            },
-          }}
-          variant="text"
-        >
-          <Button className="px-3 text-lg text-black capitalize">Home</Button>
-          <Button className="px-3 text-lg text-black capitalize">
-            Today detail
-          </Button>
-          <Button className="px-3 text-lg text-black capitalize">
-            Customer Services
-          </Button>
-          <Button className="px-3 text-lg text-black capitalize">
-            Trending products
-          </Button>
-          <Button className="px-3 text-lg text-black capitalize">Blog</Button>
-          <Button className="px-3 text-lg text-black capitalize">
-            Special offers
-          </Button>
-        </ButtonGroup>
-      </Toolbar> */}
     </AppBar>
   );
 }
