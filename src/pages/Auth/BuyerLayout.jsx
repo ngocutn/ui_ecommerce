@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import LoginBuyer from "./components/LoginBuyer";
 import RegisterBuyer from "./components/RegisterBuyer";
 import BuyerAuth from "../../utils/BuyerAuth";
+import { useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BuyerLayout = () => {
   useEffect(() => {
@@ -10,6 +13,14 @@ const BuyerLayout = () => {
       cleanup;
     };
   }, []);
+
+  const { message } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    toast.success(message);
+  }, [message]);
+
+  console.log(message);
 
   return (
     <div className="relative flex items-center justify-center w-full h-screen">
@@ -54,6 +65,8 @@ const BuyerLayout = () => {
           </div>
         </div>
       </div>
+
+      <ToastContainer />
     </div>
   );
 };
