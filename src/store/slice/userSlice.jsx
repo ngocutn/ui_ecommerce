@@ -94,6 +94,7 @@ export const Login = (userData) => async (dispatch) => {
   try {
     const { data } = await axios.post(`${API_URL}/auth/login`, userData, {
       headers: { "Content-Type": "application/json" },
+      withCredentials: true,
     });
 
     localStorage.setItem("token", data.data.token);
