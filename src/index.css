@@ -28,6 +28,16 @@
     -moz-appearance: textfield;
   }
 }
+/* swiper-button-next */
+
+#imageZoom
+  > div.swiper-button-prev.mx-5.rounded-full.py-9.pl-8.pr-9.bg-white.sm\:hidden.tablet-range\:hidden.text-black {
+  @apply absolute z-50 shadow-lg hover:bg-opacity-90;
+}
+#imageZoom
+  > div.swiper-button-next.mx-5.text-sm.rounded-full.py-9.pl-9.pr-8.bg-white.sm\:hidden.tablet-range\:hidden.text-black {
+  @apply absolute z-50 shadow-lg hover:bg-opacity-90;
+}
 
 /* Customize scroll bar
 /* width */

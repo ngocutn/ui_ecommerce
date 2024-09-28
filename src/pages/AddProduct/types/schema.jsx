@@ -3,6 +3,7 @@ import * as yup from "yup";
 export const schema = yup
   .object({
     name: yup.string().required("Name is not allowed to be empty"),
+    brandName: yup.string().required("Brand Name is not allowed to be empty"),
     description: yup
       .string()
       .required("Description is required")
@@ -28,5 +29,7 @@ export const schema = yup
       .required("Price is required"),
 
     // images: yup.array().of(yup.string().required("Please upload an image")),
+    specification: yup.array().of(yup.string()),
+    collections: yup.array().of(yup.string()),
   })
   .required();

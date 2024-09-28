@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  TextField,
+} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../../components/Loading";
 import SocialLink from "../../../components/form/SocialLink";
+import { useDispatch, useSelector } from "react-redux";
+import { Register } from "../../../store/slice/userSlice";
+import { toast } from "react-toastify";
 
 const schema = yup.object({
   firstName: yup.string().required("First name is required"),
@@ -31,7 +40,35 @@ const RegisterBuyer = ({ className }) => {
     mode: "onChange",
   });
 
-  const onSubmit = (data) => {};
+  const dispatch = useDispatch();
+  const navigatioTo = useNavigate();
+  const { error, message } = useSelector((state) => state.user);
+
+  const onSubmit = (data) => {
+    const formData = new FormData();
+
+    formData.append("firstName", data.firstName);
+    formData.append("lastName", data.lastName);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("roles", "ROLE_SELLER");
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    dispatch(Register(formData));
+  };
+
+  useEffect(() => {
+    if (error) {
+      console.log("error", error);
+    }
+
+    if (message) {
+      toast.success(message);
+    }
+  }, [message]);
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -40,33 +77,38 @@ const RegisterBuyer = ({ className }) => {
       <h1 className="text-3xl font-bold text-center">Register Buyer.</h1>
 
       <div className="flex flex-col mt-8 mb-4 gap-y-5">
-        <TextField
-          {...register("firstName")}
-          label="First Name"
-          variant="outlined"
-          error={!!errors.firstName}
-          helperText={errors.firstName?.message}
-          fullWidth
-          sx={{
-            "& .MuiInputBase-input": {
-              fontSize: "14px", // Điều chỉnh kích thước font
-            },
-          }}
-        />
-
-        <TextField
-          {...register("lastName")}
-          label="Last Name"
-          variant="outlined"
-          error={!!errors.lastName}
-          helperText={errors.lastName?.message}
-          fullWidth
-          sx={{
-            "& .MuiInputBase-input": {
-              fontSize: "14px", // Điều chỉnh kích thước font
-            },
-          }}
-        />
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              {...register("firstName")}
+              label="First Name"
+              variant="outlined"
+              error={!!errors.firstName}
+              helperText={errors.firstName?.message}
+              fullWidth
+              sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: "14px", // Điều chỉnh kích thước font
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              {...register("lastName")}
+              label="Last Name"
+              variant="outlined"
+              error={!!errors.lastName}
+              helperText={errors.lastName?.message}
+              fullWidth
+              sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: "14px",
+                },
+              }}
+            />
+          </Grid>
+        </Grid>
 
         <TextField
           {...register("email")}
@@ -77,7 +119,7 @@ const RegisterBuyer = ({ className }) => {
           fullWidth
           sx={{
             "& .MuiInputBase-input": {
-              fontSize: "14px", // Điều chỉnh kích thước font
+              fontSize: "14px",
             },
           }}
         />
@@ -92,7 +134,7 @@ const RegisterBuyer = ({ className }) => {
           fullWidth
           sx={{
             "& .MuiInputBase-input": {
-              fontSize: "14px", // Điều chỉnh kích thước font
+              fontSize: "14px",
             },
           }}
         />
@@ -107,7 +149,7 @@ const RegisterBuyer = ({ className }) => {
           fullWidth
           sx={{
             "& .MuiInputBase-input": {
-              fontSize: "14px", // Điều chỉnh kích thước font
+              fontSize: "14px",
             },
           }}
         />

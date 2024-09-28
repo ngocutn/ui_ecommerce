@@ -69,7 +69,7 @@ const Banner = ({
           },
         }}
         loop={true}
-        className={`${customHeight} rounded-3xl`}
+        className={`${customHeight} rounded-3xl border border-gray-200 shadow-md`}
         initialSlide={indexSlide || 0}
         id="imageZoom"
       >
@@ -106,6 +106,7 @@ const Banner = ({
         ></div>
         {children}
       </Swiper>
+
       <div
         className="w-[70%] h-[70vh] bg-white rounded-2xl absolute top-0 right-[-72%] z-10 overflow-hidden "
         id="image-wrapper"

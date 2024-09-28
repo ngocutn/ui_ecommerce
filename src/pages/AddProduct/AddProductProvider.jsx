@@ -8,16 +8,15 @@ import ProductCategory from "./components/ProductCategory";
 import ProductIventory from "./components/ProductInventory";
 import ProductSellType from "./components/ProductSellType";
 import ProductVariant from "./components/ProductVariant";
-import ProductImage from "./components/ProductImage";
 import ProductShipping from "./components/ProductShipping";
 import ProductPricing from "./components/ProductPricing";
 import ProductHeading from "./components/ProductHeading";
 import ProductBtn from "./components/ProductButton";
-import { View } from "lucide-react";
 import ViewImage from "./components/ViewImage";
 import { Switch } from "@mui/material";
 import ProductCollection from "./components/ProductCollection";
 import ProductSpecification from "./components/ProductSpecification";
+import { useSelector } from "react-redux";
 
 const AddProdcutProvider = () => {
   const methods = useForm({
@@ -30,6 +29,10 @@ const AddProdcutProvider = () => {
 
   const [loading, setLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const { specification: specificationData } = useSelector(
+    (state) => state.category
+  );
+  const { primaryVariant } = useSelector((state) => state.productVariant);
 
   // Switch button
   const [checked, setChecked] = useState(true);
@@ -57,8 +60,30 @@ const AddProdcutProvider = () => {
       originalPrice,
       discountedPrice,
       images,
+      specification,
+      collections,
       ...otherFields
     } = data;
+
+    const formattredSpecification = (specificationData, specification) => {
+      if (specificationData.length !== specification.length) {
+        console.error(
+          "Specification data and values arrays are not of the same length."
+        );
+        return [];
+      }
+
+      const formattedSpecifications = specificationData.map(
+        (specName, index) => {
+          return {
+            name: specName,
+            value: specification[index],
+          };
+        }
+      );
+
+      return formattedSpecifications;
+    };
 
     const request = {
       ...otherFields,
@@ -68,7 +93,8 @@ const AddProdcutProvider = () => {
       sellingPrice: parseFloat(sellingPrice),
       originalPrice: parseFloat(originalPrice),
       discountedPrice: parseFloat(discountedPrice),
-      categoryIds: [categoryIds, subCategoryIds],
+      categoryIds: [categoryIds, subCategoryIds.id, collections],
+      hasVariants: checked,
       productDimension: {
         width: parseFloat(width),
         weight: parseFloat(weight),
@@ -77,19 +103,35 @@ const AddProdcutProvider = () => {
         unitWeight,
         packageUnit,
       },
+      hasSpecification: specification.length > 0 ? true : false,
+      specifications: formattredSpecification(specificationData, specification),
+      primaryVariantType: checked ? primaryVariant : "",
+      hasCollection: "",
+      reviewOptions: [
+        {
+          type: "RECOMMENDED",
+          value: ["YES", "NO"],
+        },
+        {
+          type: "DELIVERY",
+          value: ["DELAY", "ONTIME"],
+        },
+      ],
     };
 
-    setLoading(true);
+    console.log("data", request);
 
-    const res = await addProduct(request);
-    setLoading(false);
+    // setLoading(true);
 
-    if (res.status === 201) {
-      alert(res.data.message);
-      navigate("/admin");
-    } else {
-      alert(res.response.data.message);
-    }
+    // const res = await addProduct(request);
+    // setLoading(false);
+
+    // if (res.status === 201) {
+    //   alert(res.data.message);
+    //   navigate("/admin");
+    // } else {
+    //   alert(res.response.data.message);
+    // }
   };
 
   const addProduct = async (request) => {
@@ -126,7 +168,7 @@ const AddProdcutProvider = () => {
               <ProductDescription />
               <ProductCategory />
               <ProductSellType />
-              <div className="flex justify-between items-center mt-7">
+              <div className="flex items-center justify-between mt-7">
                 <p className="text-xl font-semibold">Have variant?</p>
                 <Switch
                   checked={checked}
