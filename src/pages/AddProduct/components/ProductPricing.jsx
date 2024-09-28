@@ -87,7 +87,7 @@ const ProductPricing = () => {
               onInput={handleFractionInput}
               onBlur={validatePrices}
               inputProps={{ step: "0.01" }}
-              className="rounded-lg py-2"
+              className="py-2 rounded-lg"
               sx={{
                 "& .MuiInputBase-root": {
                   paddingLeft: "6px",
@@ -134,7 +134,7 @@ const ProductPricing = () => {
               onInput={handleFractionInput}
               onBlur={validatePrices}
               inputProps={{ step: "0.01" }}
-              className="rounded-lg py-2"
+              className="py-2 rounded-lg"
               sx={{
                 "& .MuiInputBase-root": {
                   paddingLeft: "6px",
@@ -180,7 +180,7 @@ const ProductPricing = () => {
           onInput={handleFractionInput}
           onBlur={validatePrices}
           inputProps={{ step: "0.01" }}
-          className="rounded-lg py-2"
+          className="py-2 rounded-lg"
           sx={{
             "& .MuiInputBase-root": {
               paddingLeft: "6px",

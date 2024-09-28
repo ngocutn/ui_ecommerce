@@ -27,6 +27,7 @@ export const schema = yup.object({
     .positive("Price must be a positive number")
     .required("Price is required"),
   sku: yup.string().required("Please enter sku"),
+  discountedPrice: yup.string().required("Please enter discount price"),
   images: yup.array().of(yup.string().required("Please upload an image")),
   specification: yup.array().of(yup.string()),
 });

@@ -1,7 +1,7 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { schema } from "./types/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductDescription from "./components/ProductDescription";
 import ProductCategory from "./components/ProductCategory";
@@ -16,7 +16,9 @@ import ViewImage from "./components/ViewImage";
 import { Switch } from "@mui/material";
 import ProductCollection from "./components/ProductCollection";
 import ProductSpecification from "./components/ProductSpecification";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct } from "../../store/slice/addProductSlice";
+import { useNavigation } from "react-router-dom";
 
 const AddProdcutProvider = () => {
   const methods = useForm({
@@ -33,8 +35,14 @@ const AddProdcutProvider = () => {
   const { specification: specificationData } = useSelector(
     (state) => state.category
   );
-  const { primaryVariant } = useSelector((state) => state.productVariant);
-  const { productImages } = useSelector((state) => state.addProduct);
+  const { primaryVariant, productVariants: productVariantData } = useSelector(
+    (state) => state.productVariant
+  );
+  const { productImages, error, message, isLoading } = useSelector(
+    (state) => state.addProduct
+  );
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   // Switch button
   const [checked, setChecked] = useState(true);
@@ -65,6 +73,8 @@ const AddProdcutProvider = () => {
       specification,
       collections,
       sku,
+      brandName,
+      sellingType,
       ...otherFields
     } = data;
 
@@ -96,15 +106,19 @@ const AddProdcutProvider = () => {
     });
 
     const request = {
-      sku: sku.trim(),
       name: name.trim(),
+      brandName: brandName.trim(),
       description: description.trim(),
-      quantityAvailable: parseInt(quantityAvailable),
-      sellingPrice: parseFloat(sellingPrice),
-      originalPrice: parseFloat(originalPrice),
-      discountedPrice: parseFloat(discountedPrice),
+      sku: !checked ? sku.trim() : "",
+      quantityAvailable: !checked ? parseInt(quantityAvailable) : 1,
+      sellingPrice: !checked ? parseFloat(sellingPrice) : 1299.14,
+      originalPrice: !checked ? parseFloat(originalPrice) : 150.12,
+      discountedPrice: !checked ? parseFloat(discountedPrice) : 1040.13,
+      sellingType,
+      soldQuantity: 0,
+      rating: 0,
       categoryIds: categories.concat(collectionIds),
-      hasVariants: checked,
+      hasVariants: checked ? checked : false,
       productDimension: {
         width: parseFloat(width),
         weight: parseFloat(weight),
@@ -116,8 +130,9 @@ const AddProdcutProvider = () => {
       productImages: productImages ? productImages : [],
       hasSpecification: specification.length > 0 ? true : false,
       specifications: formattredSpecification(specificationData, specification),
-      primaryVariantType: checked ? primaryVariant : "",
+      ...(checked && { primaryVariantType: primaryVariant }),
       hasCollection: collections.length > 0 ? true : false,
+      productVariants: checked ? productVariantData : [],
       reviewOptions: [
         {
           type: "RECOMMENDED",
@@ -131,7 +146,20 @@ const AddProdcutProvider = () => {
     };
 
     console.log("data", request);
+
+    dispatch(addProduct(request));
   };
+
+  useEffect(() => {
+    if (error) {
+      console.log("error", error);
+    }
+
+    if (message) {
+      console.log("message", message);
+      // navigation("/admin");
+    }
+  }, [dispatch]);
 
   return (
     <FormProvider {...methods}>

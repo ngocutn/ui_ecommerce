@@ -46,12 +46,46 @@ const addProductSlice = createSlice({
       state.productImages = action.payload;
     },
 
+    addProductRequest: (state, action) => {
+      state.product = {};
+      state.isLoading = true;
+    },
+    addProductSuccess: (state, action) => {
+      state.product = action.payload;
+      state.isLoading = false;
+      state.message = "Product added successfully";
+    },
+    addProductError: (state, action) => {
+      state.product = {};
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
     clearAllErrors: (state, action) => {
       state.error = null;
       state.message = null;
     },
   },
 });
+
+export const addProduct = (productData) => async (dispatch) => {
+  dispatch(addProductSlice.actions.addProductRequest());
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const { data } = await axios.post(`${API_URL}/products`, productData, {
+      headers: { Authorization: "Bearer " + token },
+      "Content-Type": "application/json",
+    });
+
+    dispatch(addProductSlice.actions.addProductSuccess(data.data));
+  } catch (e) {
+    dispatch(
+      addProductSlice.actions.addProductError(e.response?.data?.message)
+    );
+  }
+};
 
 export const uploadFile = (files) => async (dispatch) => {
   dispatch(addProductSlice.actions.uploadFileRequest());
