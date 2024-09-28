@@ -31,11 +31,10 @@ const AddProdcutProvider = () => {
       sellingType: "STORE",
       collections: [],
     },
-    context: { checked },
   });
 
   const [loading, setLoading] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [isCategory, setIscategory] = useState(false);
   const { specification: specificationData } = useSelector(
     (state) => state.category
   );
@@ -46,11 +45,17 @@ const AddProdcutProvider = () => {
     (state) => state.addProduct
   );
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const navigate = useNavigation();
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
+
+  useEffect(() => {
+    if (specificationData.length >= 0) {
+      setIscategory(true);
+    }
+  }, [specificationData]);
 
   // Submit form
 
@@ -76,6 +81,7 @@ const AddProdcutProvider = () => {
       sku,
       brandName,
       sellingType,
+      hasVariant,
       ...otherFields
     } = data;
 
@@ -110,11 +116,11 @@ const AddProdcutProvider = () => {
       name: name.trim(),
       brandName: brandName.trim(),
       description: description.trim(),
-      sku: !checked ? sku.trim() : "",
-      quantityAvailable: !checked ? parseInt(quantityAvailable) : 0,
-      sellingPrice: !checked ? parseFloat(sellingPrice) : 0,
-      originalPrice: !checked ? parseFloat(originalPrice) : 0,
-      discountedPrice: !checked ? parseFloat(discountedPrice) : 0,
+      sku: sku.trim(),
+      quantityAvailable: parseInt(quantityAvailable),
+      sellingPrice: parseFloat(sellingPrice),
+      originalPrice: parseFloat(originalPrice),
+      discountedPrice: parseFloat(discountedPrice),
       sellingType,
       soldQuantity: 0,
       rating: 0,
@@ -158,9 +164,11 @@ const AddProdcutProvider = () => {
 
     if (message) {
       console.log("message", message);
-      // navigation("/admin");
+      navigate("/admin");
     }
-  }, [dispatch]);
+  }, [dispatch, checked]);
+
+  console.log("checked", checked);
 
   return (
     <FormProvider {...methods}>
@@ -175,6 +183,7 @@ const AddProdcutProvider = () => {
               <div className="flex items-center justify-between mt-7">
                 <p className="text-xl font-semibold">Have variant?</p>
                 <Switch
+                  {...methods.register("hasVariant")}
                   checked={checked}
                   onChange={handleChange}
                   className="transition duration-75"
@@ -182,7 +191,7 @@ const AddProdcutProvider = () => {
               </div>
 
               {checked ? (
-                <ProductVariant />
+                <ProductVariant isCategory={isCategory} />
               ) : (
                 <>
                   <ProductIventory />

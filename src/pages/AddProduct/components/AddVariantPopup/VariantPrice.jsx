@@ -68,7 +68,7 @@ const VariantTable = ({ values }) => {
   }, [variantValues, generateCombinations]);
 
   useEffect(() => {
-    const initialOptions = variantOptions?.map((option) => {
+    const initialOptions = variantOptions.map((option) => {
       return {
         productType: option,
         valueName: "",
@@ -105,7 +105,7 @@ const VariantTable = ({ values }) => {
 
   const getVariantImages = (variantImages, variantOptions) => {
     // Tạo một bản đồ để tra cứu hình ảnh theo valueName
-    const imageMap = variantImages.reduce((acc, { valueName, images }) => {
+    const imageMap = variantImages?.reduce((acc, { valueName, images }) => {
       acc[valueName] = images || []; // Nếu không có images, gán là mảng rỗng
       return acc;
     }, {});

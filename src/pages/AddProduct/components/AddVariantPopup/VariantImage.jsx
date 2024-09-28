@@ -2,25 +2,18 @@ import { CircleX } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ImageUploader from "../../../../components/ImagePopup/ImageUploader";
-import {
-  setVariantImages,
-  uploadImage,
-} from "../../../../store/slice/productVariantSlice";
+import { uploadFile } from "../../../../store/slice/productVariantSlice";
 
 const VariantImage = () => {
   const dispatch = useDispatch();
   const [variantTypeValue, setVariantTypeValue] = useState([]);
   const [file, setFile] = useState("");
+  const [filePreview, setFilePreview] = useState([]);
   const [variantImage, setVariantImage] = useState({});
   const [selectedValue, setSelectedValue] = useState("");
-  const {
-    variantOptions,
-    variantValues,
-    primaryVariant,
-    variantImageUrl,
-    isLoading,
-    error,
-  } = useSelector((state) => state.productVariant);
+  const { variantValues, primaryVariant, variantImageUrl, error } = useSelector(
+    (state) => state.productVariant
+  );
 
   const handleRemoveImage = (valueName, imageUrl) => {
     setVariantImage((prev) => {
@@ -45,11 +38,16 @@ const VariantImage = () => {
   }, [variantValues, primaryVariant]);
 
   useEffect(() => {
-    if (file) {
-      dispatch(uploadImage(file));
-      setFile(null);
-    }
-  }, [file, dispatch]);
+    return () => {
+      filePreview.forEach((file) => {
+        if (file.preview) {
+          URL.revokeObjectURL(file.preview);
+        }
+      });
+    };
+  }, [filePreview]);
+
+  console.log("files", filePreview);
 
   useEffect(() => {
     const initialState = variantTypeValue.map((value) => ({
@@ -61,24 +59,31 @@ const VariantImage = () => {
   }, [variantTypeValue, dispatch]);
 
   useEffect(() => {
-    dispatch(setVariantImages(variantImage));
-  }, [variantImage]);
-
-  useEffect(() => {
-    if (variantImageUrl && selectedValue) {
+    if (filePreview && selectedValue) {
       setVariantImage((prev) =>
         prev.map((value) => {
           if (value.valueName === selectedValue) {
             return {
               ...value,
-              images: [...value.images, variantImageUrl], // Thêm ảnh vào đúng valueName
+              images: [...filePreview], // Thêm ảnh vào đúng valueName
             };
           }
           return value;
         })
       );
+
+      // dispatch(uploadFile(variantImage));
     }
-  }, [variantImageUrl]);
+  }, [filePreview]);
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+  }, [error]);
+
+  console.log("selecteds", selectedValue);
+  console.log("setVariantImage", variantImage);
 
   return (
     <div className="p-3 mt-8 rounded-md outline-dashed outline-offset-2 outline-gray-300">
@@ -89,6 +94,8 @@ const VariantImage = () => {
           const currentVariantImage = variantImage.find(
             (img) => img.valueName === value
           );
+
+          console.log("currentVariantImage", currentVariantImage);
           return (
             <div className="flex w-full gap-x-10" key={value}>
               <div className="w-1/3 p-2 border border-gray-300 rounded-md h-fit">
@@ -98,7 +105,7 @@ const VariantImage = () => {
                 className="grid w-full grid-cols-5 p-4 border border-gray-300 rounded-md gap-x-3"
                 onClick={() => setSelectedValue(value)}
               >
-                {currentVariantImage?.images?.length > 0 ? (
+                {currentVariantImage?.images.length > 0 ? (
                   currentVariantImage.images.map((image, index) => (
                     <div
                       key={index}
@@ -107,23 +114,23 @@ const VariantImage = () => {
                       <CircleX
                         className="absolute top-0 right-0 cursor-pointer hover:opacity-50"
                         onClick={() => {
-                          handleRemoveImage(value, image);
+                          handleRemoveImage(image, index);
                         }}
                       ></CircleX>
                       <img
-                        src={image}
+                        src={image.preview}
                         alt=""
                         className="object-contain w-full h-full"
                       />
                     </div>
                   ))
                 ) : (
-                  <ImageUploader setFile={setFile} />
+                  <ImageUploader setFiles={setFilePreview} />
                 )}
                 {/* Thêm ảnh uploader nếu đã có hình ảnh */}
-                {currentVariantImage?.images?.length < 5 &&
-                  currentVariantImage?.images?.length > 0 && (
-                    <ImageUploader setFile={setFile} />
+                {currentVariantImage?.images.length < 5 &&
+                  currentVariantImage?.images.length > 0 && (
+                    <ImageUploader setFiles={setFilePreview} />
                   )}
               </div>
             </div>
