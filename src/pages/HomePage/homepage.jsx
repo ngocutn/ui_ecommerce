@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getBannerByQuantity } from "../../service/product/api";
 import download from "../../assets/image/download.webp";
 import ProductCollection from "./ProductCollection";
+import { useSelector } from "react-redux";
 
 function HomePage() {
   const [slideImages, setSlideImages] = useState([]);

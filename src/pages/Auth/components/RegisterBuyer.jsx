@@ -34,6 +34,7 @@ const RegisterBuyer = ({ className }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid, isLoading },
   } = useForm({
     resolver: yupResolver(schema),
@@ -51,11 +52,11 @@ const RegisterBuyer = ({ className }) => {
     formData.append("lastName", data.lastName);
     formData.append("email", data.email);
     formData.append("password", data.password);
-    formData.append("roles", "ROLE_SELLER");
+    const roles = ["ROLE_SELLER"];
 
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+    roles.forEach((role) => {
+      formData.append("roles[]", role); // Thêm với tên khóa là "roles[]"
+    });
 
     dispatch(Register(formData));
   };
@@ -66,9 +67,10 @@ const RegisterBuyer = ({ className }) => {
     }
 
     if (message) {
-      toast.success(message);
+      reset();
     }
-  }, [message]);
+  }, [error, message, dispatch]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -153,6 +155,7 @@ const RegisterBuyer = ({ className }) => {
             },
           }}
         />
+        <p className="text-red-400 text-start">{error}</p>
       </div>
 
       <Button

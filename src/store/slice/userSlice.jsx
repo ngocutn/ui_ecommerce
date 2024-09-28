@@ -69,7 +69,6 @@ const userSlice = createSlice({
     clearAllError: (state) => {
       state.isLoading = false;
       state.error = null;
-      state.message = null;
     },
   },
 });
@@ -78,16 +77,42 @@ export const Register = (userData) => async (dispatch) => {
   dispatch(userSlice.actions.registerRequest());
 
   try {
-    const { data } = await axios.post(
-      `${API_URL}/api/v1/auth/register`,
-      userData,
-      { withCredentials: true, headers: { "Content-Type": "application/json" } }
-    );
+    const { data } = await axios.post(`${API_URL}/auth/register`, userData, {
+      headers: { "Content-Type": "application/json" },
+    });
 
     dispatch(userSlice.actions.registerSuccess(data.data));
     dispatch(userSlice.actions.clearAllError());
   } catch (e) {
     dispatch(userSlice.actions.registerError(e.response?.data?.message));
+  }
+};
+
+export const Login = (userData) => async (dispatch) => {
+  dispatch(userSlice.actions.loginRequest());
+
+  try {
+    const { data } = await axios.post(`${API_URL}/auth/login`, userData, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    localStorage.setItem("token", data.data.token);
+
+    dispatch(userSlice.actions.loginSuccess(data.data));
+    dispatch(userSlice.actions.clearAllError());
+  } catch (e) {
+    dispatch(userSlice.actions.loginError(e.response?.data?.message));
+  }
+};
+
+export const Logout = () => async (dispatch) => {
+  try {
+    const { data } = await axios.post(`${API_URL}/auth/logout`);
+
+    dispatch(userSlice.actions.logoutSuccess(data.message));
+    dispatch(userSlice.actions.clearAllError());
+  } catch (e) {
+    dispatch(userSlice.actions.logoutError(e.response.data.message));
   }
 };
 

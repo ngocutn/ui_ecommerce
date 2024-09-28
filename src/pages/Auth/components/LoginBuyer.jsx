@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../../components/Loading";
 import SocialLink from "../../../components/form/SocialLink";
+import { useDispatch, useSelector } from "react-redux";
+import { Login } from "../../../store/slice/userSlice";
 
 const schema = yup.object({
   email: yup.string().email().required("Email is required"),
@@ -25,7 +27,29 @@ const LoginBuyer = ({ className }) => {
     mode: "onChange",
   });
 
-  const onSubmit = (data) => {};
+  const dispatch = useDispatch();
+  const navigateTo = useNavigate();
+  const { error, message, user: userData } = useSelector((state) => state.user);
+
+  const onSubmit = (data) => {
+    const formData = new FormData();
+
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+
+    dispatch(Login(formData));
+  };
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+
+    if (message) {
+      console.log("user data", userData);
+      navigateTo("/");
+    }
+  }, [error, message, dispatch]);
 
   return (
     <form
@@ -53,6 +77,8 @@ const LoginBuyer = ({ className }) => {
           helperText={errors.password?.message}
           fullWidth
         />
+
+        {error && <p className="text-red-400 text-start">{error}</p>}
       </div>
 
       <div className="flex items-center justify-between mb-4 text-sm cursor-pointer">
