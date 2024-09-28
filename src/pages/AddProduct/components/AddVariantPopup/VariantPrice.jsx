@@ -68,7 +68,7 @@ const VariantTable = ({ values }) => {
   }, [variantValues, generateCombinations]);
 
   useEffect(() => {
-    const initialOptions = variantOptions.map((option) => {
+    const initialOptions = variantOptions?.map((option) => {
       return {
         productType: option,
         valueName: "",

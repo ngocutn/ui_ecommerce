@@ -29,5 +29,7 @@ export const schema = yup
       .required("Price is required"),
 
     // images: yup.array().of(yup.string().required("Please upload an image")),
+    specification: yup.array().of(yup.string()),
+    collections: yup.array().of(yup.string()),
   })
   .required();

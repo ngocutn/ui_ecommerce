@@ -9,6 +9,8 @@ import MainLayout from "./pages/mainLayout";
 import ProductDetails from "./pages/ProductDetail/ProductDetails";
 import AddProductProvider from "./pages/AddProduct/AddProductProvider";
 import BuyerLayout from "./pages/Auth/BuyerLayout";
+import EmailConfirm from "./pages/Auth/EmailConfirm";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const router = createBrowserRouter([
@@ -52,15 +54,16 @@ function App() {
       path: "/buyer",
       element: <BuyerLayout></BuyerLayout>,
     },
-    // {
-    //   path: "add-product",
-    //   element: <AddProduct />,
-    // },
+    {
+      path: "/confirm",
+      element: <EmailConfirm></EmailConfirm>,
+    },
   ]);
   return (
     <>
       {/* <MainPage /> */}
       <RouterProvider router={router} />
+      <ToastContainer />
       {/* <ListProduct /> */}
     </>
   );

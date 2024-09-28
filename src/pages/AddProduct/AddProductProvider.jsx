@@ -16,6 +16,7 @@ import ViewImage from "./components/ViewImage";
 import { Switch } from "@mui/material";
 import ProductCollection from "./components/ProductCollection";
 import ProductSpecification from "./components/ProductSpecification";
+import { useSelector } from "react-redux";
 
 const AddProdcutProvider = () => {
   const methods = useForm({
@@ -28,6 +29,10 @@ const AddProdcutProvider = () => {
 
   const [loading, setLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const { specification: specificationData } = useSelector(
+    (state) => state.category
+  );
+  const { primaryVariant } = useSelector((state) => state.productVariant);
 
   // Switch button
   const [checked, setChecked] = useState(true);
@@ -55,8 +60,30 @@ const AddProdcutProvider = () => {
       originalPrice,
       discountedPrice,
       images,
+      specification,
+      collections,
       ...otherFields
     } = data;
+
+    const formattredSpecification = (specificationData, specification) => {
+      if (specificationData.length !== specification.length) {
+        console.error(
+          "Specification data and values arrays are not of the same length."
+        );
+        return [];
+      }
+
+      const formattedSpecifications = specificationData.map(
+        (specName, index) => {
+          return {
+            name: specName,
+            value: specification[index],
+          };
+        }
+      );
+
+      return formattedSpecifications;
+    };
 
     const request = {
       ...otherFields,
@@ -66,7 +93,8 @@ const AddProdcutProvider = () => {
       sellingPrice: parseFloat(sellingPrice),
       originalPrice: parseFloat(originalPrice),
       discountedPrice: parseFloat(discountedPrice),
-      categoryIds: [categoryIds, subCategoryIds],
+      categoryIds: [categoryIds, subCategoryIds.id, collections],
+      hasVariants: checked,
       productDimension: {
         width: parseFloat(width),
         weight: parseFloat(weight),
@@ -75,9 +103,23 @@ const AddProdcutProvider = () => {
         unitWeight,
         packageUnit,
       },
+      hasSpecification: specification.length > 0 ? true : false,
+      specifications: formattredSpecification(specificationData, specification),
+      primaryVariantType: checked ? primaryVariant : "",
+      hasCollection: "",
+      reviewOptions: [
+        {
+          type: "RECOMMENDED",
+          value: ["YES", "NO"],
+        },
+        {
+          type: "DELIVERY",
+          value: ["DELAY", "ONTIME"],
+        },
+      ],
     };
 
-    console.log(request);
+    console.log("data", request);
 
     // setLoading(true);
 
