@@ -6,6 +6,7 @@ import productVariantReducer from "./slice/productVariantSlice";
 import brandNameReducer from "./slice/brandNameSlice";
 import collectionReducer from "./slice/collectionSlice";
 import userReducer from "./slice/userSlice";
+import addProductReducer from "./slice/addProductSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     brandName: brandNameReducer,
     productCollection: collectionReducer,
     user: userReducer,
+    addProduct: addProductReducer,
   },
 });

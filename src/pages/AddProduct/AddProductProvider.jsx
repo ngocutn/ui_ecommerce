@@ -24,6 +24,7 @@ const AddProdcutProvider = () => {
     resolver: yupResolver(schema),
     defaultValues: {
       sellingType: "STORE",
+      collections: [],
     },
   });
 
@@ -33,6 +34,7 @@ const AddProdcutProvider = () => {
     (state) => state.category
   );
   const { primaryVariant } = useSelector((state) => state.productVariant);
+  const { productImages } = useSelector((state) => state.addProduct);
 
   // Switch button
   const [checked, setChecked] = useState(true);
@@ -62,8 +64,11 @@ const AddProdcutProvider = () => {
       images,
       specification,
       collections,
+      sku,
       ...otherFields
     } = data;
+
+    console.log("collections", collections);
 
     const formattredSpecification = (specificationData, specification) => {
       if (specificationData.length !== specification.length) {
@@ -85,15 +90,20 @@ const AddProdcutProvider = () => {
       return formattedSpecifications;
     };
 
+    const categories = [categoryIds, subCategoryIds.id];
+    const collectionIds = data.selectedCollections.map((collection) => {
+      return collection.id;
+    });
+
     const request = {
-      ...otherFields,
+      sku: sku.trim(),
       name: name.trim(),
       description: description.trim(),
       quantityAvailable: parseInt(quantityAvailable),
       sellingPrice: parseFloat(sellingPrice),
       originalPrice: parseFloat(originalPrice),
       discountedPrice: parseFloat(discountedPrice),
-      categoryIds: [categoryIds, subCategoryIds.id, collections],
+      categoryIds: categories.concat(collectionIds),
       hasVariants: checked,
       productDimension: {
         width: parseFloat(width),
@@ -103,10 +113,11 @@ const AddProdcutProvider = () => {
         unitWeight,
         packageUnit,
       },
+      productImages: productImages ? productImages : [],
       hasSpecification: specification.length > 0 ? true : false,
       specifications: formattredSpecification(specificationData, specification),
       primaryVariantType: checked ? primaryVariant : "",
-      hasCollection: "",
+      hasCollection: collections.length > 0 ? true : false,
       reviewOptions: [
         {
           type: "RECOMMENDED",
@@ -120,42 +131,6 @@ const AddProdcutProvider = () => {
     };
 
     console.log("data", request);
-
-    // setLoading(true);
-
-    // const res = await addProduct(request);
-    // setLoading(false);
-
-    // if (res.status === 201) {
-    //   alert(res.data.message);
-    //   navigate("/admin");
-    // } else {
-    //   alert(res.response.data.message);
-    // }
-  };
-
-  const addProduct = async (request) => {
-    const formData = new FormData();
-    const jsonBlob = new Blob([JSON.stringify(request)], {
-      type: "application/json",
-    });
-    formData.append("request", jsonBlob);
-
-    for (let i = 0; i < selectedFiles.length; i++) {
-      formData.append("files", selectedFiles[i]);
-    }
-
-    return axios({
-      method: "post",
-      url: `https://neo4j-ecommerce.onrender.com/api/v1/products`,
-      data: formData,
-    })
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        return error;
-      });
   };
 
   return (
