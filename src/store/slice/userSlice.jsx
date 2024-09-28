@@ -158,14 +158,13 @@ export const forgotPassword = (email) => async (dispatch) => {
   try {
     const { data } = await axios.post(
       `${API_URL}/auth/forgot-password`,
-      "ban@mailinator.com", // Dữ liệu email được gửi như JSON
+      { email },
       {
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
-
     dispatch(userSlice.actions.forgotSuccess(data.message));
   } catch (e) {
     dispatch(userSlice.actions.forgotError(e.response?.data?.message));
