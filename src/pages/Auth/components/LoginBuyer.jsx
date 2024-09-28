@@ -87,7 +87,7 @@ const LoginBuyer = ({ className }) => {
           control={<Checkbox defaultChecked size="small" />}
           label="Remember me"
         />
-        <Link to="/buyer" className="hover:text-[#1576d2] text-[#dbdbdb]">
+        <Link to="/forgot" className="hover:text-[#1576d2] text-[#dbdbdb]">
           Forgot password?
         </Link>
       </div>

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_URL } from "../../constants";
+import { accordionActionsClasses } from "@mui/material";
 
 const userSlice = createSlice({
   name: "user",
@@ -69,6 +70,22 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
     },
 
+    forgotRequest: (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+      state.message = null;
+    },
+    forgotSuccess: (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+      state.message = action.payload;
+    },
+    forgotError: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+      state.message = null;
+    },
+
     setIsAuthenticated: (state, action) => {
       state.isAuthenticated = action.payload;
     },
@@ -131,6 +148,27 @@ export const checkToken = () => (dispatch) => {
     dispatch(setIsAuthenticated(false));
   } else {
     dispatch(setIsAuthenticated(true));
+  }
+};
+
+//forgot password
+export const forgotPassword = (email) => async (dispatch) => {
+  dispatch(userSlice.actions.forgotRequest());
+
+  try {
+    const { data } = await axios.post(
+      `${API_URL}/auth/forgot-password`,
+      "ban@mailinator.com", // Dữ liệu email được gửi như JSON
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    dispatch(userSlice.actions.forgotSuccess(data.message));
+  } catch (e) {
+    dispatch(userSlice.actions.forgotError(e.response?.data?.message));
   }
 };
 

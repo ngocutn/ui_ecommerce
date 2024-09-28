@@ -21,6 +21,9 @@ import { addProduct } from "../../store/slice/addProductSlice";
 import { useNavigation } from "react-router-dom";
 
 const AddProdcutProvider = () => {
+  // Switch button
+  const [checked, setChecked] = useState(true);
+
   const methods = useForm({
     mode: "all",
     resolver: yupResolver(schema),
@@ -28,6 +31,7 @@ const AddProdcutProvider = () => {
       sellingType: "STORE",
       collections: [],
     },
+    context: { checked },
   });
 
   const [loading, setLoading] = useState(false);
@@ -43,9 +47,6 @@ const AddProdcutProvider = () => {
   );
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
-  // Switch button
-  const [checked, setChecked] = useState(true);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -110,10 +111,10 @@ const AddProdcutProvider = () => {
       brandName: brandName.trim(),
       description: description.trim(),
       sku: !checked ? sku.trim() : "",
-      quantityAvailable: !checked ? parseInt(quantityAvailable) : 1,
-      sellingPrice: !checked ? parseFloat(sellingPrice) : 1299.14,
-      originalPrice: !checked ? parseFloat(originalPrice) : 150.12,
-      discountedPrice: !checked ? parseFloat(discountedPrice) : 1040.13,
+      quantityAvailable: !checked ? parseInt(quantityAvailable) : 0,
+      sellingPrice: !checked ? parseFloat(sellingPrice) : 0,
+      originalPrice: !checked ? parseFloat(originalPrice) : 0,
+      discountedPrice: !checked ? parseFloat(discountedPrice) : 0,
       sellingType,
       soldQuantity: 0,
       rating: 0,
