@@ -156,16 +156,9 @@ export const forgotPassword = (email) => async (dispatch) => {
   dispatch(userSlice.actions.forgotRequest());
 
   try {
-    const { data } = await axios.post(
-      `${API_URL}/auth/forgot-password`,
-      { email },
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const { data } = await axios.post(`${API_URL}/auth/forgot-password`, {
+      email,
+    });
     dispatch(userSlice.actions.forgotSuccess(data.message));
   } catch (e) {
     dispatch(userSlice.actions.forgotError(e.response?.data?.message));

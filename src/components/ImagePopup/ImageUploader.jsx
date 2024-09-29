@@ -1,7 +1,7 @@
 import { ImagePlus } from "lucide-react";
 import React, { useRef } from "react";
 
-const ImageUploader = ({ setFiles }) => {
+const ImageUploader = ({ setVariantImage, selectedValue }) => {
   const fileInputRef = useRef(null);
 
   const handleClick = () => {
@@ -14,8 +14,22 @@ const ImageUploader = ({ setFiles }) => {
       preview: URL.createObjectURL(file), // Create preview URL
     }));
 
-    // Append new files to the existing state
-    setFiles((prevFiles) => [...prevFiles, ...uploadedFiles]);
+    // // Append new files to the existing state
+    // setVariantImage((variant) => {
+    //   variant.valueName, [...uploadedFiles];
+    // });
+    // Cập nhật trạng thái variantImage dựa trên valueName và thêm file mới
+    setVariantImage((prevVariantImage) =>
+      prevVariantImage.map((variant) => {
+        if (variant.valueName === selectedValue) {
+          return {
+            ...variant,
+            images: [...variant.images, ...uploadedFiles], // Thêm file mới vào mảng images
+          };
+        }
+        return variant; // Giữ nguyên các valueName khác
+      })
+    );
   };
 
   return (
