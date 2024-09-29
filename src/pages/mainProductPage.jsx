@@ -1,6 +1,28 @@
+import { toast, ToastContainer } from "react-toastify";
 import SideBar from "../components/sideBar";
 import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 function MainProductPage() {
+  const { productImages, statusCode, error, message, isLoading } = useSelector(
+    (state) => state.addProduct
+  );
+
+  useEffect(() => {
+    if (error) {
+      console.log("error", error);
+    }
+
+    if (message) {
+      toast(message);
+    }
+
+    if (statusCode === 409) {
+      toast.error("Product with the same name already exists");
+      console.log(statusCode, message);
+    }
+  }, []);
+
   return (
     <div id="main-product" className="flex h-screen">
       <div className="w-1/5">
@@ -16,6 +38,7 @@ function MainProductPage() {
         </div>
         <Outlet></Outlet>
       </div>
+      <ToastContainer></ToastContainer>
     </div>
   );
 }

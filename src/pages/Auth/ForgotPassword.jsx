@@ -9,6 +9,7 @@ import WaveBg from "../../components/WaveBg";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../components/Loading";
 import { forgotPassword } from "../../store/slice/userSlice";
+import { toast, ToastContainer } from "react-toastify";
 
 const schema = yup.object({
   email: yup.string().email().required("Email is required"),
@@ -33,7 +34,7 @@ const ForgotPassword = () => {
     }
 
     if (message) {
-      console.log("message", message);
+      toast.success(message);
     }
   }, [error, message]);
 
@@ -77,10 +78,13 @@ const ForgotPassword = () => {
             />
 
             <Button
-              className="bg-[#3195e4] text-white mt-4 font-semibold"
+              className={` text-white mt-4 font-semibold ${
+                isLoading ? "bg-gray-300" : "bg-[#3195e4]"
+              }`}
               fullWidth
               sx={{ fontSize: "12px" }}
               type="submit"
+              disabled={isLoading}
             >
               {isLoading ? <Loading></Loading> : "Confirm"}
             </Button>
@@ -97,6 +101,7 @@ const ForgotPassword = () => {
         </div>
         <WaveBg></WaveBg>
       </div>
+      <ToastContainer></ToastContainer>
     </div>
   );
 };

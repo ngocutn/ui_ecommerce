@@ -18,7 +18,8 @@ import ProductCollection from "./components/ProductCollection";
 import ProductSpecification from "./components/ProductSpecification";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../store/slice/addProductSlice";
-import { useNavigation } from "react-router-dom";
+import { useNavigate, useNavigation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AddProdcutProvider = () => {
   // Switch button
@@ -30,6 +31,10 @@ const AddProdcutProvider = () => {
     defaultValues: {
       sellingType: "STORE",
       collections: [],
+      quantityAvailable: 1,
+      sellingPrice: 1,
+      originalPrice: 1,
+      discountedPrice: 1,
     },
   });
 
@@ -41,11 +46,11 @@ const AddProdcutProvider = () => {
   const { primaryVariant, productVariants: productVariantData } = useSelector(
     (state) => state.productVariant
   );
-  const { productImages, error, message, isLoading } = useSelector(
+  const { productImages, statusCode, error, message, isLoading } = useSelector(
     (state) => state.addProduct
   );
   const dispatch = useDispatch();
-  const navigate = useNavigation();
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -116,8 +121,8 @@ const AddProdcutProvider = () => {
       name: name.trim(),
       brandName: brandName.trim(),
       description: description.trim(),
-      sku: sku.trim(),
-      quantityAvailable: parseInt(quantityAvailable),
+      sku: sku ? sku.trim() : "",
+      quantityAvailable: checked ? parseInt(quantityAvailable) : 1,
       sellingPrice: parseFloat(sellingPrice),
       originalPrice: parseFloat(originalPrice),
       discountedPrice: parseFloat(discountedPrice),
@@ -159,14 +164,24 @@ const AddProdcutProvider = () => {
 
   useEffect(() => {
     if (error) {
-      console.log("error", error);
+      console.log("Error:", error);
     }
 
     if (message) {
-      console.log("message", message);
+      toast.success(message); // Thêm thành công cho thông báo
       navigate("/admin");
     }
-  }, [dispatch, checked]);
+
+    if (statusCode === 409) {
+      toast.error("Product with the same name already exists");
+      console.log(
+        "Conflict Error - Status Code:",
+        statusCode,
+        "Message:",
+        message
+      );
+    }
+  }, [dispatch, error, message, statusCode, navigate]);
 
   console.log("checked", checked);
 
