@@ -87,7 +87,7 @@ const VariantName = () => {
   return (
     <div className="flex justify-center mt-8 gap-x-10">
       <div className="p-3 rounded-md outline-dashed outline-offset-2 outline-gray-300">
-        <h1 className="mb-5 font-bold text-text1">Primary Variant</h1>
+        <h1 className="mb-5 text-sm font-bold text-text1">Primary Variant</h1>
         <div className="flex flex-col">
           {variantOptional?.map((item, index) => (
             <div>
@@ -106,7 +106,7 @@ const VariantName = () => {
         </div>
       </div>
       <div className="flex-1 p-3 rounded-md outline-dashed outline-offset-2 outline-gray-300">
-        <h1 className="mb-5 font-bold text-text1">Variant Type</h1>
+        <h1 className="mb-5 text-sm font-bold text-text1">Variant Type</h1>
         <div className="flex flex-col w-full gap-y-5">
           {variantInputs?.map((variant, index) => (
             <Box
@@ -118,7 +118,7 @@ const VariantName = () => {
                 alignItems: "center",
               }}
             >
-              <p className="w-[10%] mr-3 font-bold text-text1">
+              <p className="w-[20%] mr-3 font-bold text-sm text-text1">
                 {variant.variantType}
               </p>
               <div className="flex items-center w-full px-2 py-2 overflow-hidden border rounded-md border-text1 gap-x-1">

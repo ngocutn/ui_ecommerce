@@ -1,7 +1,7 @@
 import { ImagePlus } from "lucide-react";
 import React, { useRef } from "react";
 
-const ImageUploader = ({ setFile }) => {
+const ImageUploader = ({ setFiles }) => {
   const fileInputRef = useRef(null);
 
   const handleClick = () => {
@@ -9,9 +9,13 @@ const ImageUploader = ({ setFile }) => {
   };
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
+    const uploadedFiles = Array.from(event.target.files).map((file) => ({
+      file, // Store original file for later use
+      preview: URL.createObjectURL(file), // Create preview URL
+    }));
 
-    setFile(file);
+    // Append new files to the existing state
+    setFiles((prevFiles) => [...prevFiles, ...uploadedFiles]);
   };
 
   return (

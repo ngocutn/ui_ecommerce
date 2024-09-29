@@ -38,12 +38,12 @@ const ForgotPassword = () => {
   }, [error, message]);
 
   const onSubmit = (data) => {
-    console.log(data.email);
+    console.log(data);
 
-    // const formData = new FormData();
-    // formData.append("email", data.email);
+    const formData = new FormData();
+    formData.append("email", data.email);
 
-    dispatch(forgotPassword(data.email));
+    dispatch(forgotPassword(formData));
   };
 
   return (
