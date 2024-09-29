@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { clearAllErrors } from "../store/slice/addProductSlice";
 import { setCurrentPath } from "../store/slice/routerSlice";
+import { getUser, setIsAuthenticated } from "../store/slice/userSlice";
 function MainProductPage() {
   const { productImages, statusCode, error, message, isLoading } = useSelector(
     (state) => state.addProduct
@@ -35,22 +36,19 @@ function MainProductPage() {
     dispatch(clearAllErrors());
   }, [message, error]);
 
-  // useEffect(() => {
-  //   console.log(user.user);
-  //   if (user) {
-  //     const isUser = user?.user?.roles.includes("ROLE_SELLER");
-  //     console.log("isUser", isUser);
-  //     console.log("isUser", user);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(setIsAuthenticated(true));
+      dispatch(getUser(token));
+    }
+  }, []);
 
   useEffect(() => {
-    if (!user?.user?.roles.includes("ROLE_SELLER")) {
-      navigation("/");
+    if (user?.user?.roles.includes("ROLE_SELLER")) {
+      navigation("/admin");
     }
-
-    dispatch(setCurrentPath(pathName.pathname));
-  }, [dispatch, pathName]);
+  }, [dispatch, user]);
 
   return (
     <div id="main-product" className="flex h-screen">
