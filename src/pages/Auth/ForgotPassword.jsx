@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, TextField } from "@mui/material";
 import { ArrowLeft, LockKeyhole } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
@@ -28,6 +28,7 @@ const ForgotPassword = () => {
 
   const { isLoading, error, message } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (error) {
@@ -35,11 +36,13 @@ const ForgotPassword = () => {
     }
     if (message) {
       toast.success(message);
+      setLoading(false);
     }
-  }, [error, message]);
+  }, [error, message, setLoading]);
 
   // Form submit handler
   const onSubmit = (data) => {
+    setLoading(true);
     dispatch(forgotPassword(data.email));
   };
 
@@ -75,12 +78,12 @@ const ForgotPassword = () => {
 
             <Button
               className={` text-white mt-4 font-semibold ${
-                isLoading ? "bg-gray-300" : "bg-[#3195e4]"
+                loading ? "bg-gray-300" : "bg-[#3195e4]"
               }`}
               fullWidth
               sx={{ fontSize: "12px" }}
               type="submit"
-              disabled={isLoading}
+              disabled={loading}
             >
               {isLoading ? (
                 <div className="p-2 border-4 border-white rounded-full border-b-transparent animate-spin"></div>

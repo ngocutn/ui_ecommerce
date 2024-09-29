@@ -29,11 +29,11 @@ const ImageSlide = ({ images, isLoading }) => {
 
       {viewImage && (
         <div
-          className="fixed left-0 top-0 z-[20] flex h-full w-screen items-center justify-center overflow-hidden bg-black bg-opacity-20 shadow-custom select-none"
+          className="fixed left-0 top-0 z-[20] h-full w-full bg-white"
           onClick={handleButtonClose}
         >
           <div
-            className="mt-[90px] w-[60%] h-[70vh] relative"
+            className="h-full w-full relative"
             onClick={(e) => e.stopPropagation()}
           >
             <Banner

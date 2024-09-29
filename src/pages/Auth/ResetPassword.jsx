@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, TextField } from "@mui/material";
 import { ArrowLeft, KeyRound, LockKeyhole } from "lucide-react";
@@ -15,6 +15,7 @@ import WaveBg from "../../components/WaveBg";
 import { useDispatch, useSelector } from "react-redux";
 import { clearAllError, resetPassword } from "../../store/slice/userSlice";
 import { toast, ToastContainer } from "react-toastify";
+import EyeIcon from "../../icon/EyeIcon";
 
 const schema = yup.object({
   password: yup
@@ -44,6 +45,8 @@ const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
   const navigateTo = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = (data) => {
     const formData = new FormData();
@@ -51,8 +54,10 @@ const ResetPassword = () => {
     formData.append("email", email.trim());
     formData.append("newPassword", data.password.trim());
     formData.append("confirmPassword", data.confirmPassword.trim());
+    const url = new URL(window.location.href);
+    const token = url.searchParams.get("token");
 
-    dispatch(resetPassword(formData));
+    dispatch(resetPassword(formData, token));
   };
 
   useEffect(() => {
@@ -99,22 +104,40 @@ const ResetPassword = () => {
             <TextField
               {...register("password")}
               label="Password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               variant="outlined"
               error={!!errors.password}
               helperText={errors.password?.message}
               fullWidth
               size="small"
+              InputProps={{
+                endAdornment: (
+                  <EyeIcon
+                    showPassword={showPassword}
+                    toggleShowPassword={() => setShowPassword((prev) => !prev)}
+                  />
+                ),
+              }}
             />
             <TextField
               {...register("confirmPassword")}
               label="Confirm Password"
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               variant="outlined"
               error={!!errors.confirmPassword}
               helperText={errors.confirmPassword?.message}
               fullWidth
               size="small"
+              InputProps={{
+                endAdornment: (
+                  <EyeIcon
+                    showPassword={showConfirmPassword}
+                    toggleShowPassword={() =>
+                      setShowConfirmPassword((prev) => !prev)
+                    }
+                  />
+                ),
+              }}
             />
 
             <Button
