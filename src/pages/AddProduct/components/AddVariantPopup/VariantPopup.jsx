@@ -27,7 +27,11 @@ const VariantPopup = ({ setAddVariant }) => {
         </p>
         <VariantName />
         <VariantImage></VariantImage>
-        {variantValues[0]?.values.length > 0 ? <VariantTable /> : <></>}
+        {variantValues[0]?.values.length > 0 ? (
+          <VariantTable setAddVariant={setAddVariant} />
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

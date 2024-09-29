@@ -19,8 +19,9 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { setProductVariants } from "../../../../store/slice/productVariantSlice";
 import ConvertStringType from "../../../../utils/ConverStringType";
+import { useNavigate } from "react-router-dom";
 
-const VariantTable = ({ values }) => {
+const VariantTable = ({ setAddVariant }) => {
   const dispatch = useDispatch();
   const {
     isLoading,
@@ -155,6 +156,7 @@ const VariantTable = ({ values }) => {
 
   const handleSave = () => {
     dispatch(setProductVariants(updatedData));
+    setAddVariant(false);
   };
 
   console.log("transformedData", updatedData);
@@ -199,7 +201,6 @@ const VariantTable = ({ values }) => {
                     label="Sku"
                     id="outlined-size-small"
                     size="small"
-                    type="number"
                     slotProps={{
                       inputLabel: {
                         shrink: true,

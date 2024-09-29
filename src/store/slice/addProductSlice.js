@@ -51,21 +51,6 @@ const addProductSlice = createSlice({
       state.productImages = action.payload;
     },
 
-    // addProductRequest: (state, action) => {
-    //   state.product = {};
-    //   state.isLoading = true;
-    // },
-    // addProductSuccess: (state, action) => {
-    //   state.product = action.payload;
-    //   state.isLoading = false;
-    //   state.message = "Product added successfully";
-    // },
-    // addProductError: (state, action) => {
-    //   state.product = {};
-    //   state.isLoading = false;
-    //   state.error = action.payload;
-    // },
-
     clearAllErrors: (state, action) => {
       state.error = null;
       state.message = null;
@@ -127,5 +112,5 @@ export const uploadFile = (files) => async (dispatch) => {
   }
 };
 
-export const { setCollectionData } = addProductSlice.actions;
+export const { setCollectionData, clearAllErrors } = addProductSlice.actions;
 export default addProductSlice.reducer;
