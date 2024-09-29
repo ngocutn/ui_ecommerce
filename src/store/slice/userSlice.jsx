@@ -23,7 +23,7 @@ const userSlice = createSlice({
     },
     loginSuccess: (state, action) => {
       state.user = action.payload;
-      state.isLoading = true;
+      state.isLoading = false;
       state.isAuthenticated = true;
       state.error = null;
       state.message = "login successful";
@@ -99,6 +99,22 @@ const userSlice = createSlice({
     },
     getUserError: (state, action) => {
       state.user = {};
+      state.isLoading = false;
+      state.error = action.payload;
+      state.message = null;
+    },
+
+    resetPasswordRequest: (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+      state.message = null;
+    },
+    resetPasswordSuccess: (state, action) => {
+      state.isLoading = false;
+      state.error = null;
+      state.message = action.payload;
+    },
+    resetPasswordError: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
       state.message = null;
@@ -206,6 +222,27 @@ export const forgotPassword = (email) => async (dispatch) => {
     dispatch(userSlice.actions.forgotSuccess(data.message));
   } catch (e) {
     dispatch(userSlice.actions.forgotError(e.response?.data?.message));
+  }
+};
+
+// reset password
+export const resetPassword = (formData) => async (dispatch) => {
+  dispatch(userSlice.actions.resetPasswordRequest());
+
+  try {
+    const { res } = await axios.post(
+      `${API_URL}/auth/reset-password`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    dispatch(userSlice.actions.resetPasswordSuccess(res.data));
+  } catch (e) {
+    dispatch(userSlice.actions.resetPasswordError(e.response?.data?.message));
   }
 };
 

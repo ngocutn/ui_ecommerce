@@ -4,11 +4,13 @@ import { Button, TextField } from "@mui/material";
 import { ArrowLeft, KeyRound, LockKeyhole } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import WaveBg from "../../components/WaveBg";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../components/Loading";
+import { clearAllError, resetPassword } from "../../store/slice/userSlice";
+import { toast, ToastContainer } from "react-toastify";
 
 const schema = yup.object({
   password: yup
@@ -35,15 +37,32 @@ const ResetPassword = () => {
 
   const { isLoading, error, message } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
+  const email = searchParams.get("email");
+  const navigateTo = useNavigate();
 
   const onSubmit = (data) => {
-    console.log(data);
+    const formData = new FormData();
 
-    // const formData = new FormData();
-    // formData.append("email", data.email);
+    formData.append("email", email.trim());
+    formData.append("newPassword", data.password.trim());
+    formData.append("confirmPassword", data.confirmPassword.trim());
 
-    // dispatch(forgotPassword(formData));
+    dispatch(resetPassword(formData));
   };
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+
+    if (message) {
+      toast(message);
+      navigateTo("/");
+    }
+
+    dispatch(clearAllError());
+  }, [dispatch]);
 
   return (
     <div className="flex items-center justify-center w-full h-screen">
