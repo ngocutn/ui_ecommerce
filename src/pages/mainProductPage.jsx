@@ -1,12 +1,15 @@
 import { toast, ToastContainer } from "react-toastify";
 import SideBar from "../components/sideBar";
 import { Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { clearAllError } from "../store/slice/userSlice";
 function MainProductPage() {
   const { productImages, statusCode, error, message, isLoading } = useSelector(
     (state) => state.addProduct
   );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (error) {
@@ -21,6 +24,8 @@ function MainProductPage() {
       toast.error("Product with the same name already exists");
       console.log(statusCode, message);
     }
+
+    dispatch(clearAllError());
   }, []);
 
   return (
