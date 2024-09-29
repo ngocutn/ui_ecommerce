@@ -9,7 +9,6 @@ import * as yup from "yup";
 import WaveBg from "../../components/WaveBg";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../components/Loading";
-import { forgotPassword } from "../../store/slice/userSlice";
 
 const schema = yup.object({
   password: yup
@@ -38,12 +37,12 @@ const ResetPassword = () => {
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
-    console.log(data.email);
+    console.log(data);
 
-    const formData = new FormData();
-    formData.append("email", data.email);
+    // const formData = new FormData();
+    // formData.append("email", data.email);
 
-    dispatch(forgotPassword(formData));
+    // dispatch(forgotPassword(formData));
   };
 
   return (
