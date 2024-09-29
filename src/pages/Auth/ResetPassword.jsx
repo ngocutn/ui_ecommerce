@@ -63,7 +63,7 @@ const ResetPassword = () => {
 
     if (message) {
       toast(message);
-      navigateTo("/");
+      navigateTo("/login");
     }
 
     dispatch(clearAllError());
