@@ -50,9 +50,8 @@ function ListProduct() {
               </div>
               <div>
                 <h2 className="text-lg font-semibold">{product.name}</h2>
-                <p className="text-sm text-gray-500">
-                  {product.categoriesName}
-                </p>
+
+                <p className="text-sm text-gray-500">{product.categories[0]}</p>
                 <p className="text-sm">Price: ${product.sellingPrice}</p>
                 <p className="text-sm">
                   On hand: {product.quantityAvailable} Units

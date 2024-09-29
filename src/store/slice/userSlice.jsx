@@ -166,7 +166,6 @@ export const forgotPassword = (email) => async (dispatch) => {
         },
       }
     );
-
     dispatch(userSlice.actions.forgotSuccess(data.message));
   } catch (e) {
     dispatch(userSlice.actions.forgotError(e.response?.data?.message));
