@@ -14,7 +14,13 @@ import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../../components/Loading";
 import SocialLink from "../../../components/form/SocialLink";
 import { useDispatch, useSelector } from "react-redux";
-import { Login, setIsAuthenticated } from "../../../store/slice/userSlice";
+
+import {
+  clearUserInfor,
+  Login,
+  setIsAuthenticated,
+} from "../../../store/slice/userSlice";
+import { toast } from "react-toastify";
 import EyeIcon from "../../../icon/EyeIcon";
 
 const schema = yup.object({
@@ -64,6 +70,15 @@ const LoginBuyer = ({ className }) => {
     }
   }, [error, message, dispatch]);
 
+  useEffect(() => {
+    if (userData) {
+      userData.user?.roles.find((user) => user.roles === "ROLE_USER");
+    } else {
+      toast.error("User not found");
+
+      dispatch(clearUserInfor());
+    }
+  }, [userData]);
   const handleInputChange = () => {
     setIsShowError(false);
     setErrorMessage("");

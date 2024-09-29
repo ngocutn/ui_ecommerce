@@ -1,11 +1,44 @@
-import { Fragment, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Fragment, useEffect, useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import HeaderHome from "../components/headerHome";
 import Footer from "../components/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentPath } from "../store/slice/routerSlice";
+import { getUser, setIsAuthenticated } from "../store/slice/userSlice";
 
 const MainLayout = () => {
   const location = useLocation();
   const [isShow, setIsShow] = useState(false);
+  const { isAuthenticated, user: userData } = useSelector(
+    (state) => state.user
+  );
+
+  const dispatch = useDispatch();
+  const navigation = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token && isAuthenticated) {
+      dispatch(setIsAuthenticated(true));
+    } else {
+      dispatch(setIsAuthenticated(true));
+      localStorage.removeItem("token");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated && userData?.user?.roles.includes("ROLE_USER")) {
+      const token = localStorage.getItem("token");
+      dispatch(getUser(token));
+    }
+  }, [dispatch, isAuthenticated, userData]);
+
+  useEffect(() => {
+    if (userData?.user?.roles.includes("ROLE_SELLER")) {
+      navigation("/admin");
+    }
+  }, [userData, navigation]);
 
   return (
     <div className="h-full">
@@ -23,7 +56,7 @@ const MainLayout = () => {
           onClick={() => setIsShow(!isShow)}
         ></div>
       ) : (
-        ""
+        <></>
       )}
 
       <Footer></Footer>

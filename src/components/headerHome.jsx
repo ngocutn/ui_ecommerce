@@ -20,7 +20,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu } from "@mui/material";
 import { useEffect, useState } from "react";
-import { checkToken, clearAllError, Logout } from "../store/slice/userSlice";
+import {
+  checkToken,
+  clearAllError,
+  clearUserInfor,
+  Logout,
+  setIsAuthenticated,
+} from "../store/slice/userSlice";
 
 function HeaderHome() {
   const navigate = useNavigate();
@@ -35,21 +41,18 @@ function HeaderHome() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleLogout = () => {
     dispatch(Logout());
-
     localStorage.removeItem("token");
-
-    dispatch(checkToken());
-
-    navigate("/buyer");
+    dispatch(setIsAuthenticated(false));
+    dispatch(clearUserInfor());
+    navigate("/login");
   };
-
-  console.log("authen", isAuthenticated);
 
   return (
     <AppBar className="z-20 bg-white pr-7">
@@ -102,7 +105,7 @@ function HeaderHome() {
           direction="row"
           className="flex items-center justify-center gap-x-5"
         >
-          {isAuthenticated ? (
+          {isAuthenticated && userData?.roles?.includes("ROLE_USER") ? (
             <div className="flex items-center">
               <div className="w-11 h-11">
                 <img
@@ -125,7 +128,7 @@ function HeaderHome() {
                     padding: "0",
                   }}
                 >
-                  {/* {userData.user?.firstName} */}ád
+                  {userData?.firstName + " " + userData?.lastName}
                 </Button>
                 <Menu
                   id="basic-menu"
@@ -143,7 +146,7 @@ function HeaderHome() {
             </div>
           ) : (
             <Link
-              to="/buyer"
+              to="/login"
               className="flex items-center p-2 text-sm text-black capitalize rounded-lg hover:bg-gray-100"
             >
               <PermIdentityOutlinedIcon />
