@@ -86,6 +86,24 @@ const userSlice = createSlice({
       state.message = null;
     },
 
+    getUserRequest: (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+      state.message = null;
+    },
+    getUserSuccess: (state, action) => {
+      state.user = action.payload;
+      state.isLoading = false;
+      state.error = null;
+      state.message = action.payload;
+    },
+    getUserError: (state, action) => {
+      state.user = {};
+      state.isLoading = false;
+      state.error = action.payload;
+      state.message = null;
+    },
+
     setIsAuthenticated: (state, action) => {
       state.isAuthenticated = action.payload;
     },
@@ -94,8 +112,33 @@ const userSlice = createSlice({
       state.error = null;
       state.message = null;
     },
+
+    clearUser: (state) => {
+      state.user = {};
+      state.token = null;
+      state.isAuthenticated = false;
+      state.error = null;
+      state.message = null;
+    },
   },
 });
+
+export const getUser = (token) => {
+  return async (dispatch) => {
+    dispatch(userSlice.actions.getUserRequest());
+    try {
+      const { data } = await axios.get(`${API_URL}/auth/account`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(userSlice.actions.getUserSuccess(data.data));
+    } catch (error) {
+      const errorMessage = error.message;
+      dispatch(userSlice.actions.getUserError(errorMessage));
+    }
+  };
+};
 
 export const Register = (userData) => async (dispatch) => {
   dispatch(userSlice.actions.registerRequest());
@@ -112,6 +155,7 @@ export const Register = (userData) => async (dispatch) => {
 };
 
 export const Login = (userData) => async (dispatch) => {
+  localStorage.removeItem("token");
   dispatch(userSlice.actions.loginRequest());
 
   try {
@@ -165,5 +209,10 @@ export const forgotPassword = (email) => async (dispatch) => {
   }
 };
 
-export const { clearAllError, setIsAuthenticated } = userSlice.actions;
+export const clearUserInfor = () => async (dispatch) => {
+  dispatch(clearUser());
+};
+
+export const { clearAllError, setIsAuthenticated, clearUser } =
+  userSlice.actions;
 export default userSlice.reducer;

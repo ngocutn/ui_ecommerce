@@ -1,15 +1,22 @@
 import { toast, ToastContainer } from "react-toastify";
 import SideBar from "../components/sideBar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { clearAllErrors } from "../store/slice/addProductSlice";
+import { setCurrentPath } from "../store/slice/routerSlice";
 function MainProductPage() {
   const { productImages, statusCode, error, message, isLoading } = useSelector(
     (state) => state.addProduct
   );
 
+  const { user } = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
+  const navigation = useNavigate();
+  const pathName = useLocation();
+
+  console.log("pathName", pathName);
 
   useEffect(() => {
     if (error) {
@@ -27,6 +34,23 @@ function MainProductPage() {
 
     dispatch(clearAllErrors());
   }, [message, error]);
+
+  // useEffect(() => {
+  //   console.log(user.user);
+  //   if (user) {
+  //     const isUser = user?.user?.roles.includes("ROLE_SELLER");
+  //     console.log("isUser", isUser);
+  //     console.log("isUser", user);
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    if (!user?.user?.roles.includes("ROLE_SELLER")) {
+      navigation("/");
+    }
+
+    dispatch(setCurrentPath(pathName.pathname));
+  }, [dispatch, pathName]);
 
   return (
     <div id="main-product" className="flex h-screen">

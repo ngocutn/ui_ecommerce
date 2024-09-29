@@ -100,7 +100,7 @@ const ResetPassword = () => {
               {isLoading ? <Loading></Loading> : "Confirm"}
             </Button>
           </form>
-          <Link to="/buyer" className="z-20 flex items-center mt-3 group">
+          <Link to="/login" className="z-20 flex items-center mt-3 group">
             <ArrowLeft
               size={18}
               className="group-hover:text-[#3195e4]"

@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useLocation,
+} from "react-router-dom";
 import "../node_modules/swiper/swiper-bundle.min.css";
 
 import HomePage from "./pages/HomePage/homepage";
@@ -12,8 +16,20 @@ import BuyerLayout from "./pages/Auth/BuyerLayout";
 import EmailConfirm from "./pages/Auth/EmailConfirm";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import ResetPassword from "./pages/Auth/ResetPassword";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getUser } from "./store/slice/userSlice";
+import SellerLayout from "./pages/Auth/seller/SellerLayout";
 
 function App() {
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (token) {
+      dispatch(getUser(token));
+    }
+  }, [dispatch]);
+
   const router = createBrowserRouter([
     {
       path: "/admin",
@@ -52,8 +68,12 @@ function App() {
       element: <AddProductProvider />,
     },
     {
-      path: "/buyer",
+      path: "/login",
       element: <BuyerLayout></BuyerLayout>,
+    },
+    {
+      path: "/seller",
+      element: <SellerLayout></SellerLayout>,
     },
     {
       path: "/confirm",
@@ -68,9 +88,9 @@ function App() {
       element: <ResetPassword></ResetPassword>,
     },
   ]);
+
   return (
     <>
-      {/* <MainPage /> */}
       <RouterProvider router={router} />
       {/* <ListProduct /> */}
     </>

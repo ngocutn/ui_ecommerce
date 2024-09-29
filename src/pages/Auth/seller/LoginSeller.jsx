@@ -1,18 +1,12 @@
-import React, { useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import * as yup from "yup";
 import Loading from "../../../components/Loading";
 import SocialLink from "../../../components/form/SocialLink";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  clearUserInfor,
-  Login,
-  setIsAuthenticated,
-} from "../../../store/slice/userSlice";
-import { toast } from "react-toastify";
 
 const schema = yup.object({
   email: yup.string().email().required("Email is required"),
@@ -22,7 +16,7 @@ const schema = yup.object({
     .required("Password is required"),
 });
 
-const LoginBuyer = ({ className }) => {
+const LoginSeller = ({ className }) => {
   const {
     register,
     handleSubmit,
@@ -43,37 +37,37 @@ const LoginBuyer = ({ className }) => {
     formData.append("email", data.email);
     formData.append("password", data.password);
 
-    dispatch(Login(formData));
-    reset();
+    // dispatch(Login(formData));
+    // reset();
   };
 
-  useEffect(() => {
-    if (error) {
-      console.log(error);
-    }
+  // useEffect(() => {
+  //   if (error) {
+  //     console.log(error);
+  //   }
 
-    if (message) {
-      console.log("user data", userData);
-      navigateTo("/");
-    }
-  }, [error, message, dispatch]);
+  //   if (message) {
+  //     console.log("user data", userData);
+  //     navigateTo("/");
+  //   }
+  // }, [error, message, dispatch]);
 
-  useEffect(() => {
-    if (userData) {
-      userData.user?.roles.find((user) => user.roles === "ROLE_USER");
-    } else {
-      toast.error("User not found");
+  // useEffect(() => {
+  //   if (userData) {
+  //     userData.user?.roles.find((user) => user.roles === "ROLE_USER");
+  //   } else {
+  //     toast.error("User not found");
 
-      dispatch(clearUserInfor());
-    }
-  }, [userData]);
+  //     dispatch(clearUserInfor());
+  //   }
+  // }, [userData]);
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className={`w-1/2 h-full p-10 text-center ${className} login-container overflow-y-scroll`}
     >
-      <h1 className="text-3xl font-bold text-center">Login Buyer.</h1>
+      <h1 className="text-3xl font-bold text-center">Login Seller.</h1>
 
       <div className="flex flex-col mt-6 mb-4 gap-y-7">
         <TextField
@@ -122,4 +116,4 @@ const LoginBuyer = ({ className }) => {
   );
 };
 
-export default LoginBuyer;
+export default LoginSeller;
