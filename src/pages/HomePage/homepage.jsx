@@ -43,13 +43,13 @@ function HomePage() {
       <PopularProduct></PopularProduct>
       <ProductCollection></ProductCollection>
 
-      <div className="flex justify-center gap-5 mt-10">
-        <div className="w-[40%] flex flex-col items-stretch bg-[#f2f1ed] p-4 rounded-xl justify-between">
+      <div className="flex justify-center gap-5 mt-10 sm:flex-col tb:flex-col">
+        <div className="w-[40%] tb:w-full sm:w-full flex flex-col items-stretch bg-[#f2f1ed] p-4 rounded-xl justify-between">
           <div className="text-lg">
             <p className="font-bold">Special treat with your 1st order</p>
             <p className="font-semibold ">Join our newsletter to claim it</p>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between sm:gap-x-5">
             <input
               type="text"
               placeholder="Email address"
@@ -60,7 +60,7 @@ function HomePage() {
             </button>
           </div>
         </div>
-        <div className="w-[60%]">
+        <div className="w-[60%] sm:w-full sm:h-[50%] tb:w-full">
           <img src={download} alt="" className="w-full rounded-xl" />
         </div>
       </div>

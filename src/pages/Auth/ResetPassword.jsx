@@ -4,11 +4,15 @@ import { Button, TextField } from "@mui/material";
 import { ArrowLeft, KeyRound, LockKeyhole } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import * as yup from "yup";
 import WaveBg from "../../components/WaveBg";
 import { useDispatch, useSelector } from "react-redux";
-import Loading from "../../components/Loading";
 import { clearAllError, resetPassword } from "../../store/slice/userSlice";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -54,15 +58,18 @@ const ResetPassword = () => {
   useEffect(() => {
     if (error) {
       console.log(error);
+      toast.error(message);
     }
 
     if (message) {
-      toast(message);
+      toast.success(message);
       navigateTo("/");
     }
 
-    dispatch(clearAllError());
-  }, [dispatch]);
+    return () => {
+      dispatch(clearAllError());
+    };
+  }, [dispatch, error, message]);
 
   return (
     <div className="flex items-center justify-center w-full h-screen">
@@ -115,8 +122,13 @@ const ResetPassword = () => {
               fullWidth
               sx={{ fontSize: "12px" }}
               type="submit"
+              disabled={isLoading}
             >
-              {isLoading ? <Loading></Loading> : "Confirm"}
+              {isLoading ? (
+                <div className="p-2 border-4 border-white rounded-full border-b-transparent animate-spin"></div>
+              ) : (
+                <span>Confirm</span>
+              )}
             </Button>
           </form>
           <Link to="/login" className="z-20 flex items-center mt-3 group">
@@ -130,6 +142,7 @@ const ResetPassword = () => {
           </Link>
         </div>
         <WaveBg></WaveBg>
+        <ToastContainer></ToastContainer>
       </div>
     </div>
   );

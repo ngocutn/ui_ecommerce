@@ -32,7 +32,7 @@ function TopCategory() {
           See all
         </span>
       </div>
-      <div className="grid grid-cols-10 grid-rows-1 my-3 text-base">
+      <div className="grid grid-cols-10 grid-rows-1 my-3 text-base sm:grid-cols-4 sm:gap-y-5 tb:grid-cols-7 tb:gap-y-8">
         {isLoading ? (
           <>
             {Array.from({ length: 10 }).map((_, index) => (

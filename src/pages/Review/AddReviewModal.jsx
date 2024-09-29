@@ -104,7 +104,7 @@ const AddReviewModal = ({ setOpen, open, productId }) => {
     <div
       className={`bg-[#f6f6f6] fixed p-5 rounded-lg overflow-hidden top-0 right-0 z-40 mr-5 sm:w-[90%] h-auto max-h-[90vh] overflow-y-scroll my-8 ${
         open ? "animate-slideInRight" : "animate-slideOut"
-      } w-[35%]`}
+      } w-[35%] tb:w-[90%]`}
     >
       <div className="flex p-3 bg-white rounded-md gap-x-3">
         <div className="size-20">

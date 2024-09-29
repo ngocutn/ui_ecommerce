@@ -77,7 +77,10 @@ function PopularProduct() {
           </button>
         </div>
       </div>
-      <div id="product" className="grid grid-cols-4 grid-rows-1 gap-2 mt-3">
+      <div
+        id="product"
+        className="grid grid-cols-4 grid-rows-1 gap-2 mt-3 sm:grid-cols-1 sm:gap-y-6 tb:grid-cols-2 tb:gap-4"
+      >
         {isLoading ? (
           <>
             {Array.from({ length: 4 }).map((_, index) => (

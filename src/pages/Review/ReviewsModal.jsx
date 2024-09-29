@@ -47,7 +47,7 @@ const ReviewsModal = ({ setIsShow, isShow, productId }) => {
     <div
       className={`bg-[#f6f6f6] fixed p-5 rounded-lg overflow-hidden top-0 right-0 z-40 mr-5 sm:w-[90%] h-auto max-h-[90vh] overflow-y-scroll my-8 ${
         isShow ? "animate-slideInRight" : "animate-slideOut"
-      } `}
+      } tb:w-[90%]`}
     >
       <div className="flex items-center justify-between font-bold">
         <span className="text-base">Reviews ({countOfReviews})</span>
@@ -77,7 +77,7 @@ const ReviewsModal = ({ setIsShow, isShow, productId }) => {
           <option value={"DESC"}>Day desc</option>
         </CustomizedSelects>
       </div>
-      <div className="mt-5 min-w-[500px] w-full flex flex-col items-center justify-center gap-y-5">
+      <div className="mt-5 min-w-[500px] sm:w-[90%] w-full flex flex-col items-center justify-center gap-y-5">
         {isLoading ? (
           <Loading color="#000"></Loading>
         ) : reviewData.reviews ? (

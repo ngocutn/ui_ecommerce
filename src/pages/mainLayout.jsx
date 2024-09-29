@@ -40,11 +40,11 @@ const MainLayout = () => {
   }, [userData, navigation]);
 
   return (
-    <div className="h-full">
+    <div className="h-full sm:w-full">
       <HeaderHome></HeaderHome>
 
       <div className={location.pathname === "/" ? "bg-white" : "bg-bgGray"}>
-        <div className="w-[80%] mx-auto">
+        <div className="w-[80%] mx-auto sm:w-[90%]">
           <Outlet context={{ isShow, setIsShow }}></Outlet>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import LoginBuyer from "./components/LoginBuyer";
 import RegisterBuyer from "./components/RegisterBuyer";
 import BuyerAuth from "../../utils/BuyerAuth";
@@ -9,6 +9,8 @@ import { clearAllError } from "../../store/slice/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const BuyerLayout = () => {
+  const [show, setShow] = useState(false);
+
   useEffect(() => {
     const cleanup = BuyerAuth();
     return () => {
@@ -50,14 +52,27 @@ const BuyerLayout = () => {
           alt=""
           className="object-cover w-full h-full mb-10"
         />
+
+        <button
+          className="hidden px-5 py-2 -mt-10 text-white bg-blue-400 rounded-md shadow-md sm:block"
+          onClick={() => setShow(!show)}
+        >
+          Register
+        </button>
       </div>
 
-      <div className="container">
-        <LoginBuyer className={"absolute top-0 left-0 bg-white"}></LoginBuyer>
+      <div className="container sm:w-[90%]">
+        <LoginBuyer
+          className={`absolute top-0 left-0 bg-white sm:w-full ${
+            show ? "sm:z-0 sm:opacity-0" : ""
+          }`}
+        ></LoginBuyer>
         <RegisterBuyer
-          className={"absolute top-0 left-0 bg-white"}
+          className={`absolute top-0 left-0 bg-white sm:w-full ${
+            show ? "sm:z-30 sm:opacity-100 py-16" : ""
+          }`}
         ></RegisterBuyer>
-        <div className="overlay-container">
+        <div className="overlay-container sm:hidden">
           <div className="overlay">
             <div className="w-1/2 overlay-panel overlay-left">
               <h1 className="text-[40px] font-semibold text-white drop-shadow-md">

@@ -75,9 +75,9 @@ const ProductInfor = ({
 
   return (
     <div
-      className={`flex-1 max-w-[1/3] h-[70vh] overflow-y-scroll scrollbar-hide scroll-smooth px-2`}
+      className={`flex-1 max-w-[1/3] h-[70vh] overflow-y-scroll scrollbar-hide scroll-smooth px-2 tb:mt-10`}
     >
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between sm:flex-col sm:mt-10">
         <h1 className="text-2xl font-bold w-[80%]">{name}</h1>
         <span
           className={`text-xl font-bold ${

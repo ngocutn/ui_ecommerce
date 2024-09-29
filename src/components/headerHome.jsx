@@ -54,12 +54,15 @@ function HeaderHome() {
     navigate("/login");
   };
 
+  console.log("anchorEl", anchorEl);
+  console.log("open", open);
+
   return (
-    <AppBar className="z-20 bg-white pr-7">
+    <AppBar className="z-20 bg-white pr-7 sm:w-full sm:pr-0">
       <Toolbar component="div" className="flex justify-between my-3">
         <Stack
           direction="row"
-          className="flex items-center text-xl font-black text-blue-600 cursor-pointer logo"
+          className="flex items-center text-xl font-black text-blue-600 cursor-pointer logo sm:hidden"
           onClick={() => navigate("/")}
         >
           <img
@@ -72,7 +75,7 @@ function HeaderHome() {
 
         <Stack
           direction="row"
-          className="items-center justify-center text-sm grow w-[80%]"
+          className="items-center justify-center text-sm grow w-[80%] sm:hidden tb:hidden"
         >
           <Input
             type="search"
@@ -103,10 +106,10 @@ function HeaderHome() {
 
         <Stack
           direction="row"
-          className="flex items-center justify-center gap-x-5"
+          className="flex items-center justify-center gap-x-5 sm:w-full sm:justify-end"
         >
           {isAuthenticated && userData?.roles?.includes("ROLE_USER") ? (
-            <div className="flex items-center">
+            <div className="flex items-center sm:hidden">
               <div className="w-11 h-11">
                 <img
                   src="https://i.pinimg.com/564x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg"
@@ -114,7 +117,7 @@ function HeaderHome() {
                   className="object-contain w-full h-full"
                 />
               </div>
-              <div>
+              <div className="tb:flex tb:items-center">
                 <Button
                   id="basic-button"
                   aria-controls={open ? "basic-menu" : undefined}
