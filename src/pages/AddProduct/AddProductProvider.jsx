@@ -49,6 +49,7 @@ const AddProdcutProvider = () => {
   const { productImages, statusCode, error, message, isLoading } = useSelector(
     (state) => state.addProduct
   );
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

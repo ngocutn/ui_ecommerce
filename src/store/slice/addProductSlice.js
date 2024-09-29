@@ -11,6 +11,8 @@ const addProductSlice = createSlice({
     error: null,
     message: null,
     statusCode: null,
+    errorUpload: null,
+    messageUpload: null,
   },
   reducers: {
     addProductRequest: (state, action) => {
@@ -31,18 +33,18 @@ const addProductSlice = createSlice({
 
     uploadFileRequest: (state, action) => {
       state.isLoading = true;
-      state.error = null;
+      state.errorUpload = null;
     },
     uploadFileSuccess: (state, action) => {
       state.productImages = action.payload;
       state.isLoading = false;
-      state.error = null;
-      state.message = "Upload file successfully";
+      state.errorUpload = null;
+      state.messageUpload = "Upload file successfully";
     },
     uploadFileError: (state, action) => {
       state.productImages = null;
       state.isLoading = false;
-      state.error = action.payload;
+      state.errorUpload = action.payload;
     },
 
     setProductImages: (state, action) => {
@@ -120,10 +122,7 @@ export const uploadFile = (files) => async (dispatch) => {
     dispatch(addProductSlice.actions.uploadFileSuccess(results));
   } catch (e) {
     dispatch(
-      addProductSlice.actions.uploadFileError({
-        message: e.response?.data?.message || "Something went wrong",
-        statusCode: e.response?.data?.message || 500, // Thêm status code vào payload, mặc định là 500 nếu không có
-      })
+      addProductSlice.actions.uploadFileError(e.response?.data?.message)
     );
   }
 };
