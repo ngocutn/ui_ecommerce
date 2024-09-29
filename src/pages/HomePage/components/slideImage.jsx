@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Scrollbar } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { useEffect, useState } from "react";
 import ImageZoom from "../../../utils/ImageZoom";
 
@@ -15,6 +15,7 @@ const Banner = ({
 }) => {
   const [buttonBanner, setButtonBanner] = useState(false);
   const [currentImageSrc, setCurrentImageSrc] = useState("");
+  const [autoplay, setAutoplay] = useState(true);
 
   const enterBanner = () => {
     setButtonBanner(true);
@@ -27,6 +28,27 @@ const Banner = ({
   const handleMouseMove = (src) => {
     setCurrentImageSrc(src);
   };
+
+  const handleAutoPlay = () => {
+    setAutoplay(!autoplay);
+    if (autoplay) {
+      const swiper = document.querySelector(".swiper");
+      swiper.swiper.autoplay.start();
+    } else {
+      const swiper = document.querySelector(".swiper");
+      swiper.swiper.autoplay.stop();
+    }
+  };
+
+  useEffect(() => {
+    const swiper = document.querySelector(".swiper");
+    if (swiper && swiper.swiper) {
+      swiper.swiper.navigation.init();
+      if (swiper.swiper.autoplay) {
+        swiper.swiper.autoplay.start();
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (isHover) {
@@ -55,7 +77,7 @@ const Banner = ({
       id="image-container"
     >
       <Swiper
-        modules={[Navigation, Pagination]}
+        modules={[Navigation, Pagination, Autoplay]}
         slidesPerView={1}
         navigation={{
           nextEl: ".swiper-button-next",
@@ -69,6 +91,11 @@ const Banner = ({
           },
         }}
         loop={true}
+        autoplay={{
+          delay: 1500,
+          disableOnInteraction: autoplay,
+          enabled: autoplay,
+        }}
         className={`${customHeight} rounded-3xl border border-gray-200 shadow-md`}
         initialSlide={indexSlide || 0}
         id="imageZoom"
@@ -105,6 +132,17 @@ const Banner = ({
           }`}
         ></div>
         {children}
+
+        <button
+          className="absolute bottom-5 right-5 z-10 rounded-full bg-white p-2 flex items-center justify-center hover:bg-opacity-70 w-[30px] h-[30px]"
+          onClick={handleAutoPlay}
+        >
+          {autoplay ? (
+            <i className="fa-solid fa-play w-5 h-5 m-auto"></i>
+          ) : (
+            <i className="fa-solid fa-pause w-5 h-5 m-auto"></i>
+          )}
+        </button>
       </Swiper>
 
       <div

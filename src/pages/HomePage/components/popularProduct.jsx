@@ -81,13 +81,15 @@ function PopularProduct() {
         {isLoading ? (
           <>
             {Array.from({ length: 4 }).map((_, index) => (
-              <ProductCardSkeleton></ProductCardSkeleton>
+              <ProductCardSkeleton key={index}></ProductCardSkeleton>
             ))}
           </>
         ) : (
           popularProduct
             .slice(1, 5)
-            .map((item) => <ProductCard product={item}></ProductCard>)
+            .map((item, index) => (
+              <ProductCard key={index} product={item}></ProductCard>
+            ))
         )}
       </div>
     </div>

@@ -31,11 +31,15 @@ const ProductCard = ({ product, children }) => {
         className="w-[100%] border border-gray-200 h-auto text-lg cursor-pointer group hover:bg-white hover:shadow-card transiton-all duration-100 hover:-translate-y-1 rounded-lg overflow-hidden"
         onClick={handleClick}
       >
-        <div className="flex items-center justify-center w-full p-2 overflow-hidden bg-white h-fit">
+        <div
+          className="flex items-center justify-center w-full p-2 overflow-hidden bg-white h-fit"
+          style={{ height: "240px" }}
+        >
           <img
             src={image}
             alt="Product Image"
-            className="object-cover w-[70%] h-[70%] transition duration-300 group-hover:scale-110"
+            className="object-contain transition duration-300 group-hover:scale-110"
+            style={{ width: "90%", height: "90%" }}
           />
         </div>
         <div className="px-3 py-5">
