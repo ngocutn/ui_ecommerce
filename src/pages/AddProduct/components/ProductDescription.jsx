@@ -1,11 +1,9 @@
 import { Controller, set, useFormContext } from "react-hook-form";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import TextField from "@mui/material/TextField";
 import {
-  Autocomplete,
-  Button,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -22,13 +20,11 @@ const ProductDescription = () => {
     setError,
     setValue,
     clearErrors,
-    watch,
     control,
     formState: { errors },
   } = useFormContext();
 
   const [fileError, setFileError] = useState("");
-  const [showButton, setShowButton] = useState(true);
   const dispatch = useDispatch();
   const { error, brandName: brandNameData } = useSelector(
     (state) => state.brandName
@@ -188,33 +184,34 @@ const ProductDescription = () => {
           className="py-2 rounded-lg text-ellipsis"
         ></TextField>
 
-        <label htmlFor="brandName" className="font-semibold text-gray-500">
-          Brand Name <span className="text-red-600">*</span>
-        </label>
-
-        <Autocomplete
-          id="brandName"
-          freeSolo
-          options={
-            brandNameData.data
-              ? brandNameData.data.map((brand) => brand.name)
-              : []
-          }
-          getOptionLabel={(option) =>
-            typeof option === "string" ? option : option.name
-          }
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              error={!!errors.brandName}
-              helperText={errors.brandName?.message}
-              className="my-2 font-semibold rounded-lg "
-              size="small"
-              value={watch("brandName")}
-              onChange={(event) => setValue("brandName", event.target.value)}
-            />
-          )}
-        />
+        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+          <label htmlFor="brandName" className="font-semibold text-gray-500">
+            Brand Name <span className="text-red-600">*</span>
+          </label>
+          <Controller
+            name="brandName" // Name for the form field
+            control={control} // Pass control to the Controller
+            defaultValue="" // Default value for the select
+            render={({ field }) => (
+              <Select
+                id="productCategory"
+                className="my-2 font-semibold rounded-lg "
+                displayEmpty
+                size="small"
+                {...field} // Spread the field properties
+              >
+                {brandNameData.data?.map((brand) => (
+                  <MenuItem key={brand.id} value={brand.name}>
+                    <em>{brand.name}</em>
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+          <FormHelperText className="text-red-600">
+            {errors.brandName?.message}
+          </FormHelperText>
+        </FormControl>
 
         <div className="flex justify-between mt-2">
           <label htmlFor="description" className="font-semibold text-gray-500">
