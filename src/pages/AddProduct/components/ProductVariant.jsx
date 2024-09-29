@@ -1,7 +1,11 @@
+import { useSelector } from "react-redux";
 import VariantPopup from "./AddVariantPopup/VariantPopup";
 import { useState } from "react";
 
 const ProductVariant = ({ isCategory }) => {
+  const { productVariants: productVariantData } = useSelector(
+    (state) => state.productVariant
+  );
   const [addVariant, setAddVariant] = useState(false);
 
   const handleSetAddVariant = () => {
@@ -26,6 +30,10 @@ const ProductVariant = ({ isCategory }) => {
           + Add Variant
         </span>
       </div>
+
+      {productVariantData.length > 0 && (
+        <div className="flex flex-col gap-y-5"></div>
+      )}
 
       {addVariant && (
         <VariantPopup setAddVariant={setAddVariant}></VariantPopup>

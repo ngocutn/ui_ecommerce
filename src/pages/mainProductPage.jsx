@@ -3,7 +3,7 @@ import SideBar from "../components/sideBar";
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { clearAllError } from "../store/slice/userSlice";
+import { clearAllErrors } from "../store/slice/addProductSlice";
 function MainProductPage() {
   const { productImages, statusCode, error, message, isLoading } = useSelector(
     (state) => state.addProduct
@@ -16,8 +16,8 @@ function MainProductPage() {
       console.log("error", error);
     }
 
-    if (message) {
-      toast(message);
+    if (dispatch) {
+      toast.success(message);
     }
 
     if (statusCode === 409) {
@@ -25,8 +25,8 @@ function MainProductPage() {
       console.log(statusCode, message);
     }
 
-    dispatch(clearAllError());
-  }, []);
+    dispatch(clearAllErrors());
+  }, [message, error]);
 
   return (
     <div id="main-product" className="flex h-screen">
