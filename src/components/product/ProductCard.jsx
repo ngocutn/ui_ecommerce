@@ -38,7 +38,8 @@ const ProductCard = ({ product, children }) => {
           <img
             src={image}
             alt="Product Image"
-            className="object-contain w-full h-full transition duration-300 group-hover:scale-110"
+            className="object-contain transition duration-300 group-hover:scale-110"
+            style={{ width: "90%", height: "90%" }}
           />
         </div>
         <div className="px-3 py-5">
