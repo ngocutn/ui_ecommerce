@@ -13,6 +13,7 @@ import {
 import { Skeleton } from "@mui/material";
 import ProductInfoSkeleton from "../../components/skeleton/ProductInfoSkeleton";
 import ProductCardSkeleton from "../../components/skeleton/ProductCardSkeleton";
+import { ToastContainer } from "react-toastify";
 
 const ProductDetails = () => {
   const { isShow, setIsShow } = useOutletContext();
@@ -113,6 +114,7 @@ const ProductDetails = () => {
             )} */}
         </div>
       </div>
+      <ToastContainer></ToastContainer>
     </div>
   );
 };

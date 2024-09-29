@@ -1,27 +1,35 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCollection } from "../../store/slice/collectionSlice";
+import Collection from "./components/Collection";
 
 const ProductCollection = () => {
+  const dispatch = useDispatch();
+  const { error, message, isLoading, collections } = useSelector(
+    (state) => state.productCollection
+  );
+
+  useEffect(() => {
+    if (error) {
+      console.log("api", error);
+    }
+    if (message) {
+      console.log("api", message);
+    }
+  }, [error, message, dispatch]);
+
+  useEffect(() => {
+    dispatch(getAllCollection());
+  }, []);
+
+  console.log("collections", collections);
+
   return (
-    <div className="mt-10">
-      <div className="flex justify-between">
-        <p className="text-[22px] font-bold">Furniture Collections</p>
-        <div className="flex gap-x-3">
-          <button
-            // onClick={prevImg}
-            className="p-2 bg-gray-100 rounded-full hover:bg-opacity-45"
-          >
-            <ChevronLeft></ChevronLeft>
-          </button>
-          <button
-            // onClick={nextImg}
-            className="p-2 bg-gray-100 rounded-full hover:bg-opacity-45"
-          >
-            <ChevronRight></ChevronRight>
-          </button>
-        </div>
-      </div>
-      <div></div>
+    <div className="flex flex-col mt-10 gap-y-20">
+      {collections?.result?.map((collection, index) => (
+        <Collection key={index} collection={collection}></Collection>
+      ))}
     </div>
   );
 };
