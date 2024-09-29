@@ -21,6 +21,7 @@ import { useEffect } from "react";
 import { getUser } from "./store/slice/userSlice";
 import SellerLayout from "./pages/Auth/seller/SellerLayout";
 import ConfirmSuccess from "./pages/Auth/ConfirmSuccess";
+import ConfirmFailure from "./pages/Auth/ConfirmFailure";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -91,6 +92,10 @@ function App() {
     {
       path: "/confirm-success",
       element: <ConfirmSuccess></ConfirmSuccess>,
+    },
+    {
+      path: "/confirm-failure",
+      element: <ConfirmFailure></ConfirmFailure>,
     },
   ]);
 

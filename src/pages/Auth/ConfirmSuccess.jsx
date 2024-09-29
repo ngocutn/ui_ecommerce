@@ -1,9 +1,11 @@
 import React from "react";
 import success from "../../assets/success.png";
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ConfirmSuccess = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="absolute top-0 left-0 m-5 size-20 sm:size-10">
@@ -21,9 +23,18 @@ const ConfirmSuccess = () => {
         <p className="mt-2 text-gray-400">
           Confirm Successfully, wellcome to website
         </p>
-        <Link className="px-5 py-2 mt-10 text-white bg-black rounded-md hover:bg-opacity-80 hover:shadow-lg">
-          HomePage
-        </Link>
+        <Button
+          onClick={() => navigate("/login")}
+          className="px-5 py-2 mt-10 text-white bg-black rounded-md hover:bg-opacity-80 hover:shadow-lg"
+          startIcon={
+            <i
+              className="fa fa-check-circle text-green-500"
+              aria-hidden="true"
+            ></i>
+          }
+        >
+          Login
+        </Button>
       </div>
     </div>
   );
