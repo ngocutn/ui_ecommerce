@@ -17,6 +17,7 @@ function HomePage() {
         const res = await getBannerByQuantity(4);
 
         setSlideImages(res.data.data);
+        console.log(res.data.data);
       } catch (error) {}
     };
     getBanner();
