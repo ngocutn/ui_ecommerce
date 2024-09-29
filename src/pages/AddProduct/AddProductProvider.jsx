@@ -161,28 +161,13 @@ const AddProdcutProvider = () => {
     console.log("data", request);
 
     dispatch(addProduct(request));
+    navigate("/admin");
   };
 
   useEffect(() => {
-    if (error) {
-      console.log("Error:", error);
-    }
-
     if (message) {
-      toast.success(message); // Thêm thành công cho thông báo
-      navigate("/admin");
     }
-
-    if (statusCode === 409) {
-      toast.error("Product with the same name already exists");
-      console.log(
-        "Conflict Error - Status Code:",
-        statusCode,
-        "Message:",
-        message
-      );
-    }
-  }, [dispatch, error, message, statusCode, navigate]);
+  }, [message]);
 
   console.log("checked", checked);
 
