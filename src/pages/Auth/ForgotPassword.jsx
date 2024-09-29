@@ -85,7 +85,11 @@ const ForgotPassword = () => {
               type="submit"
               disabled={loading}
             >
-              {loading ? <Loading></Loading> : "Confirm"}
+              {isLoading ? (
+                <div className="p-2 border-4 border-white rounded-full border-b-transparent animate-spin"></div>
+              ) : (
+                <span>Login</span>
+              )}
             </Button>
           </form>
           <Link to="/login" className="z-20 flex items-center mt-3 group">

@@ -61,7 +61,7 @@ const Footer = () => {
   ];
   return (
     <div>
-      <div className="w-full px-16 shadow-lg">
+      <div className="w-full px-16 shadow-lg sm:hidden tb:hidden">
         <div className="flex justify-between mt-10">
           <div className="  w-[100px] h-[100px] flex items-center">
             <img

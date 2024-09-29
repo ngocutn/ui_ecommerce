@@ -15,7 +15,7 @@ const ImageSlide = ({ images, isLoading }) => {
     setViewImage(false);
   };
   return (
-    <div className="w-[60%] h-[70vh] bg-white rounded-lg relative shadow-primary">
+    <div className="w-[60%] h-[70vh] sm:w-[100%] tb:w-full bg-white rounded-lg relative shadow-primary">
       <div className="w-full h-full select-none">
         <Banner
           slides={images}

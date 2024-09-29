@@ -112,7 +112,7 @@ const userSlice = createSlice({
     resetPasswordSuccess: (state, action) => {
       state.isLoading = false;
       state.error = null;
-      state.message = action.payload;
+      state.message = "Reset Password Successfully";
     },
     resetPasswordError: (state, action) => {
       state.isLoading = false;

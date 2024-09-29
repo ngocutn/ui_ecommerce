@@ -25,7 +25,7 @@ export default {
       // => @media (min-width: 1536px) { ... }
       //   "max-sm": { max: "767px" },
       //   "max-md": { max: "1023px" },
-      "tablet-range": { min: "768px", max: "1023px" },
+      tb: { min: "768px", max: "1023px" },
       "tablet-up": { min: "768px", max: "1039px" },
       "desktop-up": { min: "1024px", max: "1139px" },
       "in-lg": { min: "1024px", max: "1279px" },
