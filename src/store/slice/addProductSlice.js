@@ -10,20 +10,23 @@ const addProductSlice = createSlice({
     isLoading: false,
     error: null,
     message: null,
+    statusCode: null,
   },
   reducers: {
     addProductRequest: (state, action) => {
       state.product = {};
       state.isLoading = true;
+      state.statusCode = action.payload;
     },
     addProductSuccess: (state, action) => {
       state.product = action.payload;
       state.isLoading = false;
       state.message = "Product added successfully";
     },
-    addProductFailure: (state, action) => {
+    addProductError: (state, action) => {
       state.isLoading = false;
-      state.error = action.payload;
+      state.error = action.payload.message;
+      state.statusCode = action.payload.statusCode;
     },
 
     uploadFileRequest: (state, action) => {
@@ -46,20 +49,20 @@ const addProductSlice = createSlice({
       state.productImages = action.payload;
     },
 
-    addProductRequest: (state, action) => {
-      state.product = {};
-      state.isLoading = true;
-    },
-    addProductSuccess: (state, action) => {
-      state.product = action.payload;
-      state.isLoading = false;
-      state.message = "Product added successfully";
-    },
-    addProductError: (state, action) => {
-      state.product = {};
-      state.isLoading = false;
-      state.error = action.payload;
-    },
+    // addProductRequest: (state, action) => {
+    //   state.product = {};
+    //   state.isLoading = true;
+    // },
+    // addProductSuccess: (state, action) => {
+    //   state.product = action.payload;
+    //   state.isLoading = false;
+    //   state.message = "Product added successfully";
+    // },
+    // addProductError: (state, action) => {
+    //   state.product = {};
+    //   state.isLoading = false;
+    //   state.error = action.payload;
+    // },
 
     clearAllErrors: (state, action) => {
       state.error = null;
@@ -82,7 +85,10 @@ export const addProduct = (productData) => async (dispatch) => {
     dispatch(addProductSlice.actions.addProductSuccess(data.data));
   } catch (e) {
     dispatch(
-      addProductSlice.actions.addProductError(e.response?.data?.message)
+      addProductSlice.actions.addProductError({
+        message: e.response?.data?.message || "Something went wrong",
+        statusCode: e.response?.status || 500, // Thêm status code vào payload, mặc định là 500 nếu không có
+      })
     );
   }
 };
@@ -114,7 +120,10 @@ export const uploadFile = (files) => async (dispatch) => {
     dispatch(addProductSlice.actions.uploadFileSuccess(results));
   } catch (e) {
     dispatch(
-      addProductSlice.actions.uploadFileError(e.response?.data?.message)
+      addProductSlice.actions.uploadFileError({
+        message: e.response?.data?.message || "Something went wrong",
+        statusCode: e.response?.data?.message || 500, // Thêm status code vào payload, mặc định là 500 nếu không có
+      })
     );
   }
 };

@@ -7,8 +7,7 @@ import { uploadFile } from "../../../../store/slice/productVariantSlice";
 const VariantImage = () => {
   const dispatch = useDispatch();
   const [variantTypeValue, setVariantTypeValue] = useState([]);
-  const [file, setFile] = useState("");
-  const [filePreview, setFilePreview] = useState([]);
+  const [fileReview, setFileReview] = useState({});
   const [variantImage, setVariantImage] = useState({});
   const [selectedValue, setSelectedValue] = useState("");
   const { variantValues, primaryVariant, variantImageUrl, error } = useSelector(
@@ -37,17 +36,17 @@ const VariantImage = () => {
     setVariantTypeValue(currentVariant ? currentVariant.values : []);
   }, [variantValues, primaryVariant]);
 
-  useEffect(() => {
-    return () => {
-      filePreview.forEach((file) => {
-        if (file.preview) {
-          URL.revokeObjectURL(file.preview);
-        }
-      });
-    };
-  }, [filePreview]);
+  // useEffect(() => {
+  //   return () => {
+  //     fileReview.forEach((file) => {
+  //       if (file.preview) {
+  //         URL.revokeObjectURL(file.preview);
+  //       }
+  //     });
+  //   };
+  // }, [fileReview]);
 
-  console.log("files", filePreview);
+  // console.log("files", filePreview);
 
   useEffect(() => {
     const initialState = variantTypeValue.map((value) => ({
@@ -56,46 +55,47 @@ const VariantImage = () => {
     }));
 
     setVariantImage(initialState);
+    setFileReview(initialState);
   }, [variantTypeValue, dispatch]);
 
-  useEffect(() => {
-    if (filePreview && selectedValue) {
-      setVariantImage((prev) =>
-        prev.map((value) => {
-          if (value.valueName === selectedValue) {
-            return {
-              ...value,
-              images: [...filePreview], // Thêm ảnh vào đúng valueName
-            };
-          }
-          return value;
-        })
-      );
+  // useEffect(() => {
+  //   if (filePreview && selectedValue) {
+  //     setVariantImage((prev) =>
+  //       prev.map((value) => {
+  //         if (value.valueName === selectedValue) {
+  //           return {
+  //             ...value,
+  //             images: [...filePreview], // Thêm ảnh vào đúng valueName
+  //           };
+  //         }
+  //         return value;
+  //       })
+  //     );
 
-      // dispatch(uploadFile(variantImage));
-    }
-  }, [filePreview]);
+  //   }
+  // }, [filePreview]);
 
   useEffect(() => {
     if (error) {
       console.log(error);
     }
-  }, [error]);
+
+    dispatch(uploadFile(fileReview));
+  }, [fileReview]);
 
   console.log("selecteds", selectedValue);
   console.log("setVariantImage", variantImage);
+  console.log("setFileReview", fileReview);
 
   return (
     <div className="p-3 mt-8 rounded-md outline-dashed outline-offset-2 outline-gray-300">
       <h1 className="mb-5 font-bold text-text1">Variants images</h1>
       <div className="flex flex-col gap-y-4">
         {variantTypeValue?.map((value) => {
-          // Tìm variantImage tương ứng với value hiện tại
-          const currentVariantImage = variantImage.find(
+          const currentVariantImage = fileReview.find(
             (img) => img.valueName === value
           );
 
-          console.log("currentVariantImage", currentVariantImage);
           return (
             <div className="flex w-full gap-x-10" key={value}>
               <div className="w-1/3 p-2 border border-gray-300 rounded-md h-fit">
@@ -125,12 +125,18 @@ const VariantImage = () => {
                     </div>
                   ))
                 ) : (
-                  <ImageUploader setFiles={setFilePreview} />
+                  <ImageUploader
+                    setVariantImage={setFileReview}
+                    selectedValue={selectedValue}
+                  />
                 )}
                 {/* Thêm ảnh uploader nếu đã có hình ảnh */}
                 {currentVariantImage?.images.length < 5 &&
                   currentVariantImage?.images.length > 0 && (
-                    <ImageUploader setFiles={setFilePreview} />
+                    <ImageUploader
+                      setVariantImage={setFileReview}
+                      selectedValue={selectedValue}
+                    />
                   )}
               </div>
             </div>

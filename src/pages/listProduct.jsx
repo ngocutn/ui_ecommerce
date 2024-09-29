@@ -21,6 +21,8 @@ function ListProduct() {
     getProducts();
   }, []);
 
+  console.log(products);
+
   return (
     <div className="mt-14">
       <div className="flex justify-between mt-14">
@@ -36,7 +38,7 @@ function ListProduct() {
       </div>
       <div className="grid grid-cols-2 gap-4">
         {products.length > 0 ? (
-          products.map((product) => (
+          products?.map((product) => (
             <div
               key={product.id}
               className="flex p-4 bg-white border rounded-lg shadow-sm hover:bg-gray-100"
@@ -51,7 +53,9 @@ function ListProduct() {
               <div>
                 <h2 className="text-lg font-semibold">{product.name}</h2>
 
-                <p className="text-sm text-gray-500">{product.categories[0]}</p>
+                <p className="text-sm text-gray-500">
+                  {product.categories[0].name}
+                </p>
                 <p className="text-sm">Price: ${product.sellingPrice}</p>
                 <p className="text-sm">
                   On hand: {product.quantityAvailable} Units
