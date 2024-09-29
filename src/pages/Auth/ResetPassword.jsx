@@ -55,7 +55,8 @@ const ResetPassword = () => {
     formData.append("email", email.trim());
     formData.append("newPassword", data.password.trim());
     formData.append("confirmPassword", data.confirmPassword.trim());
-    token = searchParams.get("token");
+    const url = new URL(window.location.href);
+    const token = url.searchParams.get("token");
 
     dispatch(resetPassword(formData, token));
   };
