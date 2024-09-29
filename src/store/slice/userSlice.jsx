@@ -134,7 +134,7 @@ export const getUser = (token) => {
       });
       dispatch(userSlice.actions.getUserSuccess(data.data));
     } catch (error) {
-      const errorMessage = error.message;
+      const errorMessage = error?.response?.data?.message;
       dispatch(userSlice.actions.getUserError(errorMessage));
     }
   };
@@ -155,7 +155,7 @@ export const Register = (userData) => async (dispatch) => {
 };
 
 export const Login = (userData) => async (dispatch) => {
-  localStorage.removeItem("token");
+  // localStorage.removeItem("token");
   dispatch(userSlice.actions.loginRequest());
 
   try {

@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { clearUserInfor, setIsAuthenticated } from "../store/slice/userSlice";
 
 function SideBar() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [subMenuOpen, setSubMenuOpen] = useState({
     page: false,
     myshop: false,
@@ -24,6 +27,19 @@ function SideBar() {
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
+  };
+
+  const handleLogout = () => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      localStorage.removeItem("token");
+      dispatch(clearUserInfor());
+      dispatch(setIsAuthenticated(false));
+      navigate("/");
+    } else {
+      navigate("/");
+    }
   };
 
   return (
@@ -315,7 +331,10 @@ function SideBar() {
           <span className="text-lg font-semibold">Jonathon Treat</span>
           <span className="text-gray-500">lana@treat.com</span>
         </a>
-        <i className="ml-auto text-lg text-gray-500 cursor-pointer fa-solid fa-arrow-right-from-bracket"></i>
+        <i
+          className="ml-auto text-lg text-gray-500 cursor-pointer fa-solid fa-arrow-right-from-bracket"
+          onClick={handleLogout}
+        ></i>
       </div>
     </div>
   );

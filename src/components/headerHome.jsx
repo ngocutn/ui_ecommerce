@@ -25,6 +25,7 @@ import {
   clearAllError,
   clearUserInfor,
   Logout,
+  setIsAuthenticated,
 } from "../store/slice/userSlice";
 
 function HeaderHome() {
@@ -40,31 +41,18 @@ function HeaderHome() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleLogout = () => {
     dispatch(Logout());
-
     localStorage.removeItem("token");
-
+    dispatch(setIsAuthenticated(false));
     dispatch(clearUserInfor());
-
     navigate("/login");
   };
-
-  // useEffect(() => {
-  //   if (userData?.user?.roles.includes("ROLE_SELLER")) {
-  //     navigate("/admin");
-  //   }
-  // }, [userData, dispatch]);
-
-  console.log(
-    'userData?.roles?.includes("ROLE_USER")',
-    userData?.user?.roles?.includes("ROLE_USER")
-  );
-  console.log("userData?.firstName", userData?.firstName);
 
   return (
     <AppBar className="z-20 bg-white pr-7">
@@ -117,8 +105,7 @@ function HeaderHome() {
           direction="row"
           className="flex items-center justify-center gap-x-5"
         >
-          {userData?.user?.firstName &&
-          userData?.user?.roles?.includes("ROLE_USER") ? (
+          {isAuthenticated && userData?.roles?.includes("ROLE_USER") ? (
             <div className="flex items-center">
               <div className="w-11 h-11">
                 <img
@@ -141,7 +128,7 @@ function HeaderHome() {
                     padding: "0",
                   }}
                 >
-                  {userData?.user?.firstName + " " + userData?.user?.lastName}
+                  {userData?.firstName + " " + userData?.lastName}
                 </Button>
                 <Menu
                   id="basic-menu"
