@@ -20,7 +20,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu } from "@mui/material";
 import { useEffect, useState } from "react";
-import { checkToken, clearAllError, Logout } from "../store/slice/userSlice";
+import {
+  checkToken,
+  clearAllError,
+  clearUserInfor,
+  Logout,
+} from "../store/slice/userSlice";
 
 function HeaderHome() {
   const navigate = useNavigate();
@@ -44,12 +49,22 @@ function HeaderHome() {
 
     localStorage.removeItem("token");
 
-    dispatch(checkToken());
+    dispatch(clearUserInfor());
 
-    navigate("/buyer");
+    navigate("/login");
   };
 
-  console.log("authen", isAuthenticated);
+  // useEffect(() => {
+  //   if (userData?.user?.roles.includes("ROLE_SELLER")) {
+  //     navigate("/admin");
+  //   }
+  // }, [userData, dispatch]);
+
+  console.log(
+    'userData?.roles?.includes("ROLE_USER")',
+    userData?.user?.roles?.includes("ROLE_USER")
+  );
+  console.log("userData?.firstName", userData?.firstName);
 
   return (
     <AppBar className="z-20 bg-white pr-7">
@@ -102,7 +117,8 @@ function HeaderHome() {
           direction="row"
           className="flex items-center justify-center gap-x-5"
         >
-          {isAuthenticated ? (
+          {userData?.user?.firstName &&
+          userData?.user?.roles?.includes("ROLE_USER") ? (
             <div className="flex items-center">
               <div className="w-11 h-11">
                 <img
@@ -125,7 +141,7 @@ function HeaderHome() {
                     padding: "0",
                   }}
                 >
-                  {/* {userData.user?.firstName} */}ád
+                  {userData?.user?.firstName + " " + userData?.user?.lastName}
                 </Button>
                 <Menu
                   id="basic-menu"
@@ -143,7 +159,7 @@ function HeaderHome() {
             </div>
           ) : (
             <Link
-              to="/buyer"
+              to="/login"
               className="flex items-center p-2 text-sm text-black capitalize rounded-lg hover:bg-gray-100"
             >
               <PermIdentityOutlinedIcon />

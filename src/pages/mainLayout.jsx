@@ -1,11 +1,33 @@
-import { Fragment, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Fragment, useEffect, useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import HeaderHome from "../components/headerHome";
 import Footer from "../components/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentPath } from "../store/slice/routerSlice";
+import { getUser } from "../store/slice/userSlice";
 
 const MainLayout = () => {
   const location = useLocation();
   const [isShow, setIsShow] = useState(false);
+  const { isAuthenticated, user: userData } = useSelector(
+    (state) => state.user
+  );
+
+  const dispatch = useDispatch();
+  const navigation = useNavigate();
+  const { currentPath } = useSelector((state) => state.router);
+
+  useEffect(() => {
+    dispatch(setCurrentPath("/"));
+    dispatch(getUser());
+  }, []);
+
+  useEffect(() => {
+    console.log("user", userData);
+    if (userData?.user?.roles.includes("ROLE_SELLER")) {
+      navigation("/admin");
+    }
+  }, [dispatch, currentPath]);
 
   return (
     <div className="h-full">
