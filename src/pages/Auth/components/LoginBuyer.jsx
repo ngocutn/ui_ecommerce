@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../../components/Loading";
@@ -21,8 +21,7 @@ const LoginBuyer = ({ className }) => {
   const {
     register,
     handleSubmit,
-    reset,
-    formState: { errors, isValid, isLoading },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -30,21 +29,24 @@ const LoginBuyer = ({ className }) => {
 
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
-  const { error, message, user: userData } = useSelector((state) => state.user);
+  const [isShowError, setIsShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const {
+    error,
+    message,
+    user: userData,
+    isLoading,
+  } = useSelector((state) => state.user);
 
   const onSubmit = (data) => {
-    const formData = new FormData();
-
-    formData.append("email", data.email);
-    formData.append("password", data.password);
-
-    dispatch(Login(formData));
-    reset();
+    dispatch(Login(data));
   };
 
   useEffect(() => {
     if (error) {
       console.log(error);
+      setIsShowError(true);
+      setErrorMessage(error);
     }
 
     if (message) {
@@ -52,6 +54,11 @@ const LoginBuyer = ({ className }) => {
       navigateTo("/");
     }
   }, [error, message, dispatch]);
+
+  const handleInputChange = () => {
+    setIsShowError(false);
+    setErrorMessage("");
+  };
 
   return (
     <form
@@ -68,6 +75,7 @@ const LoginBuyer = ({ className }) => {
           error={!!errors.email}
           helperText={errors.email?.message}
           fullWidth
+          onChange={handleInputChange}
         />
 
         <TextField
@@ -78,10 +86,12 @@ const LoginBuyer = ({ className }) => {
           error={!!errors.password}
           helperText={errors.password?.message}
           fullWidth
+          onChange={handleInputChange}
         />
       </div>
-      {error && <p className="p-0 m-0 text-red-400 text-start">{error}</p>}
-
+      {isShowError && (
+        <p className="p-0 m-0 text-red-400 text-start">{errorMessage}</p>
+      )}
       <div className="flex items-center justify-between mb-4 text-sm cursor-pointer">
         <FormControlLabel
           control={<Checkbox defaultChecked size="small" />}
@@ -96,7 +106,7 @@ const LoginBuyer = ({ className }) => {
         type="submit"
         variant="contained"
         color="primary"
-        disabled={!isValid}
+        disabled={!isValid || isLoading}
         sx={{ width: "70%" }}
       >
         {isLoading ? <Loading></Loading> : "Login"}
