@@ -238,12 +238,12 @@ export const forgotPassword = (email) => async (dispatch) => {
 };
 
 // reset password
-export const resetPassword = (formData) => async (dispatch) => {
+export const resetPassword = (formData, token) => async (dispatch) => {
   dispatch(userSlice.actions.resetPasswordRequest());
 
   try {
     const { res } = await axios.post(
-      `${API_URL}/auth/reset-password`,
+      `${API_URL}/auth/reset-password?token=${token}`,
       formData,
       {
         headers: {
@@ -266,7 +266,11 @@ export const SendEmail = (email) => async (dispatch) => {
 
     dispatch(userSlice.actions.sendMailSuccess(res.data));
   } catch (e) {
-    dispatch(userSlice.actions.sendMailError(e.response.data.message));
+    dispatch(
+      userSlice.actions.sendMailError(
+        e?.response?.data?.message || "Sending email failed. Please try again."
+      )
+    );
   }
 };
 
