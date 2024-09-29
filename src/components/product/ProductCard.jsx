@@ -9,9 +9,10 @@ const ProductCard = ({ product, children }) => {
     name,
     brandName,
     sumSoldQuantity,
-    primaryImage,
-    sellingPrice,
-    discountedPrice,
+    minSellingPrice,
+    maxSellingPrice,
+    minDiscountedPrice,
+    maxDiscountedPrice,
     avgRating,
     image,
   } = product;
@@ -25,7 +26,7 @@ const ProductCard = ({ product, children }) => {
   const rating = Math.round(avgRating * 10) / 10;
 
   return (
-    <div className="relative">
+    <div className="relative max-h-[450px]">
       <div
         key={id}
         className="w-[100%] border border-gray-200 h-auto text-lg cursor-pointer group hover:bg-white hover:shadow-card transiton-all duration-100 hover:-translate-y-1 rounded-lg overflow-hidden"
@@ -42,7 +43,7 @@ const ProductCard = ({ product, children }) => {
             style={{ width: "90%", height: "90%" }}
           />
         </div>
-        <div className="px-3 py-5">
+        <div className="h-[205px] px-3 py-5 ">
           <p className="overflow-hidden text-[16px] font-bold text-nowrap text-ellipsis">
             {name}
           </p>
@@ -62,19 +63,33 @@ const ProductCard = ({ product, children }) => {
                   {sumSoldQuantity} Sold
                 </span>
               </div>
-              <div className="flex gap-4 mt-2">
-                {sellingPrice && (
-                  <p
-                    className={`text-gray-500 ${
-                      discountedPrice ? "line-through" : ""
-                    }`}
-                  >
-                    $ {sellingPrice}
-                  </p>
-                )}
-                {discountedPrice && (
-                  <p className="font-bold">$ {discountedPrice}</p>
-                )}
+              <div className="flex flex-col mt-2 gap-y-1">
+                <div
+                  className={`flex items-center gap-x-2 text-[16px] ${
+                    minDiscountedPrice || maxDiscountedPrice
+                      ? "line-through"
+                      : ""
+                  }`}
+                >
+                  <span>${minSellingPrice}</span>
+                  <span>-</span>
+                  <span>${maxSellingPrice}</span>
+                </div>
+                <div>
+                  {maxDiscountedPrice || minDiscountedPrice ? (
+                    <div className={`flex items-center gap-x-2`}>
+                      <span className=" text-[16px] font-semibold">
+                        ${minDiscountedPrice}
+                      </span>
+                      <span>-</span>
+                      <span className=" text-[16px] font-semibold">
+                        ${maxDiscountedPrice}
+                      </span>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </div>
               </div>
             </div>
             <button className="flex items-center justify-center w-10 h-10 p-1 ml-auto bg-black rounded-full hover:scale-110">

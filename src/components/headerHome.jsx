@@ -122,9 +122,9 @@ function HeaderHome() {
                   aria-expanded={open ? "true" : undefined}
                   onClick={handleClick}
                   style={{
-                    fontSize: "12px",
+                    fontSize: "10px",
                     color: "Black",
-                    fontWeight: "bold",
+                    fontWeight: "nomal",
                     padding: "0",
                   }}
                 >

@@ -10,11 +10,13 @@ import {
   getAllReviewFilter,
 } from "../../store/slice/reviewSlice";
 import Loading from "../../components/Loading";
+import AddReviewModal from "./AddReviewModal";
 
 const ReviewsModal = ({ setIsShow, isShow, productId }) => {
   const [rating, setRating] = useState(0);
   const [sort, setSort] = useState("ASC");
   const [page, setPage] = useState(0);
+  const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
   const {
@@ -32,6 +34,11 @@ const ReviewsModal = ({ setIsShow, isShow, productId }) => {
       }
     }
   }, [isShow, productId, page, sort, rating]);
+
+  const handleOpenModal = () => {
+    setOpen(true);
+    // setIsShow(false);
+  };
 
   const { avgRating, countOfReviews } = reviewData;
   const avgRatingFormatted = Math.round(avgRating * 10) / 10;
@@ -93,9 +100,19 @@ const ReviewsModal = ({ setIsShow, isShow, productId }) => {
           )}
       </div>
 
-      <Button className="w-full py-3 mt-5 text-[12px] font-semibold text-white bg-black rounded-lg">
+      <Button
+        className="w-full py-3 mt-5 text-[12px] font-semibold text-white bg-black rounded-lg"
+        onClick={handleOpenModal}
+      >
         Write a review
       </Button>
+      {open && (
+        <AddReviewModal
+          setOpen={setOpen}
+          open={open}
+          productId={productId}
+        ></AddReviewModal>
+      )}
     </div>
   );
 };

@@ -30,10 +30,10 @@ function PopularProduct() {
     // getProducts();
   }, []);
 
-  // const currentProducts = productData?.slice(
-  //   currentIndex * 4,
-  //   (currentIndex + 1) * 4
-  // );
+  const currentProducts = popularProduct?.slice(
+    currentIndex * 4,
+    (currentIndex + 1) * 4
+  );
 
   useEffect(() => {
     if (error) {
@@ -47,13 +47,13 @@ function PopularProduct() {
 
   const prevImg = () => {
     const firstImg = currentIndex === 0;
-    const newImg = firstImg ? productData.length / 4 - 1 : currentIndex - 1;
+    const newImg = firstImg ? popularProduct.length / 4 - 1 : currentIndex - 1;
     setCurrentIndex(newImg);
   };
   //
 
   const nextImg = () => {
-    const lastImg = currentIndex === productData.length / 4 - 1;
+    const lastImg = currentIndex === popularProduct.length / 4 - 1;
     const newImg = lastImg ? 0 : currentIndex + 1;
     setCurrentIndex(newImg);
   };
@@ -85,8 +85,8 @@ function PopularProduct() {
             ))}
           </>
         ) : (
-          popularProduct
-            .slice(1, 5)
+          currentProducts
+            .slice(0, 5)
             .map((item, index) => (
               <ProductCard key={index} product={item}></ProductCard>
             ))

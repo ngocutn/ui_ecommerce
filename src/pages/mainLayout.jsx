@@ -19,11 +19,10 @@ const MainLayout = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (token && isAuthenticated) {
+    if (token) {
       dispatch(setIsAuthenticated(true));
     } else {
       dispatch(setIsAuthenticated(false));
-      localStorage.removeItem("token");
     }
   }, []);
 
