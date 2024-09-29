@@ -65,20 +65,25 @@ const LoginBuyer = ({ className }) => {
     }
 
     if (message) {
-      console.log("user data", userData);
       navigateTo("/");
     }
-  }, [error, message, dispatch]);
 
-  useEffect(() => {
-    if (userData) {
-      userData.user?.roles.find((user) => user.roles === "ROLE_USER");
-    } else {
-      toast.error("User not found");
+    return () => {
+      setIsShowError(false);
+      setErrorMessage("");
+    };
+  }, [dispatch, error, message]);
 
-      dispatch(clearUserInfor());
-    }
-  }, [userData]);
+  // useEffect(() => {
+  //   if (userData && userData.user?.roles?.includes("ROLE_USER")) {
+  //     navigateTo("/");
+  //   } else {
+  //     toast.error("User not found");
+  //     dispatch(clearUserInfor());
+  //     navigateTo("/login");
+  //   }
+  // }, [navigateTo]);
+
   const handleInputChange = () => {
     setIsShowError(false);
     setErrorMessage("");
@@ -120,8 +125,10 @@ const LoginBuyer = ({ className }) => {
           }}
         />
       </div>
-      {isShowError && (
-        <p className="p-0 m-0 text-red-400 text-start">{errorMessage}</p>
+      {error && (
+        <p className="p-0 m-0 text-red-400 text-start">
+          {errorMessage || "something wen wrong!"}
+        </p>
       )}
       <div className="flex items-center justify-between mb-4 text-sm cursor-pointer">
         <FormControlLabel
@@ -140,7 +147,7 @@ const LoginBuyer = ({ className }) => {
         disabled={!isValid || isLoading}
         sx={{ width: "70%" }}
       >
-        {isLoading ? <Loading></Loading> : "Login"}
+        {isLoading ? <Loading /> : "Login"}
       </Button>
 
       <SocialLink></SocialLink>

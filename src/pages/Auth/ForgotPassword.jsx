@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../components/Loading";
 import { forgotPassword } from "../../store/slice/userSlice";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import toastify styles
 
 const schema = yup.object({
   email: yup.string().email().required("Email is required"),
@@ -30,20 +31,15 @@ const ForgotPassword = () => {
 
   useEffect(() => {
     if (error) {
-      console.log("error", error);
+      toast.error(error);
     }
-
     if (message) {
       toast.success(message);
     }
   }, [error, message]);
 
+  // Form submit handler
   const onSubmit = (data) => {
-    console.log(data);
-
-    // const formData = new FormData();
-    // formData.append("email", data.email);
-
     dispatch(forgotPassword(data.email));
   };
 

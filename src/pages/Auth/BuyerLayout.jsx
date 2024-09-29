@@ -15,11 +15,11 @@ const BuyerLayout = () => {
     };
   }, []);
   const dispatch = useDispatch();
-  const { message } = useSelector((state) => state.user);
+  // const { message } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    toast.success(message);
-  }, [message]);
+  // useEffect(() => {
+  //   toast.success(message);
+  // }, [message]);
 
   return (
     <div className="relative flex items-center justify-center w-full h-screen">
