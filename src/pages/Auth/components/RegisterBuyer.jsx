@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -14,10 +14,17 @@ import Loading from "../../../components/Loading";
 import SocialLink from "../../../components/form/SocialLink";
 import { useDispatch, useSelector } from "react-redux";
 import { clearAllError, Register } from "../../../store/slice/userSlice";
+import EyeIcon from "../../../icon/EyeIcon";
 
 const schema = yup.object({
-  firstName: yup.string().required("First name is required"),
-  lastName: yup.string().required("Last name is required"),
+  firstName: yup
+    .string()
+    .matches(/^\S(.*\S)?$/, "First name is not valid!")
+    .required("First name is required"),
+  lastName: yup
+    .string()
+    .matches(/^\S(.*\S)?$/, "Last name is not valid!")
+    .required("Last name is required"),
   email: yup.string().email().required("Email is required"),
   password: yup
     .string()
@@ -43,6 +50,8 @@ const RegisterBuyer = ({ className }) => {
   const dispatch = useDispatch();
   const navigatioTo = useNavigate();
   const { error, message, isConfirm } = useSelector((state) => state.user);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = (data) => {
     const formData = new FormData();
@@ -88,7 +97,7 @@ const RegisterBuyer = ({ className }) => {
               label="First Name"
               variant="outlined"
               error={!!errors.firstName}
-              helperText={errors.firstName?.message}
+              helperText={errors.firstName?.message || " "}
               fullWidth
               sx={{
                 "& .MuiInputBase-input": {
@@ -103,7 +112,7 @@ const RegisterBuyer = ({ className }) => {
               label="Last Name"
               variant="outlined"
               error={!!errors.lastName}
-              helperText={errors.lastName?.message}
+              helperText={errors.lastName?.message || " "}
               fullWidth
               sx={{
                 "& .MuiInputBase-input": {
@@ -119,7 +128,7 @@ const RegisterBuyer = ({ className }) => {
           label="Email"
           variant="outlined"
           error={!!errors.email}
-          helperText={errors.email?.message}
+          helperText={errors.email?.message || " "}
           fullWidth
           sx={{
             "& .MuiInputBase-input": {
@@ -131,11 +140,19 @@ const RegisterBuyer = ({ className }) => {
         <TextField
           {...register("password")}
           label="Password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           variant="outlined"
           error={!!errors.password}
-          helperText={errors.password?.message}
+          helperText={errors.password?.message || " "}
           fullWidth
+          InputProps={{
+            endAdornment: (
+              <EyeIcon
+                showPassword={showPassword}
+                toggleShowPassword={() => setShowPassword(!showPassword)}
+              />
+            ),
+          }}
           sx={{
             "& .MuiInputBase-input": {
               fontSize: "14px",
@@ -146,18 +163,27 @@ const RegisterBuyer = ({ className }) => {
         <TextField
           {...register("confirmPassword")}
           label="Confirm Password"
-          type="password"
+          type={showConfirmPassword ? "text" : "password"}
           variant="outlined"
           error={!!errors.confirmPassword}
-          helperText={errors.confirmPassword?.message}
+          helperText={errors.confirmPassword?.message || " "}
           fullWidth
+          InputProps={{
+            endAdornment: (
+              <EyeIcon
+                showPassword={showConfirmPassword}
+                toggleShowPassword={() =>
+                  setShowConfirmPassword(!showConfirmPassword)
+                }
+              />
+            ),
+          }}
           sx={{
             "& .MuiInputBase-input": {
               fontSize: "14px",
             },
           }}
         />
-        <p className="text-red-400 text-start">{error}</p>
       </div>
 
       <Button
