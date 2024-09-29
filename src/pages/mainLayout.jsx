@@ -22,7 +22,7 @@ const MainLayout = () => {
     if (token && isAuthenticated) {
       dispatch(setIsAuthenticated(true));
     } else {
-      dispatch(setIsAuthenticated(true));
+      dispatch(setIsAuthenticated(false));
       localStorage.removeItem("token");
     }
   }, []);

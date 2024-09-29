@@ -15,6 +15,7 @@ import SocialLink from "../../../components/form/SocialLink";
 import { useDispatch, useSelector } from "react-redux";
 import { clearAllError, Register } from "../../../store/slice/userSlice";
 import EyeIcon from "../../../icon/EyeIcon";
+import { toast } from "react-toastify";
 
 const schema = yup.object({
   firstName: yup
@@ -52,6 +53,7 @@ const RegisterBuyer = ({ className }) => {
   const { error, message, isConfirm } = useSelector((state) => state.user);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [email, setEmail] = useState("");
 
   const onSubmit = (data) => {
     const formData = new FormData();
@@ -59,6 +61,7 @@ const RegisterBuyer = ({ className }) => {
     formData.append("firstName", data.firstName);
     formData.append("lastName", data.lastName);
     formData.append("email", data.email);
+    setEmail(data.email);
     formData.append("password", data.password);
     const roles = ["ROLE_SELLER"];
 
@@ -75,11 +78,13 @@ const RegisterBuyer = ({ className }) => {
     }
 
     if (isConfirm) {
-      navigatioTo("/confirm");
+      navigatioTo(`/confirm/${email}`);
       reset();
     }
 
-    dispatch(clearAllError());
+    if (message) {
+      toast.success(message);
+    }
   }, [error, message, dispatch]);
 
   return (
@@ -89,7 +94,7 @@ const RegisterBuyer = ({ className }) => {
     >
       <h1 className="text-3xl font-bold text-center">Register Buyer.</h1>
 
-      <div className="flex flex-col mt-8 mb-4 gap-y-5">
+      <div className="flex flex-col mt-8 mb-4 gap-y-2">
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
@@ -193,7 +198,11 @@ const RegisterBuyer = ({ className }) => {
         disabled={!isValid}
         sx={{ width: "70%" }}
       >
-        {isLoading ? <Loading></Loading> : "Register"}
+        {isLoading ? (
+          <div className="p-2 border-4 border-white rounded-full border-b-transparent animate-spin"></div>
+        ) : (
+          <span>Register</span>
+        )}
       </Button>
 
       <SocialLink></SocialLink>

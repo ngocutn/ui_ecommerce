@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { clearAllError } from "../../store/slice/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const BuyerLayout = () => {
   useEffect(() => {
@@ -14,12 +15,32 @@ const BuyerLayout = () => {
       cleanup;
     };
   }, []);
-  const dispatch = useDispatch();
-  // const { message } = useSelector((state) => state.user);
 
-  // useEffect(() => {
-  //   toast.success(message);
-  // }, [message]);
+  const dispatch = useDispatch();
+  const navigateTo = useNavigate();
+
+  const {
+    error,
+    message,
+    user: userData,
+    isLoading,
+  } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+      toast.error(error);
+    }
+
+    if (message) {
+      toast.success(message);
+      navigateTo("/");
+    }
+
+    return () => {
+      dispatch(clearAllError());
+    };
+  }, [dispatch, error, message]);
 
   return (
     <div className="relative flex items-center justify-center w-full h-screen">
@@ -64,7 +85,6 @@ const BuyerLayout = () => {
           </div>
         </div>
       </div>
-
       <ToastContainer />
     </div>
   );
