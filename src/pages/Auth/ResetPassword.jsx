@@ -4,7 +4,12 @@ import { Button, TextField } from "@mui/material";
 import { ArrowLeft, KeyRound, LockKeyhole } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import * as yup from "yup";
 import WaveBg from "../../components/WaveBg";
 import { useDispatch, useSelector } from "react-redux";
