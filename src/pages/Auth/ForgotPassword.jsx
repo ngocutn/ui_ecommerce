@@ -40,10 +40,10 @@ const ForgotPassword = () => {
   const onSubmit = (data) => {
     console.log(data);
 
-    const formData = new FormData();
-    formData.append("email", data.email);
+    // const formData = new FormData();
+    // formData.append("email", data.email);
 
-    dispatch(forgotPassword(formData));
+    dispatch(forgotPassword(data.email));
   };
 
   return (

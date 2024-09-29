@@ -158,7 +158,7 @@ export const forgotPassword = (email) => async (dispatch) => {
   try {
     const { data } = await axios.post(
       `${API_URL}/auth/forgot-password`,
-      email,
+      { email },
       {
         withCredentials: true,
         headers: {
