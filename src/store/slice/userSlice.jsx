@@ -30,7 +30,7 @@ const userSlice = createSlice({
     },
     loginError: (state, action) => {
       state.isLoading = false;
-      state.error = action.payload;
+      state.error = action.payload || "An unexpected error occurred"; // Fallback error message
       state.message = null;
       state.isAuthenticated = false;
       state.user = {};
@@ -120,6 +120,17 @@ const userSlice = createSlice({
       state.message = null;
     },
 
+    sendMailSuccess: (state, action) => {
+      state.isLoading = false;
+      state.error = null;
+      state.message = action.payload;
+    },
+    sendMailError: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+      state.message = null;
+    },
+
     setIsAuthenticated: (state, action) => {
       state.isAuthenticated = action.payload;
     },
@@ -176,15 +187,16 @@ export const Login = (userData) => async (dispatch) => {
 
   try {
     const { data } = await axios.post(`${API_URL}/auth/login`, userData, {
-      withCredentials: true,
       headers: { "Content-Type": "application/json" },
     });
 
-    localStorage.setItem("token", data.data.token);
-
     dispatch(userSlice.actions.loginSuccess(data.data));
+    localStorage.setItem("token", data.data.token);
   } catch (e) {
-    dispatch(userSlice.actions.loginError(e.response?.data?.message));
+    console.error("Login error:", e); // Log error for debugging
+    const errorMessage =
+      e.response?.data?.message || "Login failed. Please try again.";
+    dispatch(userSlice.actions.loginError(errorMessage));
   }
 };
 
@@ -243,6 +255,18 @@ export const resetPassword = (formData) => async (dispatch) => {
     dispatch(userSlice.actions.resetPasswordSuccess(res.data));
   } catch (e) {
     dispatch(userSlice.actions.resetPasswordError(e.response?.data?.message));
+  }
+};
+
+export const SendEmail = (email) => async (dispatch) => {
+  try {
+    const { res } = await axios.post(
+      `${API_URL}/auth/verify-account?email=${email}`
+    );
+
+    dispatch(userSlice.actions.sendMailSuccess(res.data));
+  } catch (e) {
+    dispatch(userSlice.actions.sendMailError(e.response.data.message));
   }
 };
 

@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import loadingBg from "../../assets/loading-bg.gif";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { SendEmail } from "../../store/slice/userSlice";
 
 const EmailConfirm = () => {
+  const { email } = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(SendEmail(email));
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen -mt-10">
       <div className="absolute top-0 left-0 m-5 size-20">

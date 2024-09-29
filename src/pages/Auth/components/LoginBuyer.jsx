@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Button,
   Checkbox,
@@ -14,12 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../../components/Loading";
 import SocialLink from "../../../components/form/SocialLink";
 import { useDispatch, useSelector } from "react-redux";
-
-import {
-  clearUserInfor,
-  Login,
-  setIsAuthenticated,
-} from "../../../store/slice/userSlice";
+import { clearAllError, Login } from "../../../store/slice/userSlice";
 import { toast } from "react-toastify";
 import EyeIcon from "../../../icon/EyeIcon";
 
@@ -43,8 +38,6 @@ const LoginBuyer = ({ className }) => {
 
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
-  const [isShowError, setIsShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const {
     error,
@@ -53,37 +46,32 @@ const LoginBuyer = ({ className }) => {
     isLoading,
   } = useSelector((state) => state.user);
 
-  const onSubmit = (data) => {
-    dispatch(Login(data));
-  };
-
   useEffect(() => {
     if (error) {
-      toast.error(error); // Show error message
+      console.log(error);
+      toast.error(error);
     }
 
     if (message) {
-      navigateTo("/"); // Redirect on success
+      navigateTo("/");
     }
 
-    // Cleanup error states
     return () => {
-      dispatch(clearUserInfor());
+      dispatch(clearAllError());
     };
-  }, [dispatch, error, message, navigateTo]);
-  // useEffect(() => {
-  //   if (userData && userData.user?.roles?.includes("ROLE_USER")) {
-  //     navigateTo("/");
-  //   } else {
-  //     toast.error("User not found");
-  //     dispatch(clearUserInfor());
-  //     navigateTo("/login");
-  //   }
-  // }, [navigateTo]);
+  }, [dispatch]);
 
-  const handleInputChange = () => {
-    setIsShowError(false);
-    setErrorMessage("");
+  const onSubmit = (data) => {
+    const formData = new FormData();
+
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    dispatch(Login(formData));
   };
 
   return (
@@ -91,7 +79,7 @@ const LoginBuyer = ({ className }) => {
       onSubmit={handleSubmit(onSubmit)}
       className={`w-1/2 h-full p-10 text-center ${className} login-container overflow-y-scroll`}
     >
-      <h1 className="text-3xl font-bold text-center">Login Buyer.</h1>
+      <h1 className="text-3xl font-bold text-center">Login</h1>
 
       <div className="flex flex-col mt-6 mb-4 gap-y-7">
         <TextField
@@ -101,7 +89,6 @@ const LoginBuyer = ({ className }) => {
           error={!!errors.email}
           helperText={errors.email?.message}
           fullWidth
-          onChange={handleInputChange}
         />
         <TextField
           {...register("password")}
@@ -111,7 +98,6 @@ const LoginBuyer = ({ className }) => {
           error={!!errors.password}
           helperText={errors.password?.message}
           fullWidth
-          onChange={handleInputChange}
           InputProps={{
             endAdornment: (
               <EyeIcon
@@ -122,11 +108,7 @@ const LoginBuyer = ({ className }) => {
           }}
         />
       </div>
-      {error && (
-        <div className="p-0 m-0 text-red-400 text-start">
-          {error || "Something went wrong!"}
-        </div>
-      )}
+      {/* {error && <span>{error}</span>} */}
       <div className="flex items-center justify-between mb-4 text-sm cursor-pointer">
         <FormControlLabel
           control={<Checkbox defaultChecked size="small" />}
@@ -141,10 +123,14 @@ const LoginBuyer = ({ className }) => {
         type="submit"
         variant="contained"
         color="primary"
-        disabled={!isValid || isLoading}
+        disabled={isLoading}
         sx={{ width: "70%" }}
       >
-        {isLoading ? <Loading /> : "Login"}
+        {isLoading ? (
+          <div className="p-2 border-4 border-white rounded-full border-b-transparent animate-spin"></div>
+        ) : (
+          <span>Login</span>
+        )}
       </Button>
 
       <SocialLink></SocialLink>

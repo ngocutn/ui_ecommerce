@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getUser } from "./store/slice/userSlice";
 import SellerLayout from "./pages/Auth/seller/SellerLayout";
+import ConfirmSuccess from "./pages/Auth/ConfirmSuccess";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -76,7 +77,7 @@ function App() {
       element: <SellerLayout></SellerLayout>,
     },
     {
-      path: "/confirm",
+      path: "/confirm/:email",
       element: <EmailConfirm></EmailConfirm>,
     },
     {
@@ -86,6 +87,10 @@ function App() {
     {
       path: "/reset",
       element: <ResetPassword></ResetPassword>,
+    },
+    {
+      path: "/confirm-success",
+      element: <ConfirmSuccess></ConfirmSuccess>,
     },
   ]);
 
