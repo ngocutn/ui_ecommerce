@@ -59,21 +59,18 @@ const LoginBuyer = ({ className }) => {
 
   useEffect(() => {
     if (error) {
-      console.log(error);
-      setIsShowError(true);
-      setErrorMessage(error);
+      toast.error(error); // Show error message
     }
 
     if (message) {
-      navigateTo("/");
+      navigateTo("/"); // Redirect on success
     }
 
+    // Cleanup error states
     return () => {
-      setIsShowError(false);
-      setErrorMessage("");
+      dispatch(clearUserInfor());
     };
-  }, [dispatch, error, message]);
-
+  }, [dispatch, error, message, navigateTo]);
   // useEffect(() => {
   //   if (userData && userData.user?.roles?.includes("ROLE_USER")) {
   //     navigateTo("/");
@@ -126,9 +123,9 @@ const LoginBuyer = ({ className }) => {
         />
       </div>
       {error && (
-        <p className="p-0 m-0 text-red-400 text-start">
-          {errorMessage || "something wen wrong!"}
-        </p>
+        <div className="p-0 m-0 text-red-400 text-start">
+          {error || "Something went wrong!"}
+        </div>
       )}
       <div className="flex items-center justify-between mb-4 text-sm cursor-pointer">
         <FormControlLabel
