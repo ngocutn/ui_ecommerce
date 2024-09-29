@@ -9,8 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
   Checkbox,
+  FormControl,
   Input,
   InputAdornment,
+  InputLabel,
+  OutlinedInput,
   TextField,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
@@ -165,28 +168,17 @@ const VariantTable = ({ values }) => {
       <TableContainer component={Paper} className="mt-10">
         <Table>
           <TableHead>
-            {/* <TableCell padding="checkbox">
-              <Checkbox
-                color="primary"
-                indeterminate={numSelected > 0 && numSelected < rowCount}
-                checked={rowCount > 0 && numSelected === rowCount}
-                onChange={onSelectAllClick}
-                inputProps={{
-                  "aria-label": "select all desserts",
-                }}
-              />
-            </TableCell> */}
             <TableRow>
               {dataTable.map((variant, index) => (
-                <TableCell key={index} className="px-4 py-2">
+                <TableCell key={index} className="px-4 py-2 font-bold">
                   {ConvertStringType(variant.variantType)}
                 </TableCell>
               ))}
-              <TableCell>SKU</TableCell>
-              <TableCell>Quantity</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Sale Price</TableCell>
-              <TableCell>MRSP Price</TableCell>
+              <TableCell className="font-bold ">SKU</TableCell>
+              <TableCell className="font-bold ">Quantity</TableCell>
+              <TableCell className="font-bold ">Price</TableCell>
+              <TableCell className="font-bold ">Sale Price</TableCell>
+              <TableCell className="font-bold ">MRSP Price</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -197,15 +189,28 @@ const VariantTable = ({ values }) => {
                 ))}
                 {/* Placeholder cells for SKU, Quantity, Price, etc. */}
                 <TableCell>
-                  <TextField
+                  {/* <TextField
                     required
                     id="standard-required"
                     variant="standard"
                     onChange={(e) => handleInputChange(e, index, 0)}
+                  /> */}
+                  <TextField
+                    label="Sku"
+                    id="outlined-size-small"
+                    size="small"
+                    type="number"
+                    slotProps={{
+                      inputLabel: {
+                        shrink: true,
+                      },
+                    }}
+                    required
+                    onChange={(e) => handleInputChange(e, index, 0)}
                   />
                 </TableCell>
                 <TableCell>
-                  <TextField
+                  {/* <TextField
                     defaultValue={"0"}
                     id="standard-number"
                     type="number"
@@ -216,10 +221,24 @@ const VariantTable = ({ values }) => {
                       },
                     }}
                     onChange={(e) => handleInputChange(e, index, 1)}
+                  /> */}
+                  <TextField
+                    defaultValue={"0"}
+                    label="Quantity"
+                    id="outlined-size-small"
+                    size="small"
+                    type="number"
+                    required
+                    slotProps={{
+                      inputLabel: {
+                        shrink: true,
+                      },
+                    }}
+                    onChange={(e) => handleInputChange(e, index, 1)}
                   />
                 </TableCell>
                 <TableCell>
-                  <Input
+                  {/* <Input
                     id="standard-adornment-amount"
                     type="number"
                     defaultValue={"0"}
@@ -227,10 +246,25 @@ const VariantTable = ({ values }) => {
                       <InputAdornment position="start">$</InputAdornment>
                     }
                     onChange={(e) => handleInputChange(e, index, 2)}
-                  />
+                  /> */}
+                  <FormControl fullWidth sx={{ m: 1 }} size="small" required>
+                    <InputLabel htmlFor="outlined-adornment-amount">
+                      Price
+                    </InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-amount"
+                      startAdornment={
+                        <InputAdornment position="start">$</InputAdornment>
+                      }
+                      label="Price"
+                      defaultValue={"0"}
+                      type="number"
+                      onChange={(e) => handleInputChange(e, index, 2)}
+                    />
+                  </FormControl>
                 </TableCell>
                 <TableCell>
-                  <Input
+                  {/* <Input
                     id="standard-adornment-amount"
                     type="number"
                     defaultValue={"0"}
@@ -238,10 +272,25 @@ const VariantTable = ({ values }) => {
                       <InputAdornment position="start">$</InputAdornment>
                     }
                     onChange={(e) => handleInputChange(e, index, 3)}
-                  />
+                  /> */}
+                  <FormControl fullWidth sx={{ m: 1 }} size="small" required>
+                    <InputLabel htmlFor="outlined-adornment-amount">
+                      Sale price
+                    </InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-amount"
+                      startAdornment={
+                        <InputAdornment position="start">$</InputAdornment>
+                      }
+                      label="Sale price"
+                      defaultValue={"0"}
+                      type="number"
+                      onChange={(e) => handleInputChange(e, index, 2)}
+                    />
+                  </FormControl>
                 </TableCell>
                 <TableCell>
-                  <Input
+                  {/* <Input
                     id="standard-adornment-amount"
                     type="number"
                     defaultValue={"0"}
@@ -249,14 +298,36 @@ const VariantTable = ({ values }) => {
                       <InputAdornment position="start">$</InputAdornment>
                     }
                     onChange={(e) => handleInputChange(e, index, 4)}
-                  />
+                  /> */}
+                  <FormControl fullWidth sx={{ m: 1 }} size="small" required>
+                    <InputLabel htmlFor="outlined-adornment-amount">
+                      MRSP price
+                    </InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-amount"
+                      startAdornment={
+                        <InputAdornment position="start">$</InputAdornment>
+                      }
+                      label="MRSP price"
+                      defaultValue={"0"}
+                      type="number"
+                      onChange={(e) => handleInputChange(e, index, 2)}
+                    />
+                  </FormControl>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <Button onClick={handleSave}>Save</Button>
+      <div className="flex items-center justify-end w-full">
+        <Button
+          onClick={handleSave}
+          className="bg-[#4192d3] text-white text-[12px] font-semibold px-7 py-2 mt-4 hover:bg-opacity-80"
+        >
+          Save
+        </Button>
+      </div>
     </div>
   );
 };
