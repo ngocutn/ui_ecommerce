@@ -158,7 +158,7 @@ const ProductDescription = () => {
       <p className="text-xl font-semibold">Description</p>
       <div
         id="productDescription"
-        className="flex flex-col h-[280px] my-3 p-4 border border-gray-200 py-2 rounded-md "
+        className="flex flex-col my-3 p-4 border border-gray-200 py-2 rounded-md max-h-[500px]"
       >
         <label htmlFor="name" className="font-semibold text-gray-500">
           Product Name <span className="text-red-600">*</span>
@@ -234,7 +234,8 @@ const ProductDescription = () => {
         </div>
 
         <ReactQuill
-          className="h-[90px] my-2 relative"
+          className="my-2 relative"
+          style={{ maxHeight: 643, overflowY: "auto" }}
           theme="snow"
           id="description"
           name="description"
@@ -248,13 +249,13 @@ const ProductDescription = () => {
         />
 
         {errors?.description && (
-          <div className="flex items-center text-sm mt-9">
+          <div className="flex items-center justify-start text-sm gap-x-2">
             <i
               className="text-red-500 fa fa-exclamation-circle"
               aria-hidden="true"
             ></i>
 
-            <p className="px-2 leading-normal text-red-500 font-nunito text-md">
+            <p className="leading-normal text-red-500 font-nunito text-md">
               {errors.description?.message}
             </p>
           </div>

@@ -423,7 +423,7 @@ function AddProduct() {
             <p className="text-xl font-semibold">Description</p>
             <div
               id="productDescription"
-              className="flex flex-col h-[280px] my-3 p-4 border border-gray-200 py-2 rounded-md "
+              className="flex flex-col my-3 p-4 border border-gray-200 py-2 rounded-md "
             >
               <label htmlFor="name" className="font-semibold text-gray-500">
                 Product Name
@@ -455,7 +455,7 @@ function AddProduct() {
                 </div>
               )}
 
-              <div className="flex justify-between">
+              <div className="flex justify-between h-full">
                 <label
                   htmlFor="description"
                   className="font-semibold text-gray-500"
@@ -481,21 +481,23 @@ function AddProduct() {
                   />
                 </label>
                 {fileError && <p className="text-red-600">{fileError}</p>}
-              </div>
 
-              <ReactQuill
-                className="h-[90px] my-2 relative"
-                theme="snow"
-                id="description"
-                name="description"
-                value={descriptionValue}
-                onChange={(value) => {
-                  setDescriptionValue(value);
-                  handleChangeDescription;
-                  handleQuillChange("description", value);
-                }}
-                modules={modules}
-              />
+                <div>
+                  <ReactQuill
+                    className="my-2"
+                    theme="snow"
+                    id="description"
+                    name="description"
+                    value={descriptionValue}
+                    onChange={(value) => {
+                      setDescriptionValue(value);
+                      handleChangeDescription;
+                      handleQuillChange("description", value);
+                    }}
+                    modules={modules}
+                  />
+                </div>
+              </div>
 
               {errors?.description && (
                 <div className="flex items-center text-sm mt-9">
