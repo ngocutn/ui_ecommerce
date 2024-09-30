@@ -7,7 +7,7 @@ import ProductCardSkeleton from "../../../components/skeleton/ProductCardSkeleto
 import { useDispatch, useSelector } from "react-redux";
 import { getPopularProduct } from "../../../store/slice/productSlice";
 
-function PopularProduct() {
+function PopularProduct({ title }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [productData, setProductData] = useState([]);
   const [isLike, setIsLike] = useState(false);
@@ -61,7 +61,7 @@ function PopularProduct() {
   return (
     <div id="popularProduct" className="mx-auto mt-12">
       <div className="flex items-center justify-between w-full h-auto m-auto">
-        <h1 className="text-xl font-bold">Popular Product 2023</h1>
+        <h1 className="text-xl font-bold">{title}</h1>
         <div className="flex gap-x-3">
           <button
             onClick={prevImg}

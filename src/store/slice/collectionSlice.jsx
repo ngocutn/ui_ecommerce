@@ -45,10 +45,10 @@ export const getAllCollection = () => async (dispatch) => {
   dispatch(collectionSlice.actions.getAllCollectionRequest());
 
   try {
-    // const res = await axios.get(`${API_URL}/categories/featured/products`);
-    const res = await axios.get(
-      `${API_URL}/categories/featured?isFeatured=true`
-    );
+    const res = await axios.get(`${API_URL}/categories/featured/products`);
+    // const res = await axios.get(
+    //   `${API_URL}/categories/featured?isFeatured=true`
+    // );
 
     dispatch(collectionSlice.actions.getAllCollectionSuccess(res.data.data));
     dispatch(collectionSlice.actions.clearAllError());

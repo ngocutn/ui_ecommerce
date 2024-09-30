@@ -60,7 +60,6 @@ const AddReviewModal = ({ setOpen, open, productId }) => {
 
     if (message) {
       toast.success(message);
-      setOpen(false);
     }
   }, [error, message]);
 
@@ -69,6 +68,7 @@ const AddReviewModal = ({ setOpen, open, productId }) => {
   const handleClick = (value) => {
     setRecommendation(value); // Lấy giá trị đã click và lưu vào state
     console.log("Selected:", value);
+    setOpen(false);
   };
 
   const handleClickDelivery = (value) => {

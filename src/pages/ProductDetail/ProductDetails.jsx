@@ -14,6 +14,7 @@ import { Skeleton } from "@mui/material";
 import ProductInfoSkeleton from "../../components/skeleton/ProductInfoSkeleton";
 import ProductCardSkeleton from "../../components/skeleton/ProductCardSkeleton";
 import { ToastContainer } from "react-toastify";
+import PopularProduct from "../HomePage/components/popularProduct";
 
 const ProductDetails = () => {
   const { isShow, setIsShow } = useOutletContext();
@@ -100,6 +101,7 @@ const ProductDetails = () => {
           productId={productId.id}
         ></ReviewsModal>
       )}
+      <PopularProduct title={"You may also like"}></PopularProduct>
       <div className="pt-16">
         <h1 className="mb-3 text-2xl font-bold">You may also like</h1>
         <div className="grid grid-cols-4 gap-10">
