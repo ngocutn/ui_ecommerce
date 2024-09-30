@@ -47,9 +47,10 @@ function MainProductPage() {
   useEffect(() => {
     if (user?.user?.roles.includes("ROLE_SELLER")) {
       navigation("/admin");
-    } else {
-      navigation("/");
     }
+    // else {
+    //   navigation("/");
+    // }
   }, [dispatch, user]);
 
   return (

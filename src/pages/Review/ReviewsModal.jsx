@@ -56,7 +56,9 @@ const ReviewsModal = ({ setIsShow, isShow, productId }) => {
       <div className="flex items-center justify-between px-4 py-2 mt-5 bg-white rounded-lg">
         <span className="text-base font-bold">Overall rating</span>
         <div className="flex items-center gap-x-2">
-          <span className="text-lg font-semibold">{avgRatingFormatted}</span>
+          <span className="text-lg font-semibold">
+            {avgRatingFormatted ? avgRatingFormatted : "0.00"}
+          </span>
           <StartFillIcon fill={"#f9619b"}></StartFillIcon>
         </div>
       </div>
