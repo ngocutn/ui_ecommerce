@@ -40,6 +40,8 @@ const ProductCollection = () => {
     dispatch(setCollectionData(selectedCollections));
   };
 
+  console.log("collection", collections);
+
   return (
     <div>
       <p className="text-xl font-semibold mt-7">Collection</p>
@@ -52,7 +54,7 @@ const ProductCollection = () => {
           <Autocomplete
             multiple
             id="checkboxes-tags-demo"
-            options={collections.results}
+            options={collections || []}
             disableCloseOnSelect
             getOptionLabel={(option) => option?.name}
             onChange={(event, newValue) => {
