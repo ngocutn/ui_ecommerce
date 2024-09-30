@@ -52,9 +52,9 @@ const ProductCollection = () => {
           <Autocomplete
             multiple
             id="checkboxes-tags-demo"
-            options={collections}
+            options={collections.results}
             disableCloseOnSelect
-            getOptionLabel={(option) => option.name}
+            getOptionLabel={(option) => option?.name}
             onChange={(event, newValue) => {
               onChange(newValue); // Cập nhật giá trị khi chọn
             }}

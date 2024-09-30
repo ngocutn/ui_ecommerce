@@ -114,7 +114,7 @@ const AddProdcutProvider = () => {
     };
 
     const categories = [categoryIds, subCategoryIds.id];
-    const collectionIds = data.selectedCollections.map((collection) => {
+    const collectionIds = data?.selectedCollections?.map((collection) => {
       return collection.id;
     });
 
@@ -130,7 +130,7 @@ const AddProdcutProvider = () => {
       sellingType,
       soldQuantity: 0,
       rating: 0,
-      categoryIds: categories.concat(collectionIds),
+      categoryIds: categories?.concat(collectionIds),
       hasVariants: checked ? checked : false,
       productDimension: {
         width: parseFloat(width),

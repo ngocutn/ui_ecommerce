@@ -18,7 +18,7 @@ const Collection = ({ collection }) => {
     }
   };
 
-  const displayedItems = collection.products.slice(
+  const displayedItems = collection?.products?.slice(
     currentIndex,
     currentIndex + itemsPerPage
   );
@@ -37,7 +37,9 @@ const Collection = ({ collection }) => {
           </button>
           <button
             onClick={nextPage}
-            disabled={currentIndex + itemsPerPage >= collection.products.length}
+            disabled={
+              currentIndex + itemsPerPage >= collection.products?.length
+            }
             className="p-2 bg-gray-100 rounded-full hover:bg-opacity-45"
           >
             <ChevronRight></ChevronRight>
@@ -45,7 +47,7 @@ const Collection = ({ collection }) => {
         </div>
       </div>
       <ul className="grid grid-cols-4 grid-rows-1 gap-2 mt-3 sm:grid-cols-1 sm:gap-y-6 tb:grid-cols-2 tb:gap-4">
-        {displayedItems.map((item, index) => (
+        {displayedItems?.map((item, index) => (
           <ProductCard key={index} product={item}></ProductCard>
         ))}
       </ul>

@@ -32,7 +32,21 @@ const ProductVariant = ({ isCategory }) => {
       </div>
 
       {productVariantData.length > 0 && (
-        <div className="flex flex-col gap-y-5"></div>
+        <div className="flex flex-col gap-y-5">
+          {productVariantData.map((variant) => (
+            <div
+              key={variant.id}
+              className="flex items-center px-5 py-4 border border-gray-300 rounded-md gap-x-2"
+            >
+              Sku: <span>{variant.sku}</span>
+              {variant.variantOptions.map((option) => (
+                <div className="flex items-center ">
+                  {option.productType}: {option.valueName}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       )}
 
       {addVariant && (
