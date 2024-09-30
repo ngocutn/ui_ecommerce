@@ -67,8 +67,8 @@ const ResetPassword = () => {
     }
 
     if (message) {
-      toast.success(message);
-      navigateTo("/");
+      toast.success("Reset Password Successfully");
+      navigateTo("/login");
     }
 
     return () => {
@@ -165,8 +165,8 @@ const ResetPassword = () => {
           </Link>
         </div>
         <WaveBg></WaveBg>
-        <ToastContainer></ToastContainer>
       </div>
+      <ToastContainer></ToastContainer>
     </div>
   );
 };

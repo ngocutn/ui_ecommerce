@@ -111,8 +111,7 @@ const userSlice = createSlice({
     },
     resetPasswordSuccess: (state, action) => {
       state.isLoading = false;
-      state.error = null;
-      state.message = "Reset Password Successfully";
+      state.message = action.payload;
     },
     resetPasswordError: (state, action) => {
       state.isLoading = false;
@@ -252,7 +251,9 @@ export const resetPassword = (formData, token) => async (dispatch) => {
       }
     );
 
-    dispatch(userSlice.actions.resetPasswordSuccess(res.data));
+    dispatch(
+      userSlice.actions.resetPasswordSuccess("Reset password successfully")
+    );
   } catch (e) {
     dispatch(userSlice.actions.resetPasswordError(e.response?.data?.message));
   }

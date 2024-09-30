@@ -40,7 +40,7 @@ function HomePage() {
         </div>
       </Banner>
       <TopCategory></TopCategory>
-      <PopularProduct></PopularProduct>
+      <PopularProduct title={"Popular Product 2023"}></PopularProduct>
       <ProductCollection></ProductCollection>
 
       <div className="flex justify-center gap-5 mt-10 sm:flex-col tb:flex-col">

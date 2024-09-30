@@ -25,10 +25,10 @@ const ConfirmSuccess = () => {
         </p>
         <Button
           onClick={() => navigate("/login")}
-          className="px-5 py-2 mt-10 text-white bg-black rounded-md hover:bg-opacity-80 hover:shadow-lg"
+          className="px-5 py-2 mt-10 text-white bg-[#4192d3] rounded-md hover:bg-opacity-80 hover:shadow-lg"
           startIcon={
             <i
-              className="fa fa-check-circle text-green-500"
+              className="text-green-500 fa fa-check-circle"
               aria-hidden="true"
             ></i>
           }
